@@ -1,15 +1,20 @@
 "use client";
 
+import { setHeaderSearchValue } from "@/features/filterSlice";
 import { useEffect } from "react";
 import { GrFormNextLink } from "react-icons/gr";
 import { IoMdCloseCircle } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
 
-const SearchResult = ({ searchText, setSearchText, SetShowSearchResult }) => {
+const SearchResult = ({  SetShowSearchResult }) => {
+  const headerSearchValue =
+  useSelector((store) => store.filterSlice.headerSearchValue) || "";
+const dispatch = useDispatch();
   useEffect(() => {
     const handleClick = (event) => {
       if (!event.target.closest("#searchResult")) {
         SetShowSearchResult(false);
-        setSearchText("");
+        dispatch(setHeaderSearchValue(""));
       }
     };
 
@@ -28,21 +33,21 @@ const SearchResult = ({ searchText, setSearchText, SetShowSearchResult }) => {
         <GrFormNextLink
           className="w-8 min-w-9 h-8 cursor-pointer"
           onClick={() => {
-            setSearchText("");
+            dispatch(setHeaderSearchValue(""));
             SetShowSearchResult(false);
           }}
         />
         <input
           type="text"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
+          value={headerSearchValue}
+          onChange={(e) => dispatch(setHeaderSearchValue(e.target.value))}
           className="outline-none w-full"
         />
-        {searchText && (
+        {headerSearchValue && (
           <div className="">
             <IoMdCloseCircle
               className="text-zinc-700 hover:text-zinc-800 transition-all duration-300 text-xl cursor-pointer w-8 h-8 "
-              onClick={() => setSearchText("")}
+              onClick={() => dispatch(setHeaderSearchValue(""))}
             />
           </div>
         )}

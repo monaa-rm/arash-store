@@ -47,6 +47,11 @@ const ProductSchema = new Schema({
   },
   unit: {
     type: String,
+    required: true
+  },
+  creator: {
+    type: String,
+    required: true
   },
 
   createdAt: {
@@ -60,5 +65,5 @@ const ProductSchema = new Schema({
   },
 });
 
-const Room = models.Room || model("Room", ProductSchema);
-export default Room;
+const Product = models.Product || model("Product", ProductSchema);
+export default Product;

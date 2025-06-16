@@ -30,11 +30,12 @@ export async function POST(req) {
       );
     }
     console.log("66666666666666");
-    const existingCat = await Category.findOne({ $or: [{ name : name }, { link : link }] });
+  const newlink = link.replace(/\s+/g, '-');
+    const existingCat = await Category.findOne({ $or: [{ name : name }, { link : newlink }] });
 if(!existingCat){
     await Category.create({
         name,
-        link,
+        link : newlink,
         creatorId: existingUser._id,
       });
       console.log("77777777777777");

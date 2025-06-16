@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-  productBrifItem: null,
+  productBrrifItem: null,
   showProductBrif: false,
   menuActiveItem: null,
   dashboardActiveItem: { title: "داشبورد ادمین", link: "mainmanager" },
   dashboardUserActiveItem: { title: "داشبورد", link: "mainmanager" },
-  showLoginBox : false
+  showLoginBox: false,
+  showPriceGlobal: false,
 };
 const globalSlice = createSlice({
   name: "global",
@@ -18,7 +19,7 @@ const globalSlice = createSlice({
       state.showLoginBox = action.payload;
     },
     setProductBrifItem: (state, action) => {
-      state.sideSetting = action.payload;
+      state.productBrrifItem = action.payload;
     },
     setMenuActiveItem: (state, action) => {
       state.menuActiveItem = action.payload;
@@ -26,10 +27,13 @@ const globalSlice = createSlice({
     setDashboardActiveItem: (state, action) => {
       state.dashboardActiveItem = action.payload;
     },
-    },
     setUserDashboardActiveItem: (state, action) => {
       state.dashboardUserActiveItem = action.payload;
     },
+    setShowPriceGlobal: (state, action) => {
+      state.showPriceGlobal = action.payload;
+    },
+  },
 });
 
 export const {
@@ -39,5 +43,6 @@ export const {
   setDashboardActiveItem,
   setShowLoginBox,
   setUserDashboardActiveItem,
+  setShowPriceGlobal,
 } = globalSlice.actions;
 export default globalSlice.reducer;

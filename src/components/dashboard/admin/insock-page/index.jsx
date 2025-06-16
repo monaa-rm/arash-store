@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import AllSocks from "../all-socks";
 import { setDashboardActiveItem } from "@/features/globalSlice";
 
-const InsockPage = ({ categories, products }) => {
+const InsockPage = () => {
   const path = usePathname();
   const dispatch = useDispatch();
   useEffect(() => {

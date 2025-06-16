@@ -9,32 +9,33 @@ import { formatNumberToPersian } from "@/utiles/utils-func";
 import SimiliarProducts from "../similar-products";
 import ProductDescComment from "../product-desc-comment";
 import ProductSingleItemImage from "@/components/elements/product-single-item-image";
+import ProductSingleItemPrice from "@/components/elements/product-single-item-price";
 
-const ProductSingleItemPage = ({ data }) => {
+const ProductSingleItemPage = ({ data, showPrice, similiarProducts }) => {
   return (
     <div className="w-full px-4 py-8 flex flex-col gap-4 relative">
       <div className=" w-full p-4 md:h-[500px] border rounded-xl bg-zinc-50 flex flex-col gap-10 md:gap-0 md:flex-row  justify-center items-center ">
         {/* قسمت عکس */}
-        <ProductSingleItemImage imageSrc={data?.imageSrc} />
+        <ProductSingleItemImage imageSrc={data?.imageSrc} alt={data?.title} />
         {/* مشخصات */}
         <div className="w-full h-full ">
           <div className=" w-full h-full xl:h-[460px] rounded-xl border shadow-sm px-2 pb-12 flex flex-col  py-4 lg:px-8 lg:py-6 relative">
             {/* title  */}
             <div className="  lg:text-xl w-full font-[vazirbold] border-b pb-2">
-              <h2 className="w-full ">{data.title}</h2>
+              <h2 className="w-full ">{data?.title}</h2>
             </div>
             {/* comment score price  */}
             <div className=" w-full flex flex-wrap justify-between items-start gap-1 pt-2">
               <div className="flex justify-start items-center gap-1">
                 <div className="flex text-white justify-center items-center gap-0.5 bg-zinc-400 rounded-lg px-1.5">
                   <FaStar className="w-3.5 h-3.5 " />
-                  <span className="text-sm mt-0.5">{data.score}</span>
+                  <span className="text-sm mt-0.5">{data?.score}</span>
                 </div>
                 <GoDotFill className="h-3 w-3 text-zinc-300" />
                 <div className="flex justify-center items-center gap-0.5">
                   <span className="text-sm text-zinc-400 mt-0.5">
-                    {data?.commentNumber
-                      ? `${data.commentsNumber} دیدگاه`
+                    {data?.commentsNumber
+                      ? `${data?.commentsNumber} دیدگاه`
                       : "بدون دیدگاه"}
                   </span>
                 </div>
@@ -42,17 +43,11 @@ const ProductSingleItemPage = ({ data }) => {
               <div className="flex  justify-center items-center gap-0.5 px-1.5">
                 <span className="text-sm">شناسه محصول:</span>
                 <span className="text-sm text-zinc-400 mt-0.5">
-                  {data.productId}
+                  {data?.productId}
                 </span>
               </div>
-              <div className="flex  justify-center items-center gap-0.5 px-1.5 sm:pt-0">
-                <span className="">قیمت:</span>
-                <span className="text-blue-600  ">
-                  {data?.price?.howMuch && Number(data?.price?.howMuch) != 0
-                    ? `${formatNumberToPersian(data?.price?.howMuch)} تومان`
-                    : "تماس بگیرید"}
-                </span>
-              </div>
+              {/* قسمت قیمت */}
+              <ProductSingleItemPrice price={data?.price?.howMuch} />
             </div>
             {/* product properties */}
             <div className="w-full pt-4  xl:pt-8 flex flex-col gap-2">
@@ -84,7 +79,7 @@ const ProductSingleItemPage = ({ data }) => {
             {/* add to cart */}
             <ProductAddToCart
               price={data?.price?.howMuch}
-              productCount={data?.productCount}
+              productCount={data?.instock}
               unit={data?.unit}
             />
             {/* like and share  and category */}
@@ -95,7 +90,12 @@ const ProductSingleItemPage = ({ data }) => {
                   href="/"
                   className="text-zinc-400 hover:text-blue-600 transition-all duration-300 ease-in-out"
                 >
-                  {data?.category?.title}
+                  {data?.category?.map(
+                    (cat, i) =>
+                      `${cat.name} ${
+                        i !== data?.category?.length - 1 ? "-" : ""
+                      }`
+                  )}
                 </Link>
               </div>
               <div className=" flex items-center text-zinc-500 gap-2">
@@ -112,14 +112,14 @@ const ProductSingleItemPage = ({ data }) => {
               <div className="flex justify-start items-center gap-3">
                 <FaBox
                   className={`w-5 h-5 ${
-                    data?.productCount == 0 ? "text-rose-600" : "text-blue-600"
+                    data?.instock == 0 ? "text-rose-600" : "text-blue-600"
                   } `}
                 />
-                {data?.productCount == 0 ? (
+                {data?.instock == 0 ? (
                   <span className="text-xs ">در انبار موجود نیست</span>
                 ) : (
                   <span className="text-xs ">
-                    {data?.productCount} {data?.unit} موجود در انبار
+                    {data?.instock} {data?.unit} موجود در انبار
                   </span>
                 )}
               </div>
@@ -135,7 +135,7 @@ const ProductSingleItemPage = ({ data }) => {
           </div>
         </div>
       </div>
-      <SimiliarProducts />
+      <SimiliarProducts similiarProducts={similiarProducts} />
       <ProductDescComment description={data?.description} title={data?.title} />
     </div>
   );

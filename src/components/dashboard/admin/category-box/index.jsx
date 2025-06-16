@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 
-const CategoryBox = ({ productCat, setProductCat, errorArray }) => {
+const CategoryBox = ({
+  productCat,
+  setProductCat,
+  errorArray,
+  setFinallyText,
+}) => {
   const [showCats, setShowCats] = useState(false);
   const [searchedCat, setSearchedCat] = useState("");
   const [searchedList, setsearchedList] = useState([]);
@@ -43,6 +48,7 @@ const CategoryBox = ({ productCat, setProductCat, errorArray }) => {
     setsearchedList(catListSearch);
   };
   const productCatListHandler = (cat) => {
+    setFinallyText("");
     setProductCat((prevProductCat) => {
       const catIndex = prevProductCat.findIndex((c) => c.name === cat.name);
       if (catIndex > -1) {
@@ -94,8 +100,12 @@ const CategoryBox = ({ productCat, setProductCat, errorArray }) => {
           }
           `}
         >
-          انتخاب دسته بندی 
-          <FaAngleDown className={`w-4 h-4 mt-0.5 transition-all duration-300 ${showCats ? "rotate-180" : "rotate-0"}`} />
+          انتخاب دسته بندی
+          <FaAngleDown
+            className={`w-4 h-4 mt-0.5 transition-all duration-300 ${
+              showCats ? "rotate-180" : "rotate-0"
+            }`}
+          />
         </div>
       </div>
 
@@ -123,7 +133,7 @@ const CategoryBox = ({ productCat, setProductCat, errorArray }) => {
             {productCat?.map((cat, i) => (
               <div
                 key={i}
-                className={`flex justify-center items-center text-sm text-blue-700 cursor-pointer `}
+                className={`flex justify-center items-center gap-0.5 rounded-full px-1 bg-slate-200 text-sm text-blue-700 cursor-pointer `}
               >
                 {cat?.name}
                 <IoMdRemoveCircleOutline
@@ -140,7 +150,11 @@ const CategoryBox = ({ productCat, setProductCat, errorArray }) => {
               <div
                 onClick={() => productCatListHandler(cat)}
                 key={i}
-                className={`text-sm  cursor-pointer hover:text-blue-600 transition-all duration-300`}
+                className={`text-sm ${
+                  productCat.find((item) => cat.link == item.link)
+                    ? "text-blue-500"
+                    : "text-inherit"
+                } cursor-pointer hover:text-blue-600 transition-all duration-300`}
               >
                 {cat?.name}
               </div>
@@ -152,7 +166,11 @@ const CategoryBox = ({ productCat, setProductCat, errorArray }) => {
               <div
                 key={i}
                 onClick={() => productCatListHandler(cat)}
-                className={`text-sm cursor-pointer hover:text-blue-600 transition-all duration-300 `}
+                className={`text-sm  ${
+                  productCat.find((item) => cat.link == item.link)
+                    ? "text-blue-500"
+                    : "text-inherit"
+                } cursor-pointer hover:text-blue-600 transition-all duration-300 `}
               >
                 {cat?.name}
               </div>

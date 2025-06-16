@@ -6,7 +6,12 @@ import { AiOutlineClose } from "react-icons/ai"; // یا هر آیکون حذف 
 import { FaPlus } from "react-icons/fa";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 
-const DescriptionBox = ({ productDesc, setProductDesc }) => {
+const DescriptionBox = ({
+  productDesc,
+  setProductDesc,
+  finallyText,
+  setFinallyText,
+}) => {
   const [textTitle, setTextTitle] = useState("");
   const [descText, setDeskText] = useState("");
   const [descList, setDescList] = useState([]);
@@ -47,6 +52,8 @@ const DescriptionBox = ({ productDesc, setProductDesc }) => {
           type="text"
           setValue={setTextTitle}
           label={"عنوان"}
+          finallyText={finallyText}
+          setFinallyText={setFinallyText}
         />
         <div className="flex w-full items-center gap-2">
           <div className="relative w-full">
@@ -120,41 +127,41 @@ const DescriptionBox = ({ productDesc, setProductDesc }) => {
         </button>
       </div>
       <div className="flex flex-col w-full gap-1">
-          {productDesc?.map((item, index) => (
-            <div
-              key={index}
-              className="flex flex-col gap-2 bg-slate-50 px-2 py-1 rounded-md"
-            >
-              {item?.title ? (
-                <div className="flex justify-between items-center gap-2 font-bold">
-                  <span>{item?.title}</span>
+        {productDesc?.map((item, index) => (
+          <div
+            key={index}
+            className="flex flex-col gap-2 bg-slate-50 px-2 py-1 rounded-md"
+          >
+            {item?.title ? (
+              <div className="flex justify-between items-center gap-2 font-bold">
+                <span>{item?.title}</span>
+                <button
+                  onClick={() => handleDeleteItem(index)}
+                  className="text-red-500"
+                >
+                  <IoMdRemoveCircleOutline />
+                </button>
+              </div>
+            ) : null}
+            {item?.desc?.map((desc, i) => (
+              <div
+                key={i}
+                className="flex justify-between items-center text-gray-500 text-sm gap-2"
+              >
+                <span>{desc}</span>
+                {!item?.title ? (
                   <button
                     onClick={() => handleDeleteItem(index)}
                     className="text-red-500"
                   >
                     <IoMdRemoveCircleOutline />
                   </button>
-                </div>
-              ) : null}
-              {item?.desc?.map((desc, i) => (
-                <div
-                  key={i}
-                  className="flex justify-between items-center text-gray-500 text-sm gap-2"
-                >
-                  <span>{desc}</span>
-                  {!item?.title ? (
-                    <button
-                      onClick={() => handleDeleteItem(index)}
-                      className="text-red-500"
-                    >
-                      <IoMdRemoveCircleOutline />
-                    </button>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

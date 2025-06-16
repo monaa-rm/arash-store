@@ -6,7 +6,7 @@ import { AiOutlineClose } from "react-icons/ai"; // یا هر آیکون حذف 
 import { FaPlus } from "react-icons/fa";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 
-const PropertiesBox = ({ productProperties, setProductProperties , title , placeholder }) => {
+const PropertiesBox = ({ productProperties, setProductProperties , title , placeholder, finallyText, setFinallyText }) => {
   const [text, setText] = useState("");
   //   const [productProperties, setProductProperties] = useState([]);
 
@@ -34,6 +34,8 @@ const PropertiesBox = ({ productProperties, setProductProperties , title , place
           type="text"
           setValue={setText}
           label={placeholder}
+          finallyText={finallyText}
+          setFinallyText={setFinallyText}
         />
 
         <button

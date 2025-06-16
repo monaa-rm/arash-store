@@ -20,7 +20,7 @@ const WelcomeSlider = ({ welcomeImages }) => {
       <Slider {...settings}>
         {welcomeImages.map((img, i) => (
           <div key={i} className="w-full h-[150px] sm:h-[400px] relative">
-            <Image alt={img} fill className="object-cover" src={img} />
+            <Image alt={img.file} fill className="object-cover" src={img.file} />
           </div>
         ))}
       </Slider>

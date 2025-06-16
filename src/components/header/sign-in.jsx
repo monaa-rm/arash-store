@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { PiUserThin } from "react-icons/pi";
+import { PiUserCheckThin, PiUserThin } from "react-icons/pi";
 import { TbLayoutDashboard } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 
@@ -42,10 +42,10 @@ const SignIn = () => {
           <button
             onClick={() => setShowBox(true)}
             type="button"
-            className=" bg-blue-700 hover:bg-blue-800 rounded-full  text-white relative flex lg:hidden justify-center items-center  w-9 min-w-9  h-9
+            className="  relative flex lg:hidden justify-center items-center  w-9 min-w-9  h-9
       transition-all duration-300 ease-in-out  "
           >
-            <PiUserThin className="w-full h-full font-thin" />
+            <PiUserCheckThin className="w-full h-full font-thin" />
           </button>
         </>
       ) : (

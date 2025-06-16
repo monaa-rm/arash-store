@@ -5,7 +5,11 @@ import { RiFilterOffLine } from "react-icons/ri";
 import SearchCategoryFilter from "../search-category-filter";
 import SearchPriceFilter from "../search-price-filter";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowCategory } from "@/features/filterSlice";
+import {
+  setActiveSearchHeaderItem,
+  setReloadFilter,
+  setShowCategory,
+} from "@/features/filterSlice";
 
 const searchHeaderItems = [
   {
@@ -35,20 +39,25 @@ const searchHeaderItems = [
 ];
 
 const SearchMainBoxHeader = () => {
-  const [activeSearchHeaderItem, setActiveSearchHeaderItem] =
-    useState("default");
   const [showFilter, setShowFilter] = useState(false);
   const [showSort, setShowSort] = useState(false);
+  const activeSearchHeaderItem = useSelector(
+    (store) => store.filterSlice.activeSearchHeaderItem
+  );
   const showCategory = useSelector((store) => store.filterSlice.showCategory);
+  const totalProducts = useSelector((store) => store.filterSlice.totalProducts);
+  const numberCategories = useSelector(
+    (store) => store.filterSlice.numberCategories
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
     const handleClick = (event) => {
       if (!event.target.closest("#filterSearch")) {
-        if(showCategory) {
-            dispatch(setShowCategory(false))
-        }else{
-            setShowFilter(false)
+        if (showCategory && window.innerWidth < 1024) {
+          dispatch(setShowCategory(false));
+        } else {
+          setShowFilter(false);
         }
       }
     };
@@ -83,7 +92,11 @@ const SearchMainBoxHeader = () => {
           </div>
           {searchHeaderItems?.map((item) => (
             <div
-              onClick={() => setActiveSearchHeaderItem(item.link)}
+              onClick={() => {
+                dispatch(setActiveSearchHeaderItem(item.link));
+                dispatch(setReloadFilter());
+                setShowSort(false);
+              }}
               key={item.link}
               className={`px-2 py-1 rounded-lg ${
                 activeSearchHeaderItem == item.link
@@ -95,12 +108,16 @@ const SearchMainBoxHeader = () => {
             </div>
           ))}
         </div>
-        <div>نمایش 8 کالا</div>
+        <div>
+          نمایش {numberCategories} از {totalProducts} کالا
+        </div>
       </div>
       <div className=" border rounded-lg text-sm lg:hidden overflow-hidden">
         <div className="flex justify-between items-center  py-2 px-4 border-b bg-gradient-to-l from-slate-100 to-slate-50">
           <span className="font-bold">فروشگاه</span>
-          <span className="text-zinc-500">نمایش 20 کالا</span>
+          <span className="text-zinc-500 text-xs">
+            نمایش {numberCategories} از {totalProducts} کالا
+          </span>
         </div>
         <div className="flex justify-around items-center  py-2 px-4">
           <div
@@ -149,19 +166,23 @@ const SearchMainBoxHeader = () => {
             >
               <input
                 checked=""
-                onChange={() => setActiveSearchHeaderItem(item.link)}
+                onChange={() => {
+                  dispatch(setActiveSearchHeaderItem(item.link));
+                  dispatch(setReloadFilter());
+                  setShowSort(false);
+                }}
                 className="sr-only peer"
                 name="futuristic-radio"
                 type="radio"
               />
               <div
-                className={`w-6 h-6 bg-transparent border-2 border-blue-500 rounded-full
+                className={`w-6 h-6  border-2 border-blue-500 rounded-full
                ${
                  activeSearchHeaderItem == item.link
-                   ? " bg-blue-400 border-blue-500  shadow-lg shadow-blue-500/50 "
-                   : null
+                   ? " bg-blue-800 border-blue-700  shadow-lg shadow-blue-800/50 "
+                   : "bg-transparent"
                }
-                transition duration-300 ease-in-out peer-hover:shadow-lg peer-hover:shadow-blue-500/50 `}
+                transition duration-300 ease-in-out peer-hover:shadow-lg peer-hover:shadow-blue-800/50 `}
               ></div>
               <span className="mr-2">{item.title}</span>
             </label>

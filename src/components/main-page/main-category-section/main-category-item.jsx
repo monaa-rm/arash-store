@@ -1,6 +1,21 @@
-const MainCategoryItem = ({ title, icon }) => {
+"use client"
+
+import { setSearchedCategory } from "@/features/filterSlice";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+
+const MainCategoryItem = ({ title, icon ,cat}) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const clickHandler = () => {
+    dispatch(setSearchedCategory(cat));
+    router.push("/search");
+  };
   return (
-    <div className="pt-2 hover:pt-0 transition-all duration-300 ease-in-out relative h-24">
+    <div
+      onClick={() => clickHandler()}
+      className="pt-2 hover:pt-0 transition-all duration-300 ease-in-out relative h-24"
+    >
       <div
         className=" z-[1] relative w-full border border-zinc-300  shadow-2xl rounded-lg h-[88px] bg-white
    hover:bg-blue-700 hover:border-blue-700 cursor-pointer text-blue-700 hover:text-white font-bold flex items-center justify-center transition-all duration-300 ease-in-out"

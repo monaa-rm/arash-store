@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-
 const InputTextSection = ({
   id,
   name,
@@ -10,6 +8,7 @@ const InputTextSection = ({
   type,
   label,
   errorArray,
+  setFinallyText,
 }) => {
   return (
     <div className=" w-full flex items-center justify-center">
@@ -19,7 +18,10 @@ const InputTextSection = ({
           name={name}
           type={type}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => {
+            setValue(e.target.value);
+            setFinallyText("");
+          }}
           placeholder=""
           className={`border-b w-full text-sm  md:text-base border-gray-300 py-1 focus:border-b-2 focus:border-blue-700 
           transition-colors  focus:outline-none peer bg-inherit ${

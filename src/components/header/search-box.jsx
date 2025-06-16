@@ -4,16 +4,20 @@ import { RiSearch2Line } from "react-icons/ri";
 import { IoMdCloseCircle } from "react-icons/io";
 import { useState } from "react";
 import SearchResult from "./search-result";
+import { useDispatch, useSelector } from "react-redux";
+import { setHeaderSearchValue } from "@/features/filterSlice";
 
 const SearchBox = () => {
-  const [searchText, setSearchText] = useState("");
   const [showSearchResult, SetShowSearchResult] = useState(false);
+  const headerSearchValue =
+    useSelector((store) => store.filterSlice.headerSearchValue) || "";
+  const dispatch = useDispatch();
   const searchHandler = (e) => {
-    setSearchText(e.target.value)
-    if(e?.target?.value?.length> 2){
-      SetShowSearchResult(true)
+    dispatch(setHeaderSearchValue(e.target.value));
+    if (e?.target?.value?.length > 2) {
+      SetShowSearchResult(true);
     }
-  }
+  };
   return (
     <form className="w-full lg:w-auto lg:relative group">
       <div
@@ -25,22 +29,24 @@ const SearchBox = () => {
         </div>
         <input
           type="search"
-          value={searchText}
+          value={headerSearchValue}
           placeholder="جستجو..."
           onChange={(e) => searchHandler(e)}
-          className="outline-none border-none h-full w-full searchbox placeholder:text-sm placeholder:text-gray-300"
+          className="outline-none border-none h-full  w-full searchbox placeholder:text-sm placeholder:text-gray-300"
         />
-        {searchText && (
+        {headerSearchValue && (
           <div className="absolut">
             <IoMdCloseCircle
               className="text-zinc-600 text-xl cursor-pointer "
-              onClick={() => setSearchText("")}
+              onClick={() => dispatch(setHeaderSearchValue(""))}
             />
           </div>
         )}
       </div>
       {showSearchResult && (
-        <SearchResult searchText={searchText} setSearchText={setSearchText} SetShowSearchResult={SetShowSearchResult} />
+        <SearchResult
+          SetShowSearchResult={SetShowSearchResult}
+        />
       )}
     </form>
   );

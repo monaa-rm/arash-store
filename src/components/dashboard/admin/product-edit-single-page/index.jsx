@@ -2,7 +2,7 @@
 
 import InputTextSection from "@/components/elements/input-text-section";
 import { setDashboardActiveItem } from "@/features/globalSlice";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import CategoryBox from "../category-box";
@@ -10,24 +10,34 @@ import PropertiesBox from "../properties-box";
 import DescriptionBox from "../description-box";
 import ProductImages from "../productImages";
 import EditImages from "../edit-images";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const ProductEditSinglePage = ({ data }) => {
-  const [productTitle, setproductTitle] = useState(data?.productTitle || "");
+  const [productTitle, setProductTitle] = useState(data?.title || "");
   const [productId, setProductId] = useState(data?.productId || "");
-  const [productPrice, setProductPrice] = useState(data?.price.howMuch || "");
+  const [productPrice, setProductPrice] = useState(
+    String(data?.price?.howMuch) || ""
+  );
   const [productCat, setProductCat] = useState(data?.category || []);
-  const [productInsocks, setProductInsocks] = useState(data?.instock || "");
+  const [productInsocks, setProductInsocks] = useState(
+    String(data?.instock) || ""
+  );
   const [productUnit, setProductUnit] = useState(data?.unit || "");
   const [productProperties, setProductProperties] = useState(
     data?.properties || []
   );
   const [productDesc, setProductDesc] = useState(data?.description || []);
   const [errorArray, setErrorArray] = useState([]);
-  const [images, setImages] = useState(data?.imageSrc || []);
   const [files, setFiles] = useState([]);
-
+  const [productImgs, setProductImgs] = useState(data?.imageSrc || []);
+  const [finallyText, setFinallyText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { data: session, status } = useSession();
   const path = usePathname();
   const dispatch = useDispatch();
+  const router = useRouter();
+
   useEffect(() => {
     dispatch(
       setDashboardActiveItem({
@@ -36,9 +46,10 @@ const ProductEditSinglePage = ({ data }) => {
       })
     );
   }, [path]);
-  const productPriceHandler = (value) => {
-    let newvalue = value.replace(/[^0-9\-]/g, "");
 
+  const productPriceHandler = (value) => {
+    setFinallyText("");
+    let newvalue = value.replace(/[^0-9\-]/g, "");
     // قبول فقط یک صفر
     if (newvalue === "00") {
       newvalue = "0";
@@ -52,6 +63,7 @@ const ProductEditSinglePage = ({ data }) => {
     setProductPrice(newvalue);
   };
   const productStockHandler = (value) => {
+    setFinallyText("");
     let newvalue = value.replace(/[^0-9\-]/g, "");
 
     // قبول فقط یک صفر
@@ -66,44 +78,80 @@ const ProductEditSinglePage = ({ data }) => {
 
     setProductInsocks(newvalue);
   };
-  const addProductHandler = () => {
+  const EditProductHandler = async () => {
     const newErrorArray = [];
     setErrorArray([]);
+    setLoading(true);
+    try {
+      if (
+        !productTitle.length ||
+        !productId.length ||
+        !productUnit.length ||
+        !productPrice?.length ||
+        !productInsocks.length ||
+        !productCat.length ||
+        !productImgs.length
+      ) {
+        if (!productTitle.length) {
+          newErrorArray.push("productTitle");
+        }
+        if (!productId.length) {
+          newErrorArray.push("productId");
+        }
+        if (!productUnit.length) {
+          newErrorArray.push("productUnit");
+        }
+        if (!productPrice.length) {
+          newErrorArray.push("productPrice");
+        }
+        if (!productInsocks.length) {
+          newErrorArray.push("productInsocks");
+        }
+        if (!productCat.length) {
+          newErrorArray.push("productCat");
+        }
+        if (!productImgs.length) {
+          newErrorArray.push("files");
+        }
 
-    if (!productTitle.length) {
-      newErrorArray.push("productTitle");
+        setErrorArray((prevErrorArray) => [
+          ...prevErrorArray,
+          ...newErrorArray,
+        ]); // Update using callback
+        console.log(errorArray);
+        setFinallyText("اطلاعات کامل نیست");
+      } else {
+        const formData = {
+          productTitle,
+          productId,
+          productPrice,
+          productCat,
+          productInsocks,
+          productUnit,
+          productProperties,
+          productDesc,
+          productImgs,
+          editor: session.user,
+        };
+        const res = await fetch(`/api/product/edit-product/${data._id}`, {
+          method: "PATCH",
+          body: JSON.stringify(formData),
+          headers: { "Content-Type": "application/json" },
+        });
+        const result = await res.json();
+        if (!res.ok) {
+          console.log(result);
+          setFinallyText(result?.error);
+        } else {
+          router.push("/dashboard/admin/edit-product");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setFinallyText("خطا در ارسال اطلاعات");
+    } finally {
+      setLoading(false);
     }
-    if (!productId.length) {
-      newErrorArray.push("productId");
-    }
-    if (!productUnit.length) {
-      newErrorArray.push("productUnit");
-    }
-    if (!productPrice.length) {
-      newErrorArray.push("productPrice");
-    }
-    if (!productInsocks.length) {
-      newErrorArray.push("productInsocks");
-    }
-    if (!productCat.length) {
-      newErrorArray.push("productCat");
-    }
-    if (!files.length) {
-      newErrorArray.push("files");
-    }
-
-    setErrorArray((prevErrorArray) => [...prevErrorArray, ...newErrorArray]); // Update using callback
-
-    console.log({
-      productTitle,
-      productId,
-      productPrice,
-      productCat,
-      productInsocks,
-      productProperties,
-      productDesc,
-      files,
-    });
   };
   return (
     <div className=" w-full flex flex-col gap-8 p-4">
@@ -112,9 +160,11 @@ const ProductEditSinglePage = ({ data }) => {
         name="productTitle"
         errorArray={errorArray}
         value={productTitle}
-        setValue={setproductTitle}
+        setValue={setProductTitle}
         type="text"
         label={"عنوان محصول"}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
       />
       <InputTextSection
         id="productId"
@@ -124,6 +174,8 @@ const ProductEditSinglePage = ({ data }) => {
         type="text"
         setValue={setProductId}
         label={"شناسه محصول"}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
       />
       <InputTextSection
         id="productPrice"
@@ -133,6 +185,8 @@ const ProductEditSinglePage = ({ data }) => {
         type="text"
         setValue={productPriceHandler}
         label={"قیمت محصول (تومان)"}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
       />
       <div className="flex gap-4 w-full">
         <InputTextSection
@@ -143,6 +197,8 @@ const ProductEditSinglePage = ({ data }) => {
           type="text"
           setValue={productStockHandler}
           label={"موجودی محصول"}
+          finallyText={finallyText}
+          setFinallyText={setFinallyText}
         />
         <InputTextSection
           id="productUnit"
@@ -152,24 +208,53 @@ const ProductEditSinglePage = ({ data }) => {
           type="text"
           setValue={setProductUnit}
           label={"واحد محصول"}
+          finallyText={finallyText}
+          setFinallyText={setFinallyText}
         />
       </div>
-      <CategoryBox productCat={productCat} setProductCat={setProductCat} />
+      <CategoryBox
+        productCat={productCat}
+        setProductCat={setProductCat}
+        errorArray={errorArray}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
+      />
       <PropertiesBox
         productProperties={productProperties}
         setProductProperties={setProductProperties}
+        title={"ویژگی های محصول"}
         placeholder="اضافه کردن ویژگی جدید"
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
       />
       <DescriptionBox
         productDesc={productDesc}
         setProductDesc={setProductDesc}
-        title={"ویژگی های محصول"}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
       />
-      {data?.imageSrc?.length ? <EditImages images={data?.imageSrc} /> : null}
-      <ProductImages files={files} setFiles={setFiles} title={`انتخاب عکس محصول`} />
-      <div
-        onClick={() => addProductHandler()}
-        className="relative cursor-pointer w-full py-2 flex justify-center items-center
+      {/* {data?.imageSrc?.length ? <EditImages images={data?.imageSrc} /> : null} */}
+      <ProductImages
+        errorArray={errorArray}
+        files={files}
+        setFiles={setFiles}
+        productImgs={productImgs}
+        setProductImgs={setProductImgs}
+        title={`انتخاب عکس محصول`}
+        setFinallyText={setFinallyText}
+      />
+      <div className="w-full">
+        <div
+          className={`${
+            finallyText.length ? "flex" : "hidden"
+          } text-rose-600  pb-0.5 text-sm`}
+        >
+          {finallyText}
+        </div>
+        <button
+          type="button"
+          onClick={() => EditProductHandler()}
+          className="relative cursor-pointer w-full py-2 flex justify-center items-center
          text-gray-100 text-sm font-bold overflow-hidden bg-gradient-to-r from-blue-600
           to-blue-950 rounded-lg transition-all duration-400 ease-in-out
            shadow-md hover:scale-100 hover:text-white hover:shadow-lg   z-[5] active:scale-90 
@@ -177,8 +262,17 @@ const ProductEditSinglePage = ({ data }) => {
     before:bg-gradient-to-r before:from-blue-700 before:to-blue-950 before:transition-all 
     before:duration-500 before:ease-in-out before:z-[-1] before:rounded-lg
      hover:before:left-0"
-      >
-        ثبت نهایی محصول
+        >
+          {loading ? (
+            <Image
+              src={"/images/spinner.svg"}
+              alt="spinner"
+              width={25}
+              height={25}
+            />
+          ) : null}
+          ویرایش محصول
+        </button>
       </div>
     </div>
   );

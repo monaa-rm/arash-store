@@ -92,6 +92,74 @@ input[type="text"] {
   color: rgb(92, 92, 92);
 font-size: 14px !important;
 }
+
+/* ///////////loding upload image */
+@-webkit-keyframes MOVE-BG {
+	from {
+		-webkit-transform: translateX(0);
+	}
+	to { 
+		-webkit-transform: translateX(46px);
+	}
+}
+
+@keyframes MOVE-BG {
+	from {
+		transform: translateX(0);
+	}
+	to { 
+		transform: translateX(46px);
+	}
+}
+
+
+
+.loading {
+	/* height: auto; */
+    text-align: center;
+    color: #4c3f2e;	
+    position: relative;
+    overflow: hidden;
+	/* padding: 1rem; */
+	/* margin: 3%; */
+	font-style: italic;
+}
+.upload_bg{
+  position: absolute;
+  left: -46px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+  
+background: -webkit-repeating-linear-gradient(
+  145deg,
+  #e5e7e7 1px,
+  #f9ffff 2px,
+  #f9ffff 11px,
+  #e5e7e7 12px,
+  #e5e7e7 20px
+);
+background: repeating-linear-gradient(
+  -55deg,
+  #e5e7e7 1px,
+  #f9ffff 2px,
+  #f9ffff 11px,
+  #e5e7e7 12px,
+  #e5e7e7 20px
+);
+  
+  -webkit-animation-name: MOVE-BG;
+-webkit-animation-duration: .6s;
+-webkit-animation-timing-function: linear;
+-webkit-animation-iteration-count: infinite;
+
+  animation-name: MOVE-BG;
+animation-duration: .6s;
+animation-timing-function: linear;
+animation-iteration-count: infinite;
+}
+
 /* /////////////////////////////////////////////////// */
 /* From Uiverse.io by JkHuger */
 .loader-pulse {

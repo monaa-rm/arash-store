@@ -1,4 +1,6 @@
-import ProductEditSinglePage from "@/components/dashboard/admin/product-edit-single-page"
+import ProductEditSinglePage from "@/components/dashboard/admin/product-edit-single-page";
+import Product from "../../../../../../models/Product";
+import connectDB from "@/utiles/connectDB";
 
 const data = {
   id: "4",
@@ -73,10 +75,11 @@ const data = {
   instock: 15,
   unit: "عدد",
 };
-const ProductEditSingle = () => {
-  return (
-    <ProductEditSinglePage data={data} />
-  )
-}
+const ProductEditSingle = async ({ params }) => {
+  await connectDB();
+  const { productId } = await params;
+  const data = await Product.findOne({ _id: productId });
+  return <ProductEditSinglePage data={JSON.parse(JSON.stringify(data))} />;
+};
 
-export default ProductEditSingle
+export default ProductEditSingle;

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Slider from "react-slick";
 
-const ProductSingleItemImage = ({ imageSrc }) => {
+const ProductSingleItemImage = ({ imageSrc,alt }) => {
   var settings = {
     dots: true,
     arrows: false,
@@ -26,8 +26,8 @@ const ProductSingleItemImage = ({ imageSrc }) => {
    rounded-xl overflow-hidden "
           >
             <Image
-              alt={src}
-              src={src}
+              alt={alt}
+              src={src?.file}
               fill
               className="object-cover  rounded-xl"
             />

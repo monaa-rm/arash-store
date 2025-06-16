@@ -16,6 +16,7 @@ const NewCategory = ({
   const [catlink, setCatlink] = useState("");
   const [loading, setLoading] = useState(false);
   const [dataMessage, setDataMessage] = useState("");
+  const [finallyText, setFinallyText] = useState("");
 
   const { data: session, status } = useSession();
   useEffect(() => {
@@ -102,7 +103,6 @@ const NewCategory = ({
     }
   };
 
-
   return (
     <div
       className={`fixed z-[1] top-0  pt-[240px] lg:pr-[200px] bottom-0 left-0 right-0 flex justify-center items-start   ${
@@ -121,6 +121,8 @@ const NewCategory = ({
           type="text"
           setValue={setCatname}
           label={"نام دسته"}
+          finallyText={finallyText}
+          setFinallyText={setFinallyText}
         />
 
         <InputTextSection
@@ -130,6 +132,8 @@ const NewCategory = ({
           type="text"
           setValue={setCatlink}
           label={"لینک دسته"}
+          finallyText={finallyText}
+          setFinallyText={setFinallyText}
         />
         <div className="relative pt-6 ">
           <div className="absolute top-0 flex justify-center items-center">

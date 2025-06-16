@@ -2,32 +2,32 @@
 
 import InputTextSection from "@/components/elements/input-text-section";
 import { setDashboardActiveItem } from "@/features/globalSlice";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { FaImage } from "react-icons/fa";
-import { FaFileCirclePlus } from "react-icons/fa6";
-import { IoClose, IoCloudUploadOutline } from "react-icons/io5";
-import { MdDone } from "react-icons/md";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import EditImages from "../edit-images";
 import ProductImages from "../productImages";
 import PropertiesBox from "../properties-box";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const SettingsPage = ({ data }) => {
-  const [title, setTitle] = useState(data?.title || "");
-  const [desc, setDesc] = useState(data?.desc || "");
-  const [prevFiles, setPrevFiles] = useState(data?.images || []);
-  const [files, setFiles] = useState([]);
+  const [title, setTitle] = useState(data?.welcomeTitle || "");
+  const [desc, setDesc] = useState(data?.welcomeDescription || "");
   const [errorArray, setErrorArray] = useState("");
-  const [address, setAddress] = useState([]);
-  const [phone, setPhone] = useState([]);
-  const [telegram, setTelegram] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
-  const [youtube, setYoutube] = useState("");
-  const [instagram, setInstagram] = useState("");
-
-  const fileInputRef = useRef(null);
+  const [address, setAddress] = useState(data?.address || []);
+  const [phone, setPhone] = useState(data?.phone || []);
+  const [telegram, setTelegram] = useState(data?.telegramLink || "");
+  const [whatsapp, setWhatsapp] = useState(data?.whatsappLink || "");
+  const [youtube, setYoutube] = useState(data?.youtubeLink || "");
+  const [instagram, setInstagram] = useState(data?.instagramLink || "");
+  const [email, setEmail] = useState(data?.email || "");
+  const [files, setFiles] = useState([]);
+  const [siteImages, setSiteImages] = useState(data?.welcomeImages || []);
+  const [finallyText, setFinallyText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { data: session, status } = useSession();
   const path = usePathname();
+  const router = useRouter();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
@@ -35,20 +35,77 @@ const SettingsPage = ({ data }) => {
     );
   }, [path]);
 
-  const addBlogHandler = () => {
+  const addBlogHandler = async () => {
     const newErrorArray = [];
     setErrorArray([]);
-    if (!title.length) {
-      newErrorArray.push("title");
+    setLoading(true);
+    try {
+      if (
+        !title.length ||
+        !desc.length ||
+        // !address?.length ||
+        // !phone.length ||
+        !email.length ||
+        !siteImages.length
+      ) {
+        if (!title.length) {
+          newErrorArray.push("title");
+        }
+        if (!desc.length) {
+          newErrorArray.push("desc");
+        }
+        // if (!address.length) {
+        //   newErrorArray.push("address");
+        // }
+        // if (!phone.length) {
+        //   newErrorArray.push("phone");
+        // }
+        if (!email.length) {
+          newErrorArray.push("email");
+        }
+        if (!siteImages.length) {
+          newErrorArray.push("files");
+        }
+
+        setErrorArray((prevErrorArray) => [
+          ...prevErrorArray,
+          ...newErrorArray,
+        ]); // Update using callback
+        console.log(errorArray);
+        setFinallyText("اطلاعات کامل نیست");
+      } else {
+        const formData = {
+          title,
+          desc,
+          phone,
+          address,
+          email,
+          telegram,
+          instagram,
+          whatsapp,
+          youtube,
+          siteImages,
+          editor: session.user,
+        };
+        const res = await fetch(`/api/setting`, {
+          method: "POST",
+          body: JSON.stringify(formData),
+          headers: { "Content-Type": "application/json" },
+        });
+        const result = await res.json();
+        if (!res.ok) {
+          console.log(result);
+          setFinallyText(result?.error);
+        } else {
+          router.push("/dashboard/admin");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setFinallyText("خطا در ارسال اطلاعات");
+    } finally {
+      setLoading(false);
     }
-    if (!desc.length) {
-      newErrorArray.push("desc");
-    }
-    if (!files.length && !prevFiles.length) {
-      newErrorArray.push("files");
-    }
-    setErrorArray((prevErrorArray) => [...prevErrorArray, ...newErrorArray]);
-    console.log({ title, desc, files });
   };
   return (
     <div className="w-full flex flex-col gap-8 p-4">
@@ -60,6 +117,8 @@ const SettingsPage = ({ data }) => {
         setValue={setTitle}
         type="text"
         label={"عنوان خوش آمد گویی"}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
       />
       <div className="relative w-full">
         <textarea
@@ -95,26 +154,43 @@ const SettingsPage = ({ data }) => {
         setProductProperties={setAddress}
         title={"آدرس ها"}
         placeholder={"اضافه کردن آدرس"}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
       />
       <PropertiesBox
         productProperties={phone}
         setProductProperties={setPhone}
         title={"شماره های تماس"}
         placeholder={"اضافه کردن شماره تماس"}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
       />
-
+      <InputTextSection
+        id="email"
+        name="email"
+        errorArray={errorArray}
+        value={email}
+        setValue={setEmail}
+        type="text"
+        label={"ایمیل"}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
+      />
       <div className="w-full flex flex-col gap-2">
         <h3 className="py-2 font-bold">انتخاب عکس خوش آمد گویی</h3>
-        {prevFiles?.length ? <EditImages images={prevFiles} /> : null}
+        {/* {prevFiles?.length ? <EditImages images={prevFiles} /> : null} */}
         <ProductImages
           errorArray={errorArray}
           files={files}
           setFiles={setFiles}
-          title={"انتخاب عکس"}
+          productImgs={siteImages}
+          setProductImgs={setSiteImages}
+          title={`انتخاب عکس محصول`}
+          setFinallyText={setFinallyText}
         />
       </div>
       <div className="w-full flex flex-col gap-2">
-      <h3 className="py-2 font-bold">لینک ها</h3>
+        <h3 className="py-2 font-bold">لینک ها</h3>
         <div className="w-full flex flex-col gap-8">
           <InputTextSection
             id="telegram"
@@ -124,6 +200,8 @@ const SettingsPage = ({ data }) => {
             setValue={setTelegram}
             type="text"
             label={"لینک telegram"}
+            finallyText={finallyText}
+            setFinallyText={setFinallyText}
           />
           <InputTextSection
             id="instagram"
@@ -133,6 +211,8 @@ const SettingsPage = ({ data }) => {
             setValue={setInstagram}
             type="text"
             label={"لینک instagram"}
+            finallyText={finallyText}
+            setFinallyText={setFinallyText}
           />
           <InputTextSection
             id="whatsapp"
@@ -142,6 +222,8 @@ const SettingsPage = ({ data }) => {
             setValue={setWhatsapp}
             type="text"
             label={"لینک whatsapp"}
+            finallyText={finallyText}
+            setFinallyText={setFinallyText}
           />
           <InputTextSection
             id="youtube"
@@ -151,12 +233,24 @@ const SettingsPage = ({ data }) => {
             setValue={setYoutube}
             type="text"
             label={"لینک youtube"}
+            finallyText={finallyText}
+            setFinallyText={setFinallyText}
           />
+
+
         </div>
       </div>
-      <div
-        onClick={() => addBlogHandler()}
-        className="relative cursor-pointer w-full py-2 flex justify-center items-center
+      <div className="w-full">
+        <div
+          className={`${
+            finallyText.length ? "flex" : "hidden"
+          } text-rose-600  pb-0.5 text-sm`}
+        >
+          {finallyText}
+        </div>
+        <div
+          onClick={() => addBlogHandler()}
+          className="relative cursor-pointer w-full py-2 flex justify-center items-center
          text-gray-100 text-sm font-bold overflow-hidden bg-gradient-to-r from-blue-600
           to-blue-950 rounded-lg transition-all duration-400 ease-in-out
            shadow-md hover:scale-100 hover:text-white hover:shadow-lg   z-[5] active:scale-90 
@@ -164,8 +258,17 @@ const SettingsPage = ({ data }) => {
     before:bg-gradient-to-r before:from-blue-700 before:to-blue-950 before:transition-all 
     before:duration-500 before:ease-in-out before:z-[-1] before:rounded-lg
      hover:before:left-0"
-      >
-        ویرایش
+        >
+          ویرایش
+          {loading ? (
+            <Image
+              src={"/images/spinner.svg"}
+              alt="spinner"
+              width={25}
+              height={25}
+            />
+          ) : null}
+        </div>
       </div>
     </div>
   );

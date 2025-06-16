@@ -7,10 +7,14 @@ import Basket from "./basket";
 import SignIn from "./sign-in";
 import { BsQuestionCircle } from "react-icons/bs";
 import HeaderMenuMobile from "./header-menu-mobile";
+import HeaderSetting from "./HeaderSetting";
 
-const Header = () => {
+const Header =  () => {
+
   return (
     <header className="pb-2 w-full shadow-md p-2 pt-3  sticky z-[5] top-0 bg-white">
+  <HeaderSetting />
+
       <div className=" w-full hidden lg:flex items-center justify-between gap-4 ">
         <div className="flex justify-start items-center lg:gap-2 xl:gap-8">
           <Link href={"/"}>

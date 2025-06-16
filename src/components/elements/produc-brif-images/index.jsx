@@ -19,11 +19,11 @@ const ProductBrifImages = ({ images }) => {
     <div className="w-full h-full rounded-md overflow-hidden flex justify-center items-center">
       <div className="w-56 h-64 ll">
         <Slider {...settings}>
-          {images.map((image, i) => (
+          {images?.map((image, i) => (
             <div key={i} className=" w-56 h-56 relative ">
               <Image
-                src={image}
-                alt="image"
+                src={image?.file}
+                alt={image?.file}
                 fill
                 className="object-fill rounded-lg"
               />

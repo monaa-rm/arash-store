@@ -9,10 +9,14 @@ import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import ProductAddToCart from "@/components/elements/product-add-to-cart";
 import SearchItemAddToCart from "@/components/elements/search-item-add-to-cart";
+import { useSelector } from "react-redux";
 
 const SearchBoxItem = ({ item }) => {
   const [shopping, setShopping] = useState(false);
   const [count, setCount] = useState(1);
+  const showPriceGlobal = useSelector(
+    (store) => store.globalSlice.showPriceGlobal
+  );
   useEffect(() => {
     const handleClick = (event) => {
       if (!event.target.closest(`#searchBoxItem${item?.id}`)) {
@@ -28,7 +32,7 @@ const SearchBoxItem = ({ item }) => {
   }, []);
   return (
     <div
-      id={`searchBoxItem${item?.id}`}
+      id={`searchBoxItem${item?._id}`}
       className="group relative w-full h-72 flex justify-center items-center  [perspective:1000px]"
     >
       <div
@@ -40,10 +44,10 @@ const SearchBoxItem = ({ item }) => {
         <div className=" absolute w-full overflow-hidden max-w-[260px] border rounded-2xl hover:shadow-md transition-all duration-500 h-72 ">
           <div className="w-full h-44 relative">
             <Image
-              src={`/images/sample/${item?.id}.jpg`}
+              src={item?.imageSrc[0]?.file}
               fill
               className="object-fill"
-              alt={"/images/sample/11.jpg"}
+              alt={item?.imageSrc[0]?.file}
             />
           </div>
           <div className="w-full flex flex-col gap-1 p-2">
@@ -63,14 +67,16 @@ const SearchBoxItem = ({ item }) => {
                 <span className="text-xs text-rose-600">ناموجود</span>
               ) : (
                 <span className="text-xs text-zinc-500">
-                  {item?.inStock} در انبار
+                  {item?.instock} {item?.unit} در انبار
                 </span>
               )}
             </div>
             <div className="flex justify-between items-center gap-2  pt-2">
               <div className="w-8 h-8 flex justify-center items-center">
                 <div
-                  onClick={() => setShopping(true)}
+                  onClick={() => {
+                    if (showPriceGlobal) setShopping(true);
+                  }}
                   className="w-7 h-7 group flex justify-center items-center rounded-lg bg-blue-700 hover:bg-blue-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out "
                 >
                   <LuShoppingCart
@@ -78,12 +84,18 @@ const SearchBoxItem = ({ item }) => {
                   />
                 </div>
               </div>
-              <div className="flex justify-center items-center gap-1">
-                <span className="font-bold text-sm">
-                  {formatNumberToPersian(item?.price)}
-                </span>
-                <span className="text-zinc-500 text-xs">تومان</span>
-              </div>
+              {showPriceGlobal ? (
+                <div className="flex justify-center items-center gap-1">
+                  <span className="font-bold text-sm">
+                    {formatNumberToPersian(item?.price?.howMuch)}
+                  </span>
+                  <span className="text-zinc-500 text-xs">تومان</span>
+                </div>
+              ) : (
+                <div className="flex justify-center items-center gap-1">
+                  <span className="text-blue-600 text-sm">تماس بگیرید</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -110,7 +122,6 @@ const SearchBoxItem = ({ item }) => {
                 <span className="absolute bg-blue-800 w-40 h-36 -left-2 -top-10 rounded-full group-hover:scale-100 scale-0 -z-10 group-hover:duration-700 duration-500 origin-center transform transition-all"></span>
                 افزودن به سبد خرید
               </button>
-
             </div>
           </div>
         </div>

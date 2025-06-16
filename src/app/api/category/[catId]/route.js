@@ -2,12 +2,13 @@ import connectDB from "@/utiles/connectDB";
 import Category from "../../../../../models/Category";
 import { NextResponse } from "next/server";
 import User from "../../../../../models/User";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/route";
 
 export async function PATCH(req, { params }) {
   const { catId } = params;
   try {
     await connectDB();
-    console.log("1111111111");
   } catch (error) {
     return NextResponse.json(
       { error: "خطا در اتصال به سرور" },
@@ -15,22 +16,17 @@ export async function PATCH(req, { params }) {
     );
   }
   try {
-    console.log("2222222222");
     const { name, link, editorInfo } = await req.json();
-    console.log("33333333333333");
     if (!name || !link || !editorInfo) {
       return NextResponse.json({ error: "اطلاعات کامل نیست" }, { status: 422 });
     }
-    console.log("4444444444444", { editorInfo });
     const existingUser = await User.findOne({ phone: editorInfo });
-    console.log("555555555555555");
     if (!existingUser || existingUser.role !== "admin") {
       return NextResponse.json(
         { error: "فقط ادمین به این قسمت دسترسی دارد" },
         { status: 403 }
       );
     }
-    console.log("66666666666666", catId);
     const existingCat = await Category.findOne({ _id: catId });
     if (existingCat) {
       await Category.findByIdAndUpdate(catId, { name, link });
@@ -45,16 +41,8 @@ export async function PATCH(req, { params }) {
         { status: 409 }
       );
     }
-
-    // } else {
-    //   console.log("8888888888");
-    //   return NextResponse.json(
-    //     { error: "این شماره از قبل ثبت نام کرده است" },
-    //     { status: 409 }
-    //   );
-    // }
   } catch (error) {
-    console.log("falsleeeeeeeeee");
+    console.log(error)
     return NextResponse.json(
       { error: "مشکلی در سرور رخ داده است" },
       { status: 500 }
@@ -62,10 +50,9 @@ export async function PATCH(req, { params }) {
   }
 }
 export async function DELETE(req, { params }) {
-  const { catId } = params;
+  const { catId } = await params;
   try {
     await connectDB();
-    console.log("1111111111");
   } catch (error) {
     return NextResponse.json(
       { error: "خطا در اتصال به سرور" },
@@ -74,8 +61,10 @@ export async function DELETE(req, { params }) {
   }
   try {
     const existingCat = await Category.findOne({ _id: catId });
+    const session = await getServerSession(authOptions);
+    console.log({session})
     if (existingCat) {
-      await Category.findByIdAndDelete(catId);
+      // await Category.findByIdAndDelete(catId);
 
       return NextResponse.json(
         { data: `دسته حذف شد` },

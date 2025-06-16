@@ -1,9 +1,11 @@
-import SearchPage from "@/components/search/search-page"
+import SearchPage from "@/components/search/search-page";
 
-const Search = () => {
+
+const Search = async () => {
+
   return (
     <SearchPage />
-  )
-}
+  );
+};
 
-export default Search
+export default Search;
