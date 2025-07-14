@@ -8,20 +8,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-// const product = {
-//   id: "1",
-//   title: "سنسور 5KΩ چفتن (بدون سوکت)",
-//   company: "mio mio",
-//   images: [
-//     "/images/sample/1.jpg",
-//     "/images/sample/2.jpg",
-//     "/images/sample/3.jpg",
-//   ],
-//   rating: 4,
-//   rating_number: 50,
-//   comments_number: 21,
-//   properties: ["مقاومت 5KΩ", " بدون سوکت"],
-// };
+
 const ProductBrif = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
@@ -53,7 +40,6 @@ const ProductBrif = () => {
     async function getProduct() {
       try {
         setLoading(true);
-        console.log("start55555555");
         const res = await fetch(
           `api/product/get-single-product/${productBrifItem}`
         );
@@ -72,7 +58,6 @@ const ProductBrif = () => {
       }
     }
     if (productBrifItem) {
-      console.log("halaaaaaa");
       getProduct();
     }
     console.log(productBrifItem);
@@ -98,19 +83,18 @@ const ProductBrif = () => {
         ) : product?.title ? (
           <div
             ref={innerDivRef}
-            className=" overflow-y-auto  p-4 pt-8 md:pt-4 border-gray-300  h-[500px] relative "
+            className="   p-4 pt-8 md:pt-4 border-gray-300 h-[600px] md:h-[500px] relative "
           >
             <div className="flex flex-col md:flex-row gap-2 h-full ">
               <div className="w-full md:w-1/2 h-64 md:h-full flex justify-center items-center">
                 <ProductBrifImages images={product?.imageSrc} />
               </div>
-              <div className="w-full h-full md:w-1/2 border-t md:border-0 border-b py-2 flex flex-col md:justify-center gap-2 ">
+              <div className="w-full h-full md:w-1/2 border-t md:border-0  py-2 flex flex-col md:justify-center gap-2 ">
                 <div className=" flex flex-col gap-0.5">
                   <h1 className="font-bold text-xl">{product?.title}</h1>
-                  {/* <span className="text-xs text-gray-400">sherkataaaaaaaa</span> */}
                 </div>
                 <div className="flex justify-start items-center gap-2 border-t pt-2">
-                  <div className="flex justify-center items-center gap-1 rounded-md bg-gray-200 px-1">
+                  <div className="flex justify-center items-center gap-1 rounded-[5px] bg-gray-200 px-1">
                     <FaStar className="text-white w-4 h-4 " />
                     <span className="text-sm text-gray-700">
                       {product?.score}
@@ -126,7 +110,13 @@ const ProductBrif = () => {
                 </div>
                 <div className="flex flex-col gap-2 border-t py-2">
                   <h3 className="text-md font-bold style">ویژگی های محصول</h3>
-                  <ul className="list-disc list-inside">
+                  <ul
+                    className={`list-disc list-inside ${
+                      product?.properties?.length > 4
+                        ? " h-[80px] overflow-y-auto"
+                        : "h-auto overflow-y-visible"
+                    }`}
+                  >
                     {product?.properties?.map((item, i) => (
                       <li className="text-gray-500 text-sm " key={i}>
                         {item}
@@ -134,7 +124,7 @@ const ProductBrif = () => {
                     ))}
                   </ul>
                 </div>
-                <div className="flex gap-2 md:absolute bottom-4 left-4 items-center justify-end pt-6 ">
+                <div className="  flex gap-2 absolute bottom-4 left-4 items-center justify-end pt-6 ">
                   <button
                     type="button"
                     onClick={() => {
@@ -142,14 +132,14 @@ const ProductBrif = () => {
                       dispatch(setProductBrifItem(null));
                       setProduct({});
                     }}
-                    className="px-2 py-1 border bg-white hover:bg-gray-100 rounded-md transition-all duration-300 "
+                    className="px-2 py-1 border bg-white hover:bg-gray-100 rounded-[8px] transition-all duration-300 "
                   >
                     بستن
                   </button>
                   <Link
                     href={`/products/${product?._id}`}
                     type="button"
-                    className="px-2 py-1 border bg-blue-600 hover:bg-blue-700 rounded-md text-white transition-all duration-300"
+                    className="px-2 py-1 border bg-blue-600 hover:bg-blue-700 rounded-[8px] text-white transition-all duration-300"
                   >
                     مشاهده محصول
                   </Link>

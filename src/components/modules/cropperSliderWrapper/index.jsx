@@ -1,14 +1,15 @@
 "use client";
 import React, { useRef } from "react";
 import Slider from "react-slick";
-import { MdZoomOutMap } from "react-icons/md";
-import BestSellerSliderItem from "@/components/elements/best-seller-slider-item";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import Link from "next/link";
 import { CgArrowLeft } from "react-icons/cg";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setSearchedCategory } from "@/features/filterSlice";
 
 const CropperSliderWrapper = ({
   children,
@@ -16,8 +17,11 @@ const CropperSliderWrapper = ({
   sliderTitle,
   link,
   sliderbg,
+  cat,
 }) => {
   let sliderRef = useRef(null);
+  const router = useRouter();
+  const dispatch = useDispatch();
   const next = () => {
     sliderRef.slickNext();
   };
@@ -79,7 +83,17 @@ const CropperSliderWrapper = ({
         justify-center items-center gap-[0.5em] overflow-hidden group hover:translate-y-[0.125em]
          duration-200 backdrop-blur-[12px]"
           >
-            <Link href={"/product/id"} className="text-white">مشاهده محصولات</Link>
+            <div
+              onClick={() => {
+                if (cat?._id) {
+                  dispatch(setSearchedCategory(cat));
+                  router.push("/search");
+                }
+              }}
+              className="text-white"
+            >
+              مشاهده محصولات
+            </div>
           </button>
         </div>
 
@@ -104,7 +118,6 @@ const CropperSliderWrapper = ({
             >
               {children}
             </Slider>
-            {/* <div className=" absolute top-1/2 -translate-y-1/2 left-0 right-0"></div> */}
           </div>
         </div>
       </div>

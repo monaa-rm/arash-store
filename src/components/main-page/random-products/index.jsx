@@ -3,54 +3,55 @@ import RandomProductItem from "@/components/elements/random-product-item";
 import Image from "next/image";
 import Slider from "react-slick";
 
-const data = [
-  {
-    id: "1",
-    title: " برد چیست و چه دارد",
-    imageSrc: "/sample/3.jpg",
-  },
-  {
-    id: "2",
-    title: " گازی و اسپلیت چیست و چه کاربردی ",
-    imageSrc: "/sample/3.jpg",
-  },
-  {
-    id: "3",
-    title: " برد کولرو چه کاربردی دارد",
-    imageSrc: "/sample/4.jpg",
-  },
-  {
-    id: "4",
-    title: "  چیست کاربردی دارد",
-    imageSrc: "/sample/5.jpg",
-  },
-  {
-    id: "5",
-    title: " برد کولر گازی و اسپلیت چیست و چه کاربردی دارد",
-    imageSrc: "/sample/6.jpg",
-  },
-  {
-    id: "6",
-    title: " چه کاربردی دارد",
-    imageSrc: "/sample/8.jpg",
-  },
-  {
-    id: "7",
-    title: "گازی و اسپلیتد",
-    imageSrc: "/sample/7.jpg",
-  },
-  {
-    id: "8",
-    title: "خازن",
-    imageSrc: "/sample/9.jpg",
-  },
-  {
-    id: "9",
-    title: " برد کولرد",
-    imageSrc: "/sample/5.jpg",
-  },
-];
-const RandomProducts = () => {
+// const data = [
+//   {
+//     id: "1",
+//     title: " برد چیست و چه دارد",
+//     imageSrc: "/sample/3.jpg",
+//   },
+//   {
+//     id: "2",
+//     title: " گازی و اسپلیت چیست و چه کاربردی ",
+//     imageSrc: "/sample/3.jpg",
+//   },
+//   {
+//     id: "3",
+//     title: " برد کولرو چه کاربردی دارد",
+//     imageSrc: "/sample/4.jpg",
+//   },
+//   {
+//     id: "4",
+//     title: "  چیست کاربردی دارد",
+//     imageSrc: "/sample/5.jpg",
+//   },
+//   {
+//     id: "5",
+//     title: " برد کولر گازی و اسپلیت چیست و چه کاربردی دارد",
+//     imageSrc: "/sample/6.jpg",
+//   },
+//   {
+//     id: "6",
+//     title: " چه کاربردی دارد",
+//     imageSrc: "/sample/8.jpg",
+//   },
+//   {
+//     id: "7",
+//     title: "گازی و اسپلیتد",
+//     imageSrc: "/sample/7.jpg",
+//   },
+//   {
+//     id: "8",
+//     title: "خازن",
+//     imageSrc: "/sample/9.jpg",
+//   },
+//   {
+//     id: "9",
+//     title: " برد کولرد",
+//     imageSrc: "/sample/5.jpg",
+//   },
+// ];
+const RandomProducts = ({ data }) => {
+  console.log(data)
   const settings = {
     dots: false,
     arrows: false,
@@ -99,9 +100,9 @@ const RandomProducts = () => {
         {data &&
           data?.map((item) => (
             <RandomProductItem
-              key={item.id}
-              imageSrc={item.imageSrc}
-              title={item.title}
+              key={item?._id}
+              imageSrc={item?.imageSrc}
+              title={item?.title}
             />
           ))}
       </Slider>

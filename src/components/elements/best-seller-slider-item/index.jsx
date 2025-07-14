@@ -16,7 +16,7 @@ const BestSellerSliderItem = ({ data, hideBreef }) => {
   const [isLiked, setIsLiked] = useState(false);
   const showPriceGlobal = useSelector(
     (store) => store.globalSlice.showPriceGlobal
-  );
+  ) || false ;
   const dispatch = useDispatch();
   const { _id, title, price, imageSrc } = data;
   return (

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   showCategory: false,
   headerSearchValue: "",
+  headerSearchedItems: [],
   searchedCategory: {},
   searchPrice: [0, 2000000],
   reloadFilter: -1,
@@ -19,6 +20,9 @@ const filterSlice = createSlice({
 
     setHeaderSearchValue: (state, action) => {
       state.headerSearchValue = action.payload;
+    },
+    setHeaderSearchedItems: (state, action) => {
+      state.headerSearchedItems = action.payload;
     },
     setSearchedCategory: (state, action) => {
       state.searchedCategory = action.payload;
@@ -46,6 +50,7 @@ export const {
   setSearchedCategory,
   setSearchPrice,
   setHeaderSearchValue,
+  setHeaderSearchedItems,
   setReloadFilter,
   setNumberCategories,
   setTotalProducts,

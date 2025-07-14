@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/utiles/connectDB";
 import User from "../../../../../../models/User";
 import Product from "../../../../../../models/Product";
+import mongoose from "mongoose";
 
 export async function PATCH(req, { params }) {
   try {
@@ -11,7 +12,12 @@ export async function PATCH(req, { params }) {
   }
   try {
     const { prdID } = await params;
-    console.log({prdID})
+    if (!mongoose.Types.ObjectId.isValid(prdID)) {
+      return NextResponse.json(
+        { error: "ایدی نامعتبر است" },
+        { status: 400 }
+      );
+    }
     const {
       productTitle,
       productId,
@@ -24,21 +30,24 @@ export async function PATCH(req, { params }) {
       productImgs,
       editor,
     } = await req.json();
-    const existingProduct = await Product.findOne({_id : prdID});
-    if(!existingProduct){
-      return NextResponse.json({ error: "چنین محصولی موجود نیست" }, { status: 422 });
+    const existingProduct = await Product.findOne({ _id: prdID });
+    if (!existingProduct) {
+      return NextResponse.json(
+        { error: "چنین محصولی موجود نیست" },
+        { status: 422 }
+      );
     }
     if (
       !productTitle ||
       !productId ||
       !productPrice ||
-      !productCat ||
+      // !productCat ||
       !productInsocks ||
       !productUnit ||
       !productImgs ||
       !editor
     ) {
-      console.log({prdID})
+      console.log({ prdID });
       return NextResponse.json({ error: "اطلاعات کامل نیست" }, { status: 422 });
     }
     const existingUser = await User.findOne({ phone: editor?.phone });
@@ -67,22 +76,14 @@ export async function PATCH(req, { params }) {
       imageSrc: productImgs,
       // editor: existingUser._id,
     };
-     await  Product.findByIdAndUpdate(prdID, updates, { new: true, runValidators: true });
-
-    // console.log(    productTitle,
-    //   productId,
-    //   productPrice,
-    //   productCat,
-    //   productInsocks,
-    //   productUnit,
-    //   productProperties,
-    //   productDesc,
-    //   productImgs,
-    //   editor);
+    await Product.findByIdAndUpdate(prdID, updates, {
+      new: true,
+      runValidators: true,
+    });
 
     return NextResponse.json({ data: "محصول ویرایش شد" }, { status: 200 });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json({ error: "خطا از سمت سرور" }, { status: 500 });
   }
 }

@@ -18,19 +18,28 @@ const MainPage = async () => {
   await connectDB();
   const welcomeData = await SiteSetting.findOne();
   const newproducts = await Product.find().limit(6).sort({ _id: -1 });
-
+  const randomProduct = await Product.aggregate([
+    { $sample: { size: 5 } },
+    {
+      $project: {
+        _id: 1,
+        title: 1,
+        imageSrc: 1,
+      },
+    },
+  ]);
   return (
     <main className=" flex flex-col gap-10">
       <WelcomeSection data={JSON.parse(JSON.stringify(welcomeData)) || {}} />
       <MainCategorySection />
       <CropperSlider />
       <NewProducts newproducts={JSON.parse(JSON.stringify(newproducts))} />
-      {/*  <BestSellers />
-      <ArashSuggestion />
+      {/* <BestSellers />
+      <ArashSuggestion /> */}
       <FilterRemoteSection />
-      <RandomProducts />
+      <RandomProducts data={JSON.parse(JSON.stringify(randomProduct))} />
       <Blogs />
-      <ArashStoreIntroduce />*/}
+      <ArashStoreIntroduce />
       <ProductBrif />
     </main>
   );

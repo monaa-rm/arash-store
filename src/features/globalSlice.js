@@ -7,6 +7,9 @@ const initialState = {
   dashboardUserActiveItem: { title: "داشبورد", link: "mainmanager" },
   showLoginBox: false,
   showPriceGlobal: false,
+
+  showMenu: false,
+  showMenuCategory: false,
 };
 const globalSlice = createSlice({
   name: "global",
@@ -33,6 +36,12 @@ const globalSlice = createSlice({
     setShowPriceGlobal: (state, action) => {
       state.showPriceGlobal = action.payload;
     },
+    setShowMenu: (state, action) => {
+      state.showMenu = action.payload;
+    },
+    setShowMenuCategory: (state, action) => {
+      state.showMenuCategory = action.payload;
+    },
   },
 });
 
@@ -44,5 +53,7 @@ export const {
   setShowLoginBox,
   setUserDashboardActiveItem,
   setShowPriceGlobal,
+  setShowMenuCategory,
+  setShowMenu,
 } = globalSlice.actions;
 export default globalSlice.reducer;

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Product from "../../../../../../models/Product";
 import connectDB from "@/utiles/connectDB";
+import mongoose from "mongoose";
 
 export async function DELETE(req, { params }) {
   // تغییر export default به export async function DELETE
@@ -11,6 +12,12 @@ export async function DELETE(req, { params }) {
   }
   try {
     const { prdID } = await params;
+    if (!mongoose.Types.ObjectId.isValid(prdID)) {
+      return NextResponse.json(
+        { error: "ایدی نامعتبر است" },
+        { status: 400 }
+      );
+    }
     const existingProduct = await Product.findOne({ _id: prdID });
     if (!existingProduct) {
       return NextResponse.json(

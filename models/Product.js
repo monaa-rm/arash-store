@@ -1,5 +1,4 @@
 import { model, models, Schema } from "mongoose";
-import User from "./User";
 
 const ProductSchema = new Schema({
   title: {
@@ -52,6 +51,10 @@ const ProductSchema = new Schema({
   creator: {
     type: String,
     required: true
+  },
+  view: {
+    type: Number,
+    default: 0
   },
 
   createdAt: {

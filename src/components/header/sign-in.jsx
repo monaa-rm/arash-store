@@ -34,7 +34,7 @@ const SignIn = () => {
             // onClick={() => dispatch(setShowLoginBox(true))}
             onClick={() => setShowBox(true)}
             type="button"
-            className=" hidden lg:flex justify-center items-center  min-w-24 h-10 rounded-lg  bg-blue-700 hover:bg-blue-800 text-sm
+            className=" hidden lg:flex justify-center items-center  min-w-24 h-10 rounded-[10px]  bg-blue-700 hover:bg-blue-800 text-sm
      text-white transition-all duration-300 ease-in-out  "
           >
             حساب کاربری

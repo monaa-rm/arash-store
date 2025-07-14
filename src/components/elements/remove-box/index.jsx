@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const RemoveBox = ({
@@ -15,6 +16,7 @@ const RemoveBox = ({
     const handleClick = (event) => {
       if (!event.target.closest("#rmBox")) {
         setShowRemove(false);
+        setErrormsg("");
       }
     };
     document.body.addEventListener("click", handleClick);
@@ -24,7 +26,8 @@ const RemoveBox = ({
     };
   }, []);
   const removeHandler = async () => {
-    console.log("start")
+    setLoading(true);
+    setErrormsg("");
     try {
       const res = await fetch(`/api/category/${catToRemove._id}`, {
         method: "DELETE",
@@ -50,34 +53,46 @@ const RemoveBox = ({
     >
       <div
         id="rmBox"
-        className="  h-52  w-72  bg-slate-50 border rounded-lg shadow-md flex flex-col justify-between gap-8 px-4 py-8"
+        className="  h-52  w-72  bg-slate-50 border rounded-lg shadow-md flex flex-col justify-between gap-4 px-4 py-6"
       >
         <span>آیا از پاک کردن دسته {catToRemove?.name} مطمئنید؟</span>
-        <div className=" flex justify-center items-center gap-2">
-          <button
-            onClick={() => removeHandler()}
-            className="relative  w-36 h-8 font-bold rounded-md isolation-auto z-[1] text-white border-2 bg-blue-600 border-blue-500
+        <div className="flex flex-col w-full gap-1">
+          {" "}
+          <div className=" flex justify-center items-center pt-2 gap-2">
+            <button
+              onClick={() => removeHandler()}
+              className="relative  w-36 h-8 font-bold rounded-md isolation-auto z-[1] text-white border-2 bg-blue-600 border-blue-500
         before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full
          before:-right-full before:hover:right-0 before:rounded-full  before:bg-blue-950 before:-z-10 
           before:aspect-square before:hover:scale-150 text-sm md:text-base overflow-hidden before:hover:duration-700
            flex justify-center items-center gap-2"
-          >
-            <span>پاک کردن</span>
-          </button>
-          <button
-            onClick={() => {
-              setShowRemove(false);
-              setCatToRemove(null);
-            }}
-            className="relative w-36 h-8 font-bold rounded-md isolation-auto z-[1] text-white border-2 bg-rose-600 border-rose-500
+            >
+              <span>پاک کردن</span>
+              {loading ? (
+                <Image
+                  src={"/images/spinner.svg"}
+                  alt="spinner"
+                  width={25}
+                  height={25}
+                />
+              ) : null}
+            </button>
+            <button
+              onClick={() => {
+                setShowRemove(false);
+                setCatToRemove(null);
+              }}
+              className="relative w-36 h-8 font-bold rounded-md isolation-auto z-[1] text-white border-2 bg-rose-600 border-rose-500
         before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full
          before:-right-full before:hover:right-0 before:rounded-full  before:bg-rose-950 before:-z-10 
           before:aspect-square before:hover:scale-150 text-sm md:text-base  overflow-hidden before:hover:duration-700
            flex justify-center items-center gap-2"
-          >
-            <span>انصراف</span>
-          </button>
-        </div>
+            >
+              <span>انصراف</span>
+            </button>
+          </div>
+          <div className="text-xs text-rose-600">{errormsg} </div>
+        </div>{" "}
       </div>
     </div>
   );

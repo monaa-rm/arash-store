@@ -4,13 +4,14 @@ import Link from "next/link";
 import React from "react";
 
 const BlogItem = ({ blog }) => {
+  console.log(blog)
   return (
     <div className={`w-full h-[380px] flex justify-center items-center `}>
       <div className="relative w-full max-w-[320px] sm:w-[330px] h-[380px] flex flex-col gap-3 overflow-hidden rounded-2xl shadow-lg bg-zinc-100 shadow-zinc-200 ">
         <div className="relative w-full h-[150px]">
           <Image
             src={blog?.imageSrc}
-            alt="blog"
+            alt={blog?.imageSrc}
             fill
             className="object-cover"
           />
@@ -27,7 +28,7 @@ const BlogItem = ({ blog }) => {
           </p>
         </div>
         <div className="w-full absolute bottom-0 px-4 py-2 border-t border-blue-300 text-zinc-500 text-sm">
-          {getJalaliDate(blog?.createdAt)}
+        { blog?.createdAt ? getJalaliDate(blog?.createdAt) : ""}
         </div>
       </div>
     </div>

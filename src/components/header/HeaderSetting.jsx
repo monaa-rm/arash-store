@@ -1,13 +1,13 @@
 "use client";
 
 import { setShowPriceGlobal } from "@/features/globalSlice";
-import { useEffect, useState } from "react";
+import { setOrderProducts } from "@/features/orderSlice";
+import { getFromLocalStorage } from "@/utiles/utils-func";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const HeaderSetting = () => {
-  const showPriceGlobal = useSelector(
-    (store) => store.globalSlice.showPriceGlobal
-  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,14 +18,15 @@ const HeaderSetting = () => {
         if (res.ok) {
             dispatch(setShowPriceGlobal(data?.data?.showPrice));
         }
-        console.log("bing",showPriceGlobal , data?.data?.showPrice)
+        const orders = getFromLocalStorage("orders");
+        dispatch(setOrderProducts(orders))
       } catch (error) {
         console.log(error);
       }
     }
     fetchSetting();
-  }, [showPriceGlobal]);
-  return null;
+  }, []);
+  return <></>;
 };
 
 export default HeaderSetting;

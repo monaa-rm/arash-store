@@ -14,11 +14,11 @@ const rtl = true;
 const SearchPriceFilter = () => {
   const [values, setValues] = useState([0, 2000000]);
   const searchPrice = useSelector((store) => store.filterSlice.searchPrice);
+  const dispatch = useDispatch();
   const showPriceGlobal = useSelector(
     (store) => store.globalSlice.showPriceGlobal
-  );
-  if (!showPriceGlobal) return null;
-  const dispatch = useDispatch();
+  ) ;
+  if (!showPriceGlobal) return <></>;
   return (
     <div className="h-52 w-full max-w-80 rounded-lg border bg-white  py-4 px-4">
       <h1 className="font-bold">فیلتر بر اساس قیمت:</h1>

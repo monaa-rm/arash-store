@@ -1,84 +1,20 @@
 import ProductEditSinglePage from "@/components/dashboard/admin/product-edit-single-page";
 import Product from "../../../../../../models/Product";
 import connectDB from "@/utiles/connectDB";
+import mongoose from "mongoose";
+import { notFound } from "next/navigation";
 
-const data = {
-  id: "4",
-  productTitle: "خازن کمپرسوور و فن کولر گازی ۳۵  ",
-  imageSrc: [
-    "/images/sample/4.jpg",
-    "/images/sample/5.jpg",
-    "/images/sample/3.jpg",
-    "/images/sample/8.jpg",
-    "/images/sample/7.jpg",
-    "/images/sample/1.jpg",
-  ],
-  productId: 123455,
-  // comments: [
-  //   {
-  //     name: "faride",
-  //     comment:
-  //       "این آنتن مجهز به فیلتر 4G است که از تداخل سیگنال‌های موبایل و پارازیت‌های ۴G جلوگیری می‌کند. این ویژگی باعث می‌شود که دریافت سیگنال‌های تلویزیونی با کیفیت بالاتر و بدون اختلال انجام شود.تواد در دریافت سیگنال‌هاسیگنال‌های ضعیف تلویزیونی را نیز دریافت کند. این ویژگی برای مناطقی که سیگنال تلویزیون ضعیف است، بسیار مفید است.کمترین مصرف انرژی",
-  //   },
-  //   {
-  //     name: "mostafa",
-  //     comment:
-  //       "ین آنتن مجهز به فیلتر 4G است که از تداخل سیگنال‌های موبایل و پارازیت‌های ۴G جلوگیری می‌کند. این ویژگی باعث می‌شود که دریافت سیگنال‌های تلویزیونی با کیفیت بالاتر",
-  //   },
-  // ],
-  score: 4,
-  scoreNumber: 8,
-  commentsNumber: 0,
-  category: [{ name: "خازن", link: "condenser" }],
-  properties: [
-    " برند اسپارت",
-    " فیلتر 4G جهت حذف پارازیت",
-    "مخصوص انواع تلویزیون‌های LED، LCD و گیرنده‌های دیجیتال",
-    " پشتیبانی از HDTV و 4K Ultra HD",
-    "محافظت در برابر ESD",
-    " برند اسپارت",
-    " فیلتر 4G جهت حذف پارازیت",
-    "مخصوص انواع تلویزیون‌های LED، LCD و گیرنده‌های دیجیتال",
-    " پشتیبانی از HDTV و 4K Ultra HD",
-    "محافظت در برابر ESD",
-  ],
-  price: { howMuch: 325000, priceUpdate: "12.1.25" },
-  description: [
-    {
-      title:
-        "آنتن رومیزی اسپارت یک آنتن دیجیتال پیشرفته است که برای دریافت سیگنال‌های تلویزیونی طراحی شده است. این آنتن ویژگی‌ها و قابلیت‌های خاصی دارد که می‌تواند برای کاربران بسیار مفید باشد.",
-      desc: [],
-    },
-    {
-      title: "ویژگی‌ها و خصوصیات آنتن رومیزی اسپارت:",
-      desc: [
-        "فیلتر 4G جهت حذف پارازیت: به فیلتر 4G است که از تداخل سیگنال‌های موبایل و پارازیت‌های ۴G جلوگیری می‌کند. این ویژگی باعث می‌شود که دریافت سیگنال‌های تلویزیونی با کیفیت بالاتر و بدون اختلال انجام شود.عیف تلویزیونی را نیز دریافت کند. این ویژگی برای مناطقی که سیگنال تلویزیون ضعیف است، بسیار مفید است.کمترین مصرف انرژی:",
-      ],
-    },
-    {
-      title: " قابلیت‌های خاصی دارد که می‌تواند برای کاربران:",
-      desc: [
-        "به فیلتر 4G است که از تداخل سیگنال‌های موبایل و",
-        "طراحی شده است. این آنتن ویژگی‌ها و قابلیت‌ها",
-      ],
-    },
-    {
-      title: " قابلیت‌های خاصی دارد که می‌تواند برای کاربران:",
-      desc: [
-        "حی شده است. این آنتن ویژگی‌ها و قابل",
-        "‌های خاصی دارد که می‌تواند برای کاربران بسیار مفید",
-        "به فیلتر 4G است که از تداخل سیگنال‌های موبایل و",
-        "طراحی شده است. این آنتن ویژگی‌ها و قابلیت‌ها",
-      ],
-    },
-  ],
-  instock: 15,
-  unit: "عدد",
-};
+
 const ProductEditSingle = async ({ params }) => {
   await connectDB();
   const { productId } = await params;
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    return notFound();
+  }
   const data = await Product.findOne({ _id: productId });
+  if(!data?.title){
+    return notFound();
+  }
   return <ProductEditSinglePage data={JSON.parse(JSON.stringify(data))} />;
 };
 

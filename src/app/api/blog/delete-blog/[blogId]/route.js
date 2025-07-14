@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/utiles/connectDB";
 import Blog from "../../../../../../models/Blog";
+import mongoose from "mongoose";
 
 export async function DELETE(req, { params }) {
   // تغییر export default به export async function DELETE
@@ -12,6 +13,12 @@ export async function DELETE(req, { params }) {
   try {
     const { blogId } = await params;
     console.log({blogId})
+    if (!mongoose.Types.ObjectId.isValid(blogId)) {
+      return NextResponse.json(
+        { error: "ایدی نامعتبر است" },
+        { status: 400 }
+      );
+    }
     const existingBlog = await Blog.findOne({ _id: blogId });
     if (!existingBlog) {
       return NextResponse.json(

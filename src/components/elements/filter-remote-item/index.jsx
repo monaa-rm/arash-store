@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CgArrowLeft } from "react-icons/cg";
+import FilterRemoteItemSeeAll from "../filter-remote-item-see-all";
+import Category from "../../../../models/Category";
 
-const FilterRemoteItem = ({
+const FilterRemoteItem = async ({
   title,
   img,
   altImage,
@@ -10,6 +12,7 @@ const FilterRemoteItem = ({
   linkTilte,
   bgColor,
 }) => {
+  const cat = await Category.findOne({ link: linkCategory });
   return (
     <div className="w-full md:w-1/3 flex justify-center items-center">
       <div
@@ -21,13 +24,15 @@ const FilterRemoteItem = ({
         <div className="absolute blur duration-500 group-hover:blur-none w-24 h-24 bg-sky-700 rounded-full group-hover:-translate-x-12"></div>
         <div className="z-[1]   flex justify-between items-center w-full h-full">
           <div className="w-full h-full flex flex-col justify-end md:justify-center lg:justify-end gap-4 pb-6 ">
-            <span className=" text-3xl md:text-2xl lg:text-3xl font-bold">{title}</span>
+            <span className=" text-3xl md:text-2xl lg:text-3xl font-bold">
+              {title}
+            </span>
             <button
               className="h-fit w-fit px-[1em] py-[0.25em] border-[1px] rounded-full flex 
     justify-center items-center gap-[0.5em] overflow-hidden group hover:translate-y-[0.125em]
      duration-200 backdrop-blur-[12px]"
             >
-              <Link href={linkCategory} className="md:text-sm lg:text-base">مشاهده محصولات</Link>
+              <FilterRemoteItemSeeAll cat={JSON.parse(JSON.stringify(cat))} />
               <CgArrowLeft className="md:hidden lg:block" />
             </button>
           </div>

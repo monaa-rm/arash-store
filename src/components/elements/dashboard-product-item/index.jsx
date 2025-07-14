@@ -129,7 +129,7 @@ const DashboardProductItem = ({ item, reload, setReload }) => {
           </div>
           <div className="w-full flex flex-col gap-1 p-2">
             <Link
-              href={`/dashboard/admin/edit-product/${item?._id}`}
+              href={`/products/${item?._id}`}
               className=" cursor-pointer font-bold text-sm line-clamp-1 "
             >
               {item?.title}

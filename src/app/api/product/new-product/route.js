@@ -22,11 +22,23 @@ export async function POST(req) {
       productImgs,
       creator,
     } = await req.json();
+    console.log({
+      productTitle,
+      productId,
+      productPrice,
+      productCat,
+      productInsocks,
+      productUnit,
+      productProperties,
+      productDesc,
+      productImgs,
+      creator,
+    })
     if (
       !productTitle ||
       !productId ||
       !productPrice ||
-      !productCat ||
+      // !productCat ||
       !productInsocks ||
       !productUnit ||
       !productImgs ||

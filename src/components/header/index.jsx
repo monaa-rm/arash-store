@@ -8,12 +8,16 @@ import SignIn from "./sign-in";
 import { BsQuestionCircle } from "react-icons/bs";
 import HeaderMenuMobile from "./header-menu-mobile";
 import HeaderSetting from "./HeaderSetting";
+import Category from "../../../models/Category";
+import connectDB from "@/utiles/connectDB";
 
-const Header =  () => {
+const Header = async () => {
+  await connectDB();
+  const categories = await Category.find();
 
   return (
-    <header className="pb-2 w-full shadow-md p-2 pt-3  sticky z-[5] top-0 bg-white">
-  <HeaderSetting />
+    <header className="pb-2 w-full shadow-md p-2 pt-3 text-sm md:text-base sticky z-[5] top-0 bg-white">
+      <HeaderSetting />
 
       <div className=" w-full hidden lg:flex items-center justify-between gap-4 ">
         <div className="flex justify-start items-center lg:gap-2 xl:gap-8">
@@ -43,7 +47,9 @@ const Header =  () => {
       {/* هدر برای سایز کمتر از lg */}
       <div className=" w-full flex flex-col lg:hidden gap-4 ">
         <div className="flex justify-between items-center">
-          <HeaderMenuMobile />
+          <HeaderMenuMobile
+            categories={JSON.parse(JSON.stringify(categories)) || []}
+          />
 
           <Link href={"/"}>
             <div className="w-10 h-10 relative">

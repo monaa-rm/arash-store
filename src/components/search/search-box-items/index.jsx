@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from "react";
 import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
 import SearchBoxItem from "../search-box-item";
 import { useDispatch, useSelector } from "react-redux";
-import { setNumberCategories, setTotalProducts } from "@/features/filterSlice";
+import { setHeaderSearchValue, setNumberCategories, setTotalProducts } from "@/features/filterSlice";
 import Pagination from "@/components/elements/pagination";
 
 const SearchBoxItems = () => {
@@ -13,7 +13,7 @@ const SearchBoxItems = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const searchPrice = useSelector((store) => store.filterSlice.searchPrice);
   const headerSearchValue = useSelector(
     (store) => store.filterSlice.headerSearchValue
@@ -54,7 +54,7 @@ const SearchBoxItems = () => {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, productsPerPage, reloadFilter, searchedCategory]);
+  }, [currentPage, productsPerPage, reloadFilter, searchedCategory , headerSearchValue]);
   // useEffect برای فراخوانی API
   useEffect(() => {
     fetchProducts();

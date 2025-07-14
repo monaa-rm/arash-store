@@ -89,7 +89,7 @@ const ProductEditSinglePage = ({ data }) => {
         !productUnit.length ||
         !productPrice?.length ||
         !productInsocks.length ||
-        !productCat.length ||
+        // !productCat.length ||
         !productImgs.length
       ) {
         if (!productTitle.length) {
@@ -107,9 +107,9 @@ const ProductEditSinglePage = ({ data }) => {
         if (!productInsocks.length) {
           newErrorArray.push("productInsocks");
         }
-        if (!productCat.length) {
-          newErrorArray.push("productCat");
-        }
+        // if (!productCat.length) {
+        //   newErrorArray.push("productCat");
+        // }
         if (!productImgs.length) {
           newErrorArray.push("files");
         }
@@ -254,13 +254,13 @@ const ProductEditSinglePage = ({ data }) => {
         <button
           type="button"
           onClick={() => EditProductHandler()}
-          className="relative cursor-pointer w-full py-2 flex justify-center items-center
-         text-gray-100 text-sm font-bold overflow-hidden bg-gradient-to-r from-blue-600
-          to-blue-950 rounded-lg transition-all duration-400 ease-in-out
+          className="relative cursor-pointer w-full py-2 flex gap-2 justify-center items-center
+         text-gray-100 text-sm md:text-base font-bold overflow-hidden bg-gradient-to-r from-blue-600
+          to-blue-950 rounded-[8px] transition-all duration-400 ease-in-out
            shadow-md hover:scale-100 hover:text-white hover:shadow-lg   z-[5] active:scale-90 
            before:absolute before:top-0 before:-left-full before:w-full before:h-full
     before:bg-gradient-to-r before:from-blue-700 before:to-blue-950 before:transition-all 
-    before:duration-500 before:ease-in-out before:z-[-1] before:rounded-lg
+    before:duration-500 before:ease-in-out before:z-[-1] before:rounded-[8px]
      hover:before:left-0"
         >
           {loading ? (

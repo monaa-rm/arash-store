@@ -20,7 +20,7 @@ const NewProducts = ({ newproducts }) => {
   if (!newproducts.length) return null;
   return (
     <SliderWrapper data={""} sliderTitle="محصولات جدید" link="/new-products">
-      <BestSellerSliderLastItem sliderTitle="محصولات جدید" clickHandler={seeAllNewProducts} />
+      <BestSellerSliderLastItem  sliderTitle="محصولات جدید" clickHandler={seeAllNewProducts} />
       {newproducts?.length &&
         newproducts?.map((item, i) => (
           <BestSellerSliderItem key={i} data={item} hideBreef={false} />

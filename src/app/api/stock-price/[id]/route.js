@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/utiles/connectDB";
 import User from "../../../../../models/User";
 import Product from "../../../../../models/Product";
+import mongoose from "mongoose";
 
 export async function PATCH(req, { params }) {
   try {
@@ -11,6 +12,12 @@ export async function PATCH(req, { params }) {
   }
   try {
     const { id } = await params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json(
+        { error: "ایدی نامعتبر است" },
+        { status: 400 }
+      );
+    }
     const { newstock, newprice, session } = await req.json();
     console.log(newstock < 1, newprice < 1, session);
     if (newprice < 1 || newstock < 1) {

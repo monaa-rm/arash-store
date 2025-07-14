@@ -1,46 +1,52 @@
+import { setShowPriceGlobal } from "@/features/globalSlice";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const AdminShowPrice = () => {
-  const [showPrice, setShowPrice] = useState(false);
+  // const [showPrice, setShowPrice] = useState(false);
+  const showPriceGlobal =
+  useSelector((store) => store.globalSlice.showPriceGlobal) || false;
+  const dispatch = useDispatch();
   const [errText, setErrorText] = useState("");
 
-  useEffect(() => {
-    async function fetchPriceSetting() {
-      setErrorText("");
+  // useEffect(() => {
+  //   async function fetchPriceSetting() {
+  //     setErrorText("");
 
-      try {
-        const res = await fetch("/api/stock-price/show-price-setting");
-        const data = await res.json();
-        if (res.ok) {
-          console.log(data.data);
-          setShowPrice(data?.data?.showPrice);
-        } else {
-          setErrorText("خطا");
-        }
-      } catch (error) {
-        setErrorText("خطا");
-      }
-    }
-    fetchPriceSetting();
-  }, []);
+  //     try {
+  //       const res = await fetch("/api/stock-price/show-price-setting");
+  //       const data = await res.json();
+  //       if (res.ok) {
+  //         console.log(data.data);
+  //         dispatch(setShowPriceGlobal(data?.data?.showPrice))
+  //         // setShowPrice(data?.data?.showPrice);
+  //       } else {
+  //         setErrorText("خطا");
+  //       }
+  //     } catch (error) {
+  //       setErrorText("خطا");
+  //     }
+  //   }
+  //   fetchPriceSetting();
+  // }, []);
 
   const setShowPriceHandler = async () => {
-    setShowPrice(!showPrice);
+    dispatch(setShowPriceGlobal(!showPriceGlobal));
     setErrorText("");
     try {
       const res = await fetch("/api/stock-price/showprice", {
         method: "POST",
-        body: JSON.stringify({ showPriceOrNot: !showPrice }),
+        body: JSON.stringify({ showPriceOrNot: !showPriceGlobal }),
         headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();
       if (!res.ok) {
-        setShowPrice(showPrice);
+        dispatch(setShowPriceGlobal(showPriceGlobal));
         setErrorText("خطا");
       }
     } catch (error) {
       setErrorText("خطا");
-      setShowPrice(showPrice);
+      dispatch(setShowPriceGlobal(showPriceGlobal));
     }
   };
 
@@ -52,10 +58,10 @@ const AdminShowPrice = () => {
         <label className="relative inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
-            value={showPrice}
+            value={showPriceGlobal}
             onChange={() => setShowPriceHandler()}
             className="sr-only peer"
-            checked={showPrice}
+            checked={showPriceGlobal}
           />
           <div
             className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700

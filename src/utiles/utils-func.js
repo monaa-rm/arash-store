@@ -2,7 +2,6 @@ import { format, parseISO } from "date-fns";
 import moment, { jalali } from "jalali-moment";
 
 export function getJalaliDate(createdAt) {
-
   try {
     console.log(createdAt);
     const dateObject = new Date(createdAt);
@@ -26,16 +25,27 @@ export function getJalaliDate(createdAt) {
 }
 export const getSortQuery = (sortOrder) => {
   switch (sortOrder) {
-      case 'expensive':
-          return { price: -1 }; // 1 for ascending
-      case 'cheap':
-          return { price: 1 }; // -1 for descending
-      case 'new':
-          return { _id: -1 }; // Assuming you have a createdAt field
-      default:
-          return { _id: -1 }; // Default to latest
+    case "expensive":
+      return { price: -1 }; // 1 for ascending
+    case "cheap":
+      return { price: 1 }; // -1 for descending
+    case "new":
+      return { _id: -1 }; // Assuming you have a createdAt field
+    case "visit":
+      return { view: -1 }; // Assuming you have a createdAt field
+    default:
+      return { _id: -1 }; // Default to latest
   }
 };
+export function getFromLocalStorage(value) {
+  try {
+    const ordersString = localStorage.getItem(value);
+    return ordersString ? JSON.parse(ordersString) : []; // اگه هیچی نبود، یه آرایه خالی برگردون
+  } catch (error) {
+    console.error('Error getting orders from localStorage:', error);
+    return [];
+  }
+}
 export function formatNumberToPersian(number) {
   return new Intl.NumberFormat("fa-IR").format(number);
 }

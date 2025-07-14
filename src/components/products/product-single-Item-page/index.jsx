@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { FaBox, FaStar } from "react-icons/fa";
 import { IoIosHeartEmpty, IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
@@ -10,8 +11,13 @@ import SimiliarProducts from "../similar-products";
 import ProductDescComment from "../product-desc-comment";
 import ProductSingleItemImage from "@/components/elements/product-single-item-image";
 import ProductSingleItemPrice from "@/components/elements/product-single-item-price";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setSearchedCategory } from "@/features/filterSlice";
 
-const ProductSingleItemPage = ({ data, showPrice, similiarProducts }) => {
+const ProductSingleItemPage = ({ data, similiarProducts }) => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   return (
     <div className="w-full px-4 py-8 flex flex-col gap-4 relative">
       <div className=" w-full p-4 md:h-[500px] border rounded-xl bg-zinc-50 flex flex-col gap-10 md:gap-0 md:flex-row  justify-center items-center ">
@@ -81,22 +87,38 @@ const ProductSingleItemPage = ({ data, showPrice, similiarProducts }) => {
               price={data?.price?.howMuch}
               productCount={data?.instock}
               unit={data?.unit}
+              id={data?._id}
             />
             {/* like and share  and category */}
             <div className=" h-10 flex bg-transparent justify-between items-center px-2 lg:px-8 gap-3 absolute bottom-0 left-0 right-0 border-t">
               <div className="flex justify-center items-center gap-2">
                 <span className="">دسته:</span>
-                <Link
-                  href="/"
-                  className="text-zinc-400 hover:text-blue-600 transition-all duration-300 ease-in-out"
-                >
-                  {data?.category?.map(
-                    (cat, i) =>
-                      `${cat.name} ${
-                        i !== data?.category?.length - 1 ? "-" : ""
-                      }`
-                  )}
-                </Link>
+                {data?.category?.length ? (
+                  <div className="flex gap-1">
+                    {data?.category?.map((cat, i) => (
+                      <div
+                        key={cat._id}
+                        className=" flex gap-1  text-sm text-zinc-400"
+                        onClick={() => {
+                          dispatch(setSearchedCategory(cat));
+                          router.push("/search");
+                        }}
+                      >
+                        <span className="cursor-pointer  hover:text-blue-600 transition-all duration-300 ease-in-out">{cat.name}</span>
+                        <span>
+                          {i !== data?.category?.length - 1 ? "-" : ""}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <Link
+                    href="/"
+                    className="text-zinc-400 text-sm  transition-all duration-300 ease-in-out"
+                  >
+                    بدون دسته بندی{" "}
+                  </Link>
+                )}
               </div>
               <div className=" flex items-center text-zinc-500 gap-2">
                 <div className=" cursor-pointer">
