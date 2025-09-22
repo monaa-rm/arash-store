@@ -7,6 +7,7 @@ import { CiShoppingCart } from "react-icons/ci";
 import {
   formatNumberToPersian,
   getFromLocalStorage,
+  slugify,
 } from "@/utiles/utils-func";
 import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
@@ -21,6 +22,7 @@ const SearchBoxItem = ({ item }) => {
   const [msg, setMsg] = useState("");
   const [reload, setReload] = useState(-1);
   const dispatch = useDispatch();
+  const prdslug = slugify(item?.title);
   const showPriceGlobal =
     useSelector((store) => store.globalSlice.showPriceGlobal) || false;
   const orderProducts =
@@ -41,7 +43,6 @@ const SearchBoxItem = ({ item }) => {
   useEffect(() => {
     let orders = getFromLocalStorage("orders");
     const orderedProduct = orders?.find((product) => product?.id == item?._id);
-    console.log(orderProducts);
     if (orderedProduct?.id) {
       setCount(Number(orderedProduct?.quantity));
       setMsg(`${orderedProduct?.quantity} عدد در سبد خرید`);
@@ -54,7 +55,7 @@ const SearchBoxItem = ({ item }) => {
   return (
     <div
       id={`searchBoxItem${item?._id}`}
-      className="group relative w-full h-72 flex justify-center items-center  [perspective:1000px]"
+      className="group mb-2 relative w-full h-72 flex justify-center items-center z-0  [perspective:1000px]"
     >
       <div
         className={`absolute flex justify-center items-center duration-1000 w-full h-full [transform-style:preserve-3d] ${
@@ -76,7 +77,7 @@ const SearchBoxItem = ({ item }) => {
           </div>
           <div className="w-full flex flex-col gap-1 p-2">
             <Link
-              href={`products/${item._id}`}
+              href={`/products/${item._id}/${prdslug}`}
               className=" cursor-pointer font-bold text-sm line-clamp-1 "
             >
               {item?.title}
@@ -84,10 +85,10 @@ const SearchBoxItem = ({ item }) => {
             <div className="flex justify-start items-center gap-1 pt-3">
               <LuBoxes
                 className={`w-4 h-4 ${
-                  item?.inStock == 0 ? "text-rose-600" : "text-blue-400"
+                  item?.instock == 0 ? "text-rose-600" : "text-blue-400"
                 } `}
               />
-              {item?.inStock == 0 ? (
+              {item?.instock == 0 ? (
                 <span className="text-xs text-rose-600">ناموجود</span>
               ) : (
                 <span className="text-xs text-zinc-500">
@@ -101,10 +102,23 @@ const SearchBoxItem = ({ item }) => {
                   onClick={() => {
                     if (showPriceGlobal) setShopping(true);
                   }}
-                  className="w-7 h-7 group flex justify-center items-center rounded-[6px] bg-blue-700 hover:bg-blue-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out "
+                  className={`w-7 h-7 relative group flex justify-center items-center rounded-[6px] ${
+                    count > 0
+                      ? "bg-green-500 hover:bg-green-600"
+                      : " bg-blue-700 hover:bg-blue-800"
+                  }
+                       cursor-pointer  transition-all duration-300 ease-in-out `}
                 >
+                  <div
+                    className={`px-1 h-4 rounded-full justify-center items-center border bg-white text-xs absolute -top-2 right-5 ${
+                      count > 0 ? "flex" : "hidden"
+                    }`}
+                  >
+                    {count}
+                  </div>
                   <LuShoppingCart
-                    className={`w-5 h-5 group-hover:w-[22px] group-hover:h-[22px] transition-all duration-300 ease-in-out text-white`}
+                    className={`w-5 h-5 group-hover:w-[22px] group-hover:h-[22px] transition-all
+                       duration-300 ease-in-out text-white`}
                   />
                 </div>
               </div>
@@ -150,23 +164,6 @@ const SearchBoxItem = ({ item }) => {
                 reload={reload}
               />
             </div>
-            {/* <div
-              onClick={() => addToCartHandler()}
-              className="flex justify-center items-center pt-6 "
-            >
-              <button className=" font-bold w-36 h-12 rounded bg-blue-600 text-white relative overflow-hidden group z-10 hover:text-white duration-1000">
-                <span className="absolute bg-blue-700 w-40 h-36 rounded-full group-hover:scale-100 scale-0 -z-10 -left-2 -top-10 group-hover:duration-500 duration-700 origin-center transform transition-all"></span>
-                <span className="absolute bg-blue-800 w-40 h-36 -left-2 -top-10 rounded-full group-hover:scale-100 scale-0 -z-10 group-hover:duration-700 duration-500 origin-center transform transition-all"></span>
-               {count > 0 && msg.length ? " ویرایش در سبد خرید" : " افزودن به سبد خرید"}
-              </button>
-            </div> */}
-            {/* <div
-              className={`${
-                msg?.length ? "bg-orange-500" : "bg-none"
-              } rounded-[6px] px-1 py-1 text-xs w-fit  absolute bottom-2 left-1/2 -translate-x-1/2`}
-            >
-              {msg}
-            </div> */}
           </div>
         </div>
       </div>

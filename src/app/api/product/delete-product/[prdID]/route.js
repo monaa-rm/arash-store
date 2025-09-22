@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import Product from "../../../../../../models/Product";
 import connectDB from "@/utiles/connectDB";
 import mongoose from "mongoose";
+import Comment from "../../../../../../models/Comment";
+import Order from "../../../../../../models/order";
 
 export async function DELETE(req, { params }) {
   // تغییر export default به export async function DELETE
@@ -13,10 +15,7 @@ export async function DELETE(req, { params }) {
   try {
     const { prdID } = await params;
     if (!mongoose.Types.ObjectId.isValid(prdID)) {
-      return NextResponse.json(
-        { error: "ایدی نامعتبر است" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "ایدی نامعتبر است" }, { status: 400 });
     }
     const existingProduct = await Product.findOne({ _id: prdID });
     if (!existingProduct) {
@@ -25,6 +24,18 @@ export async function DELETE(req, { params }) {
         { status: 422 }
       );
     }
+    const ordersContainingProduct = await Order.find({
+      "items.id": prdID,
+    });
+    console.log("orders", ordersContainingProduct);
+    if(ordersContainingProduct?.length) {
+            return NextResponse.json(
+        { error: "سفارش برای این محصول موجود است" },
+        { status: 409 }
+      );
+    }
+    await Comment.deleteMany({ productId: existingProduct?._id });
+
     const images = existingProduct.imageSrc;
 
     // استفاده از Promise.all برای اطمینان از حذف تمامی تصاویر قبل از حذف محصول

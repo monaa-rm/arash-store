@@ -2,8 +2,11 @@
 import AdminBlogItem from "@/components/elements/admin-blog-item";
 import GlobalLoading from "@/components/elements/global-loading";
 import Pagination from "@/components/elements/pagination";
+import { setDashboardActiveItem } from "@/features/globalSlice";
+import { usePathname } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
+import { useDispatch } from "react-redux";
 
 const AdminBlogsPage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -16,6 +19,13 @@ const AdminBlogsPage = () => {
   const [loading, setLoading] = useState(false);
   const [reload, setReload] = useState(-1);
   const [isSearchActive, setIsSearchActive] = useState(false);
+const path = usePathname();
+const dispatch = useDispatch()
+    useEffect(() => {
+       dispatch(
+      setDashboardActiveItem({ title: "وبلاگ‌ها", link: "blogs" })
+    );
+  }, [path]);
 
   const fetchBlogs = useCallback(async () => {
     setLoading(true);
@@ -101,7 +111,7 @@ const AdminBlogsPage = () => {
       )}
 
       <Pagination
-        items={products}
+        items={blogs}
         loading={loading}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

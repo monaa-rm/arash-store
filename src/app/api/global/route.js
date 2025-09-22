@@ -9,7 +9,7 @@ export async function GET(req) {
     return NextResponse.json({ error: "خطا از سمت سرور" }, { status: 500 });
   }
   try {
-    const setting = await SiteSetting.findOne().select({ showPrice: 1 });
+    const setting = await SiteSetting.findOne().select({ showPrice: 1});
     return NextResponse.json({ data: setting }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: "خطا از سمت سرور" }, { status: 500 });

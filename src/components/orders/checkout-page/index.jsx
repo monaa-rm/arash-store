@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import YourOrders from "../your-orders";
 import { IoInformationCircle } from "react-icons/io5";
 import { IoMdLock } from "react-icons/io";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setClientAdditionalInfo,
   setClientAddress,
@@ -21,9 +21,11 @@ import {
   setClientPhoneNumber,
   setClientPostalCode,
   setClientProvince,
+  setOrderProducts,
 } from "@/features/orderSlice";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const ChackoutPage = () => {
   const [cost, setCost] = useState(0);
@@ -52,22 +54,12 @@ const ChackoutPage = () => {
 
   const [errorArray, setErrorArray] = useState([]);
   const [finallyText, setFinallyText] = useState("");
-  // const [clientName, setClientName] = useState("");
-  // const [clientLastName, setClientLastName] = useState("");
-  // const [clientProvince, setClientProvince] = useState("");
-  // const [clientCity, setClientCity] = useState("");
-  // const [clientAddress, setClientAddress] = useState("");
-  // const [clientPostalCode, setClientPostalCode] = useState("");
-  // const [clientPhoneNumber, setClientPhoneNumber] = useState("");
-  // const [clientMobileNumber, setClientMobileNumber] = useState("");
-  // const [clientEmail, setClientEmail] = useState("");
-  // const [clientAdditionalInfo, setClientAdditionalInfo] = useState("");
 
-  // const dispatch = useDispatch();
-  // const router = useRouter();
+
+  const dispatch = useDispatch();
+  const router = useRouter();
   const { data: session, status } = useSession();
-  // const orderProducts =
-  //   useSelector((store) => store.orderSlice.orderProducts) || [];
+
   useEffect(() => {
     let selectedCityList = [];
     if (clientProvince?.id) {
@@ -153,8 +145,11 @@ const ChackoutPage = () => {
           console.log(data);
           setFinallyText(data?.error);
         } else {
-          // router.push("/checkout-result");
-          console.log("hooooraaaaaaaa")
+          router.push("/checkout/success");
+          console.log("hooooraaaaaaaa");
+          dispatch(setOrderProducts([]));
+          localStorage.removeItem("orders");
+
         }
       }
     } catch (error) {

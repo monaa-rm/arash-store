@@ -12,38 +12,33 @@ export async function GET(req) {
   }
   try {
     // const data = await req.json();
-
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get("page")) || 1;
-    const limit = parseInt(url.searchParams.get("limit")) || 10;
+    const limit = parseInt(url.searchParams.get("limit")) || 12;
     const searchvalue = url.searchParams.get("searchvalue") || "";
     const minprice = url.searchParams.get("minprice") || 0;
-    const maxprice = url.searchParams.get("maxprice") || 200000000;
+    const maxprice = url.searchParams.get("maxprice") ;
     const category = url.searchParams.get("category") || null;
     const sortby = url.searchParams.get("sortby") || "default";
     let filter = {};
-    console.log({ searchvalue, minprice, maxprice, category, sortby });
     const indexOfLastProduct = page * limit;
     const indexOfFirstProduct = indexOfLastProduct - limit;
     if (searchvalue.length) {
-      console.log("searchvalue boddd");
       filter.title = { $regex: searchvalue, $options: "i" };
     }
-    console.log(111111);
     if (minprice || +maxprice) {
       filter["price.howMuch"] = { $gte: +minprice, $lte: +maxprice };
     }
-    console.log(22222);
     if (category?.length && category != null) {
       filter["category.link"] = { $in: [category] };
     }
-    console.log(333333);
-    console.log("filter finally", filter);
+    console.log(sortby ,getSortQuery(sortby))
     const sendProducts = await Product.find(filter) // Post مدل Mongoose شماست
       .skip(indexOfFirstProduct)
       .limit(limit)
       .sort(getSortQuery(sortby))
       .exec();
+
     const totalProducts = await Product.countDocuments(filter);
     const totalPages = Math.ceil(totalProducts / limit);
     return NextResponse.json(

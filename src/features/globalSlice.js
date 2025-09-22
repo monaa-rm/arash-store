@@ -10,7 +10,8 @@ const initialState = {
 
   showMenu: false,
   showMenuCategory: false,
-};
+  favorites: [],
+}; 
 const globalSlice = createSlice({
   name: "global",
   initialState,
@@ -42,6 +43,9 @@ const globalSlice = createSlice({
     setShowMenuCategory: (state, action) => {
       state.showMenuCategory = action.payload;
     },
+    setFavorites: (state, action) => {
+      state.favorites = action.payload;
+    },
   },
 });
 
@@ -55,5 +59,6 @@ export const {
   setShowPriceGlobal,
   setShowMenuCategory,
   setShowMenu,
+  setFavorites,
 } = globalSlice.actions;
 export default globalSlice.reducer;

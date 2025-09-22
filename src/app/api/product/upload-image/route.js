@@ -2,123 +2,16 @@ import { NextResponse } from "next/server";
 import { existsSync, mkdirSync } from "fs";
 import fs from "fs/promises";
 import path from "path";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/route";
+import sanitizeFilename from "sanitize-filename";
+import connectDB from "@/utiles/connectDB";
 
-// export async function POST(req) {
-//   try {
-//     const formData = await req.formData();
-//     const file = formData.get("file");
-
-//     if (!file) {
-//       return NextResponse.json({}, { status: 400 });
-//     }
-//     if (file.size === 0) {
-//       return NextResponse.json({ error: "please enter file" }, { status: 400 });
-//     }
-
-//     const destinationDirPath = path.join(process.cwd(), "public/uploads");
-
-//     // Create the uploads directory if it doesn't exist
-//     if (!existsSync(destinationDirPath)) {
-//       mkdirSync(destinationDirPath, { recursive: true });
-//     }
-
-//     const fileName = `${Date.now()}-${file.name}`;
-//     const filePath = path.join(destinationDirPath, fileName);
-
-//     // Critical: Prevent directory traversal attacks
-//     if (!filePath.startsWith(path.join(process.cwd(), "public/uploads"))) {
-//         return NextResponse.json({ error: "Invalid file path" }, { status: 400 });
-//     }
-// console.log("filesss", file)
-//     // Use sharp for image optimization and conversion
-//     const optimizedImage = await sharp(await file.arrayBuffer())
-//       .resize(800) // Adjust resize dimensions as needed
-//       .toFormat('jpeg') // Specify the desired format
-//       .jpeg({ quality: 80 }) // Adjust quality (0-100, 80 is a good balance)
-//       .toFile(filePath);
-
-//     // // Send the optimized file to the API for cloud storage
-//     // const apiUrl = "YOUR_API_ENDPOINT_FOR_UPLOAD"; // Replace with your API endpoint
-//     // const response = await fetch(apiUrl, {
-//     //   method: "POST",
-//     //   body: fs.createReadStream(filePath), // Send the file as a stream
-//     //   headers: {
-//     //     "Content-Type": "application/octet-stream", // Important for file uploads
-//     //   },
-//     // });
-
-//     // if (!response.ok) {
-//     //   // Handle API errors
-//     //   const errorData = await response.json();
-//     //   console.error("API upload error:", errorData);
-//     //   return NextResponse.json({ error: "API upload failed" }, { status: response.status });
-//     // }
-
-//     // Remove the temporary file after successful upload
-//     await fs.unlink(filePath);
-//     return NextResponse.json({ message: "Image uploaded successfully" });
-
-//   } catch (error) {
-//     console.error("Error:", error);
-//     return NextResponse.json({ error: "An error occurred" }, { status: 500 });
-//   }
-// }
-
-// import { NextResponse } from "next/server";
-// import { existsSync } from "fs";
-// import fs from "fs/promises";
-// import path from "path";
-
-// export async function POST(req) {
-//   try {
-//     const formData = await req.formData();
-
-//     const file = formData.get("file");
-//     console.log("1", file);
-//     if (!file) {
-//       return NextResponse.json({}, { status: 400 });
-//     }
-//     if (file.size < 1) {
-//       return NextResponse.json({ data: "please enter file" }, { status: 400 });
-//     }
-
-//     const destinationDirPath = path.join(process.cwd(), "public/uploads");
-//     const newname = Date.now() + file.name;
-//     const filePath = path.join(destinationDirPath, newname); // مسیر کامل فایل
-//     const fileUrl = `/uploads/${newname}`; // URL فایل
-//     if (!existsSync(destinationDirPath)) {
-//       await fs.mkdir(destinationDirPath, { recursive: true });
-//     }
-
-//     if (file?.name?.includes(".HEIC") || file?.name?.includes(".HEIF")) {
-//       ////////////
-//       console.log("upload heic 111111111" , filePath);
-//       const fileBuffer = Buffer.from(await file.arrayBuffer());
-//       const optimizedImage = await sharp(fileBuffer)
-//         .resize(800) // Adjust resize dimensions as needed
-//         .toFormat("jpeg") // Specify the desired format
-//         .jpeg({ quality: 80 }) // Adjust quality (0-100, 80 is a good balance)
-//         .toFile(filePath);
-//       console.log("upload 2222222" , optimizedImage);
-
-//     } else {
-//       const fileArrayBuffer = await file.arrayBuffer();
-
-//       await fs.writeFile(filePath, Buffer.from(fileArrayBuffer));
-
-//       return NextResponse.json(
-//         { data: fileUrl, name: file.name, type: file.type },
-//         { status: 201 }
-//       );
-//     }
-//   } catch (error) {
-//     console.error("Error uploading file:", error); // افزودن لاگ برای دیباگ
-//     return NextResponse.json(
-//       { error: "error at upload file" },
-//       { status: 500 }
-//     );
-//   }
-// }
+const {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} = require("@aws-sdk/client-s3");
 
 export async function POST(req) {
   try {
@@ -126,10 +19,18 @@ export async function POST(req) {
     const file = formData.get("file");
     const creatorRole = formData.get("creatorRole");
     const saveIn = formData.get("saveIn");
-    console.log({file,creatorRole , saveIn})
+    console.log({ file, creatorRole, saveIn });
     const fileName = file?.name;
     const fileExtension = fileName?.split(".").pop().toLowerCase();
-
+    ///// اسم saveIn برای تنظیمات کلی رو  global گذاشتم
+    await connectDB();
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json(
+        { error: "لطفا وارد حساب کاربری خود شوید" },
+        { status: 401 }
+      );
+    }
     if (creatorRole !== "admin") {
       return NextResponse.json(
         { error: "فقط ادمین میتواند به این قسمت دسترسی داشته باشد" },
@@ -157,18 +58,16 @@ export async function POST(req) {
         { status: 415 }
       );
     }
- 
-    console.log("00000000000");
 
     const destinationDirPath = path.join(process.cwd(), "public/uploads");
     const newname = Date.now() + file.name;
     const filePath = path.join(destinationDirPath, newname); // مسیر کامل فایل
-    const fileUrl = `/uploads/${newname}`; // URL فایل
+    // const fileUrl = `/uploads/${newname}`; // URL فایل
 
     // بررسی وجود دایرکتوری و ایجاد آن در صورت عدم وجود
-    if (!existsSync(destinationDirPath)) {
-      await fs.mkdir(destinationDirPath, { recursive: true });
-    }
+    // if (!existsSync(destinationDirPath)) {
+    //   await fs.mkdir(destinationDirPath, { recursive: true });
+    // }
     console.log("1111111111111111");
     // if (file?.name?.toLowerCase().includes(".heic") || file?.name?.toLowerCase().includes(".heif")) {
     //   // پردازش فایل HEIC/HEIF
@@ -191,10 +90,45 @@ export async function POST(req) {
     // } else {
     // اگر نه HEIC و نه HEIF باشد، فایل را مستقیم ذخیره کنید
 
-    console.log("666666666666");
     const fileArrayBuffer = await file.arrayBuffer();
-    await fs.writeFile(filePath, Buffer.from(fileArrayBuffer));
+    // await fs.writeFile(filePath, Buffer.from(fileArrayBuffer));
     // }
+    const uniqueSuffix = `${Date.now()}_${Math.round(Math.random() * 1e9)}`;
+    let originalFilename = file.name.replace(/\.[^/.]+$/, "");
+    const sanitizedFilename = sanitizeFilename(originalFilename);
+    if (originalFilename.length > 255) {
+      originalFilename = originalFilename.slice(0, 255);
+    }
+    const filename = `${sanitizedFilename}_${uniqueSuffix}.${fileExtension}`;
+
+    const client = new S3Client({
+      region: "default",
+      endpoint: process.env.LIARA_ENDPOINT,
+      credentials: {
+        accessKeyId: process.env.LIARA_ACCESS_KEY,
+        secretAccessKey: process.env.LIARA_SECRET_KEY,
+      },
+    });
+    const params = {
+      Body: fileArrayBuffer,
+      Bucket: process.env.LIARA_BUCKET_NAME,
+      // Key: "saveIn/" + filename,
+      Key: saveIn + "/" + filename,
+    };
+    await client.send(new PutObjectCommand(params));
+    // callback
+    client.send(new PutObjectCommand(params), (error, data) => {
+      if (error) {
+        console.log(error);
+        return NextResponse.json(
+          { error: "ذخیره تصویر با مشکل مواجه شد" },
+          { status: 500 }
+        );
+      } else {
+        console.log(data);
+      }
+    });
+    const fileUrl = `${process.env.GOAL_HOST_URL}/${saveIn}/${filename}`;
 
     return NextResponse.json(
       { data: fileUrl, name: file.name, type: file.type },

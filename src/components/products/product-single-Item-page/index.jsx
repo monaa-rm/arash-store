@@ -12,12 +12,43 @@ import ProductDescComment from "../product-desc-comment";
 import ProductSingleItemImage from "@/components/elements/product-single-item-image";
 import ProductSingleItemPrice from "@/components/elements/product-single-item-price";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSearchedCategory } from "@/features/filterSlice";
+import { useEffect, useState } from "react";
+import { setFavorites } from "@/features/globalSlice";
 
 const ProductSingleItemPage = ({ data, similiarProducts }) => {
+  let favorites = useSelector((store) => store?.globalSlice?.favorites) || [];
+  const [isLiked, setIsLiked] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
+  useEffect(() => {
+    const favs = localStorage.getItem("favorites");
+    const parsedFavs = favs ? JSON.parse(favs) : [];
+    dispatch(setFavorites(parsedFavs)); // به‌روزرسانی وضعیت local
+  }, [data?._id ]);
+  useEffect(() => {
+    favorites.includes(data?._id) ? setIsLiked(true) : setIsLiked(false);
+  }, [data?._id , favorites ]);
+
+  const favoriteHandler = async () => {
+    try {
+      if (isLiked) {
+        setIsLiked(false);
+        const newFavorites = favorites.filter((item) => item !== data?._id);
+        localStorage.setItem("favorites", JSON.stringify(newFavorites));
+        dispatch(setFavorites(newFavorites));
+      } else {
+        setIsLiked(true);
+        const newFavorites = [...favorites, data?._id];
+        console.log(newFavorites);
+        localStorage.setItem("favorites", JSON.stringify(newFavorites));
+        dispatch(setFavorites(newFavorites));
+      }
+    } catch (error) {
+      // setIsLiked(isLiked);
+    }
+  };
   return (
     <div className="w-full px-4 py-8 flex flex-col gap-4 relative">
       <div className=" w-full p-4 md:h-[500px] border rounded-xl bg-zinc-50 flex flex-col gap-10 md:gap-0 md:flex-row  justify-center items-center ">
@@ -33,7 +64,7 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
             {/* comment score price  */}
             <div className=" w-full flex flex-wrap justify-between items-start gap-1 pt-2">
               <div className="flex justify-start items-center gap-1">
-                <div className="flex text-white justify-center items-center gap-0.5 bg-zinc-400 rounded-lg px-1.5">
+                <div className="flex text-white justify-center items-center gap-0.5 bg-zinc-400 rounded-[4px] px-1.5">
                   <FaStar className="w-3.5 h-3.5 " />
                   <span className="text-sm mt-0.5">{data?.score}</span>
                 </div>
@@ -96,19 +127,19 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
                 {data?.category?.length ? (
                   <div className="flex gap-1">
                     {data?.category?.map((cat, i) => (
-                      <div
+                      <Link
                         key={cat._id}
                         className=" flex gap-1  text-sm text-zinc-400"
-                        onClick={() => {
-                          dispatch(setSearchedCategory(cat));
-                          router.push("/search");
-                        }}
+                        href={`/category/${cat?.link}`}
+                       
                       >
-                        <span className="cursor-pointer  hover:text-blue-600 transition-all duration-300 ease-in-out">{cat.name}</span>
+                        <span className="cursor-pointer  hover:text-blue-600 transition-all duration-300 ease-in-out">
+                          {cat.name}
+                        </span>
                         <span>
                           {i !== data?.category?.length - 1 ? "-" : ""}
                         </span>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 ) : (
@@ -124,8 +155,15 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
                 <div className=" cursor-pointer">
                   <IoShareSocialOutline className="w-6 h-6 hover:text-blue-600 transition-all duration-300 ease-in-out" />
                 </div>
-                <div className="cursor-pointer">
-                  <IoMdHeartEmpty className="w-6 h-6 hover:text-blue-600 transition-all duration-300 ease-in-out" />
+                <div
+                  className=" cursor-pointer"
+                  onClick={() => favoriteHandler()}
+                >
+                  {isLiked ? (
+                    <IoMdHeart className="w-7 h-7 cursor-pointer text-blue-700 transition-all duration-300" />
+                  ) : (
+                    <IoMdHeartEmpty className="w-7 h-7 cursor-pointer text-zinc-500 hover:text-blue-700 transition-all duration-300" />
+                  )}
                 </div>
               </div>
             </div>
@@ -158,7 +196,12 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
         </div>
       </div>
       <SimiliarProducts similiarProducts={similiarProducts} />
-      <ProductDescComment description={data?.description} title={data?.title} />
+      <ProductDescComment
+        rate={data?.score}
+        id={data?._id}
+        description={data?.description}
+        title={data?.title}
+      />
     </div>
   );
 };

@@ -38,7 +38,6 @@ const ProductImages = ({
         console.log(fileExtension);
         let finallyFile = file;
         if (allowedExtensions.includes(fileExtension)) {
-          console.log("ggggggggggg");
           if (
             file?.name?.toLowerCase().includes(".heic") ||
             file?.name?.toLowerCase().includes(".heif")
@@ -109,7 +108,7 @@ const ProductImages = ({
     if (files?.length) {
       try {
         setLoading(true);
-        const res = await fetch("/api/product/delete-image", {
+        const res = await fetch(`/api/product/delete-image?saveIn=blogs`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -163,7 +162,7 @@ const ProductImages = ({
               errorArray.includes("files") && !files?.length
                 ? "border-rose-600"
                 : " border-gray-300 "
-            } border-dashed rounded-lg cursor-pointer `}
+            } border-dashed rounded-[8px] cursor-pointer `}
         >
           <label
             htmlFor="dropzone-file"
@@ -203,12 +202,12 @@ const ProductImages = ({
           <h4 className="text-md font-semibold mb-2 w-full">عکس انتخاب شده</h4>
           <div className="w-full">
             <div className="flex justify-center items-center w-full">
-              <div className="relative rounded-lg w-96 h-60 sm:h-72 flex justify-center items-center border bg-slate-100">
+              <div className="relative rounded-[8px] w-96 h-60 sm:h-72 flex justify-center items-center border bg-slate-100">
                 <Image
                   fill
                   src={files}
                   alt={files}
-                  className={`rounded-lg object-fill overflow-hidden `}
+                  className={`rounded-[8px] object-fill overflow-hidden `}
                 />
                 <button
                   onClick={() => handleRemoveFile()}

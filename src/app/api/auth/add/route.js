@@ -52,7 +52,7 @@ console.log("phone numbbbbb" , phoneNumber)
       );
     }
     console.log("33333333");
-    if (password?.length < 8) {
+    if (password?.length < 6) {
       return NextResponse.json(
         { error: "رمز عبور باید بیشتر از 6 کاراکتر باشد" },
         { status: 422 }

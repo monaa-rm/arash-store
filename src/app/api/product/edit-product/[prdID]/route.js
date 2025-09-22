@@ -13,10 +13,7 @@ export async function PATCH(req, { params }) {
   try {
     const { prdID } = await params;
     if (!mongoose.Types.ObjectId.isValid(prdID)) {
-      return NextResponse.json(
-        { error: "ایدی نامعتبر است" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "ایدی نامعتبر است" }, { status: 400 });
     }
     const {
       productTitle,
@@ -74,7 +71,7 @@ export async function PATCH(req, { params }) {
       properties: productProperties,
       description: productDesc,
       imageSrc: productImgs,
-      // editor: existingUser._id,
+      suggest: existingProduct?.suggest,
     };
     await Product.findByIdAndUpdate(prdID, updates, {
       new: true,

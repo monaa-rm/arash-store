@@ -11,7 +11,7 @@ import Link from "next/link";
 import { RiBloggerFill, RiSettings5Fill } from "react-icons/ri";
 import { LuMessageSquareMore } from "react-icons/lu";
 
-const menuData = [
+const menuData = [ 
     { title: "حساب کاربری", link: false, iconname: "user-account" },
     { title: " ویرایش اطلاعات شخصی", link: "user-edit" },
     { title: "سفارش ها و پرداخت ها", link: false, iconname: "orders" },
@@ -20,7 +20,7 @@ const menuData = [
     // { title: "جزئیات سفارش ها", link: "pay-details" },
 
     { title: " پیام ها و اعلان ها", link: false, iconname: "notifications" },
-    { title: "پیام ها", link: "messages" },
+    { title: "دیدگاه ها", link: "comments" },
     { title: "علاقه مندی ها", link: false, iconname: "favorite" },
     { title: "محصولات مارک شده", link: "favorites" },
 
@@ -33,7 +33,7 @@ const menuData = [
 //   { title: "تنظیمات سایت", link: "settings" },
   // { title: "خروج", link: false, iconname: "logout" },
 ];
-const DashboardUserLayout = ({ children }) => {
+const DashboardUserLayout  = ({ children }) => {
   const [showList, setShowList] = useState(false);
   const topRef = useRef(null);
   const dashboardActiveItem = useSelector(

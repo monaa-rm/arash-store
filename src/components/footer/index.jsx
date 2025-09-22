@@ -1,50 +1,59 @@
-
 import FooterTopSection from "../elements/footer-top-section";
 import Image from "next/image";
 import SocialMediaicons from "../elements/social-media-icons";
 import FooterBottom from "../elements/footer-bottom";
+import Link from "next/link";
+import { BsExclamationSquareFill } from "react-icons/bs";
+import { MdLockOutline, MdOutlinePhoneEnabled } from "react-icons/md";
+import { FiFileText } from "react-icons/fi";
+import FooterAddress from "./footer-address";
+import SiteSetting from "../../../models/SiteSetting";
+import FooterPhoneEmail from "./footer-phone-email";
 
-const Footer = () => {
+const Footer = async () => {
+  let info = {};
+  try {
+    info = await SiteSetting.findOne();
+  } catch (error) {
+    console.log(error);
+    throw Error("خطا در دریافت اطلاعات");
+  }
   return (
     <footer className="w-full bg-slate-200 pt-4">
       <FooterTopSection />
       <div className="px-4 flex flex-col sm:flex-row flex-wrap items-center sm:items-start justify-center">
-        <div className="w-full sm:w-1/2 md:w-1/4  p-4 flex flex-col gap-4">
-          <h1 className="border-b border-zinc-700 font-bold pb-2">
-            {" "}
-            آدرس فروشگاه
-          </h1>
-          <ul>
-            <li className="list-inside list-disc">لاهیجان،فلان قسمت</li>
-            <li className="list-inside list-disc"> لنگزود ،فلان</li>
-          </ul>
-        </div>
-        <div className="w-full sm:w-1/2 md:w-1/4 md:hidden lg:flex  p-4 flex flex-col gap-4">
-          <h1 className="border-b border-zinc-700 font-bold pb-2">
-            فروشگاه آرش
-          </h1>
-          <ul>
-            <li className="border-b flex justify-between items-center">
-              <span>تلفن</span>
-              <span>013-458-6952</span>
-            </li>
-            <li className="border-b flex justify-between items-center">
-              <span>ایمیل</span>
-              <span>arashstore@gmail.com</span>
-            </li>
-            <SocialMediaicons />
-          </ul>
-        </div>
+        <FooterAddress data={JSON.parse(JSON.stringify(info))} />
+        <FooterPhoneEmail data={JSON.parse(JSON.stringify(info))} />
         <div className="w-full sm:w-1/2 md:w-1/4  p-4 flex flex-col gap-4">
           <h1 className="border-b border-zinc-700 font-bold pb-2">
             راهنمای خرید
           </h1>
-          <ul>
-            <li className="">اصالت محصولات</li>
-            <li>خرید عمده از سایت</li>
-            <li>رویه ارسال سفارش</li>
-            <li>پاسخ به سوالات متداول</li>
-          </ul>
+          <div>
+            <Link
+              href={"/about-us"}
+              className="flex justify-start items-center gap-2   hover:text-blue-800 transition-all duration-300"
+            >
+              درباره‌ی ما
+            </Link>
+            <Link
+              href={"/contact-us"}
+              className="flex justify-start items-center gap-2   hover:text-blue-800 transition-all duration-300"
+            >
+              تماس با ما
+            </Link>
+            <Link
+              href={"/terms"}
+              className="flex justify-start items-center gap-2   hover:text-blue-800 transition-all duration-300"
+            >
+              قوانین و مقررات
+            </Link>
+            <Link
+              href={"/privacy-policy"}
+              className="flex justify-start items-center gap-2   hover:text-blue-800 transition-all duration-300"
+            >
+              حریم خصوصی
+            </Link>
+          </div>
         </div>
         <div className="w-full sm:w-1/2 md:w-1/4  p-4 flex flex-col gap-4">
           <h1 className="border-b border-zinc-700 font-bold pb-2">

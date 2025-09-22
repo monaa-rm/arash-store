@@ -2,6 +2,7 @@
 
 import { setSearchedCategory } from "@/features/filterSlice";
 import { setShowMenu, setShowMenuCategory } from "@/features/globalSlice";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { MdChevronLeft } from "react-icons/md";
@@ -32,7 +33,8 @@ const MenuMobileCategory = ({ categories }) => {
         className={`headermenucat-h w-full  overflow-y-auto scrollbar-style`}
       >
         {categories?.map((cat) => (
-          <div
+          <Link
+          href={`/category/${cat?.link}`}
             onClick={() => {
               dispatch(setSearchedCategory(cat));
               dispatch(setShowMenuCategory(false));
@@ -45,7 +47,7 @@ const MenuMobileCategory = ({ categories }) => {
           >
             {cat.name}
             <MdChevronLeft className=" ml-2 group-hover:ml-1 w-5 h-5 transition-all duration-200" />
-          </div>
+          </Link>
         ))}
       </div>
     </div>

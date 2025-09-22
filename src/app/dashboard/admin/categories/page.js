@@ -1,16 +1,13 @@
 import CategoriesPage from "@/components/dashboard/admin/categories-page";
-// const getData = async () => {
-//   const data = await fetch(
-//     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/category/allCategories`,
-//     {
-//       cache: "no-store",
-//     }
-//   ).then((res) => res.json());
-//   return data;
-// };
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+import { notFound } from "next/navigation";
+
 const Categories = async () => {
-//   const data = await getData();
-// console.log(data)
+  const  session  = await getServerSession(authOptions);
+  if (!session || session?.user?.role !== "admin") {
+    return notFound();
+  }
   return <CategoriesPage  />;
 };
 

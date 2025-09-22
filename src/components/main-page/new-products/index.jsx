@@ -11,20 +11,23 @@ const NewProducts = ({ newproducts }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const seeAllNewProducts = () => {
-    dispatch(
-      setActiveSearchHeaderItem("new")
-    );
-    router.push("/search")
+    dispatch(setActiveSearchHeaderItem("new"));
+    router.push("/search");
   };
 
   if (!newproducts.length) return null;
   return (
     <SliderWrapper data={""} sliderTitle="محصولات جدید" link="/new-products">
-      <BestSellerSliderLastItem  sliderTitle="محصولات جدید" clickHandler={seeAllNewProducts} />
       {newproducts?.length &&
         newproducts?.map((item, i) => (
           <BestSellerSliderItem key={i} data={item} hideBreef={false} />
         ))}
+      {newproducts?.length > 4 ? (
+        <BestSellerSliderLastItem
+          sliderTitle="محصولات جدید"
+          clickHandler={seeAllNewProducts}
+        />
+      ) : null}
     </SliderWrapper>
   );
 };

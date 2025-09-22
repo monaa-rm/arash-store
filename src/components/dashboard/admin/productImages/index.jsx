@@ -15,6 +15,7 @@ const ProductImages = ({
   errorArray,
   title,
   setFinallyText,
+  saveIn
 }) => {
   const fileInputRef = useRef(null);
   const [uploadedFiles, setUploadedFiles] = useState(productImgs); // فایل های اپلود شده
@@ -34,7 +35,7 @@ const ProductImages = ({
   const handleRemoveFile = async (file, index) => {
     setErrormsg("");
     try {
-      const res = await fetch("/api/product/delete-image", {
+      const res = await fetch(`/api/product/delete-image?saveIn=${saveIn}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +105,6 @@ const ProductImages = ({
     const fileExtension = fileName.split(".").pop().toLowerCase();
 
     if (allowedExtensions.includes(fileExtension)) {
-      console.log("ggggggggggg");
       if (
         file?.name?.toLowerCase().includes(".heic") ||
         file?.name?.toLowerCase().includes(".heif")
@@ -133,7 +133,7 @@ const ProductImages = ({
       const formData = new FormData();
       formData.append("file", finallyFile);
       formData.append("creatorRole", session?.user.role);
-      formData.append("saveIn", "products");
+      formData.append("saveIn", saveIn);
       try {
         const res = await fetch("/api/product/upload-image", {
           method: "POST",
@@ -204,7 +204,7 @@ const ProductImages = ({
               errorArray.includes("files") && !files?.length
                 ? "border-rose-600"
                 : " border-gray-300 "
-            } border-dashed rounded-lg cursor-pointer `}
+            } border-dashed rounded-[8px] cursor-pointer `}
         >
           <label
             htmlFor="dropzone-file"
@@ -246,13 +246,13 @@ const ProductImages = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 lg:gap-4 ">
             {productImgs.map((file, index) => (
               <div key={index} className="flex justify-center items-center">
-                <div className="relative rounded-lg w-60 h-60 flex justify-center items-center border bg-slate-100">
+                <div className="relative rounded-[8px] w-60 h-60 flex justify-center items-center border bg-slate-100">
                   <Image
                     fill
                     src={file?.file}
                     // src={URL.createObjectURL(file)}
                     alt={file?.name}
-                    className={`rounded-lg object-fill overflow-hidden `}
+                    className={`rounded-[8px] object-fill overflow-hidden `}
                   />
                   <button
                     onClick={() => handleRemoveFile(file, index)}

@@ -49,7 +49,7 @@ const SignUp = ({ setShowSignUp }) => {
         <h2 className="text-2xl text-sky-900 font-bold mb-6">صفحه ثبت نام</h2>
         <button
           onClick={() => setShowSignUp(false)}
-          className="[background:linear-gradient(144deg,#af40ff,#5b42f3_50%,#00ddeb)] text-white  py-2 font-bold rounded-md hover:opacity-80 w-10 h-8 flex justify-center items-center"
+          className="[background:linear-gradient(144deg,#af40ff,#5b42f3_50%,#00ddeb)] text-white  py-2 font-bold rounded-[8px] hover:opacity-80 w-10 h-8 flex justify-center items-center"
         >
           <FaArrowLeft className="text-white w-6 h-6" />
         </button>
@@ -67,7 +67,7 @@ const SignUp = ({ setShowSignUp }) => {
             id="phoneNumber"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-2 w-full border rounded-[8px]"
             type="number"
             autoComplete="off"
           />
@@ -81,7 +81,7 @@ const SignUp = ({ setShowSignUp }) => {
             رمز عبور
           </label>
           <input
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-2 w-full border rounded-[8px]"
             name="password"
             id="password"
             value={password}
@@ -98,7 +98,7 @@ const SignUp = ({ setShowSignUp }) => {
             تکرار رمز عبور
           </label>
           <input
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-2 w-full border rounded-[8px]"
             name="repeatPassword"
             id="repeatPassword"
             value={repeatPassword}
@@ -115,7 +115,7 @@ const SignUp = ({ setShowSignUp }) => {
             disabled={!phoneNumber || !repeatPassword || !phoneNumber}
             onClick={(e) => signUpHandler(e)}
             className="[background:linear-gradient(144deg,#af40ff,#5b42f3_50%,#00ddeb)] text-white px-4 
-            py-2 font-bold rounded-md hover:opacity-80 w-full flex justify-center items-center gap-1"
+            py-2 font-bold rounded-[8px] hover:opacity-80 w-full flex justify-center items-center gap-1"
             type="button"
           >
             ثبت نام

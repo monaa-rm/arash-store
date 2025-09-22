@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { MdZoomOutMap } from "react-icons/md";
 import {
@@ -7,21 +8,55 @@ import {
   IoMdHeartEmpty,
 } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { setProductBrifItem, setShowProductBrif } from "@/features/globalSlice";
+import {
+  setFavorites,
+  setProductBrifItem,
+  setShowProductBrif,
+} from "@/features/globalSlice";
 import Link from "next/link";
-import { formatNumberToPersian } from "@/utiles/utils-func";
-import { useState } from "react";
+import { formatNumberToPersian, slugify } from "@/utiles/utils-func";
+import { useEffect, useState } from "react";
 
 const BestSellerSliderItem = ({ data, hideBreef }) => {
+  let favorites = useSelector((store) => store?.globalSlice?.favorites) || [];
+  // const [favorites, setFavorites] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
-  const showPriceGlobal = useSelector(
-    (store) => store.globalSlice.showPriceGlobal
-  ) || false ;
+  const showPriceGlobal =
+    useSelector((store) => store.globalSlice.showPriceGlobal) || false;
   const dispatch = useDispatch();
   const { _id, title, price, imageSrc } = data;
+  const prdslug = slugify(title);
+  useEffect(() => {
+    const favs = localStorage.getItem("favorites");
+    const parsedFavs = favs ? JSON.parse(favs) : [];
+    dispatch(setFavorites(parsedFavs)); // به‌روزرسانی وضعیت local
+  }, [data?._id]);
+  useEffect(() => {
+    favorites.includes(data?._id) ? setIsLiked(true) : setIsLiked(false);
+  }, [data?._id, favorites]);
+
+  const favoriteHandler = async () => {
+    try {
+      if (isLiked) {
+        setIsLiked(false);
+        console.log(_id);
+        const newFavorites = favorites.filter((item) => item !== _id);
+        localStorage.setItem("favorites", JSON.stringify(newFavorites));
+        dispatch(setFavorites(newFavorites));
+      } else {
+        setIsLiked(true);
+        const newFavorites = [...favorites, _id];
+        console.log(newFavorites);
+        localStorage.setItem("favorites", JSON.stringify(newFavorites));
+        dispatch(setFavorites(newFavorites));
+      }
+    } catch (error) {
+      // setIsLiked(isLiked);
+    }
+  };
   return (
     <div className="px-4 w-full flex justify-center" dir="rtl">
-      <div className="relative w-full flex justify-center min-w-[200px] max-w-56 group group overflow-hidden text-gray-50 h-72   border border-gray-200 rounded-2xl hover:duration-700 duration-700">
+      <div className="relative w-full flex justify-center min-w-[200px] max-w-56 group group overflow-hidden text-gray-50 h-72   border border-gray-200 rounded-[16px] hover:duration-700 duration-700">
         <div className="relative top-0  w-full h-56 left-0 right-0">
           <Image
             src={imageSrc[0].file}
@@ -35,7 +70,7 @@ const BestSellerSliderItem = ({ data, hideBreef }) => {
         <div
           className={`${
             hideBreef && "hidden"
-          } absolute left-2 top-2 rounded-md  bg-white bg-opacity-50 p-0.5`}
+          } absolute left-2 top-2 rounded-[4px]  bg-white bg-opacity-50 p-0.5`}
         >
           <MdZoomOutMap
             className="cursor-pointer"
@@ -45,14 +80,13 @@ const BestSellerSliderItem = ({ data, hideBreef }) => {
             }}
           />
         </div>
-        {/* </div>
-        </div> */}
+
         <div className="absolute bg-gradient-to-b from-gray-50 to-gray-200 -bottom-12 w-full px-2 py-3 flex flex-col gap-1 group-hover:-bottom-0 group-hover:duration-600 duration-500">
           <Link
-            href={`/products/${data._id}`}
+            href={`/products/${_id}/${prdslug}`}
             className="text-blue-900 cursor-pointer font-bold text-sm line-clamp-1  group-hover:line-clamp-2"
           >
-            {title}
+            <h3>{title}</h3>
           </Link>
           <div className=" font-bold text-left py-1 pl-2 text-yellow-600 text-xs">
             {showPriceGlobal
@@ -60,14 +94,21 @@ const BestSellerSliderItem = ({ data, hideBreef }) => {
               : "تماس بگیرید "}
           </div>
           <div className="flex justify-center items-center gap-1 border-t pt-2">
-            <Link href={`/`}>
+            <div
+              onClick={() => {
+                dispatch(setProductBrifItem(_id));
+                dispatch(setShowProductBrif(true));
+              }}
+            >
               <IoIosSearch className="w-7 h-7 cursor-pointer text-zinc-800 hover:text-blue-700 transition-all duration-300" />
-            </Link>
-            {isLiked ? (
-              <IoMdHeart className="w-7 h-7 cursor-pointer text-blue-700 transition-all duration-300" />
-            ) : (
-              <IoMdHeartEmpty className="w-7 h-7 cursor-pointer text-zinc-800 hover:text-blue-700 transition-all duration-300" />
-            )}
+            </div>
+            <div onClick={() => favoriteHandler()}>
+              {isLiked ? (
+                <IoMdHeart className="w-7 h-7 cursor-pointer text-blue-700 transition-all duration-300" />
+              ) : (
+                <IoMdHeartEmpty className="w-7 h-7 cursor-pointer text-zinc-800 hover:text-blue-700 transition-all duration-300" />
+              )}
+            </div>
           </div>
         </div>
       </div>

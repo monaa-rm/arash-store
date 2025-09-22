@@ -20,7 +20,7 @@ const userSchema = new Schema({
     type: String,
     default: "",
   },
-  liked_residances: {
+  favorites: {
     type: [String],
     default: [],
   },

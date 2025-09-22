@@ -66,7 +66,7 @@ const EnterWithSms = ({
       <div className="flex justify-end">
         <button
           onClick={() => setEnterWithSms(false)}
-          className="[background:linear-gradient(144deg,#af40ff,#5b42f3_50%,#00ddeb)] text-white  py-2 font-bold rounded-md hover:opacity-80 w-10 h-8 flex justify-center items-center"
+          className="[background:linear-gradient(144deg,#af40ff,#5b42f3_50%,#00ddeb)] text-white  py-2 font-bold rounded-[8px] hover:opacity-80 w-10 h-8 flex justify-center items-center"
         >
           <FaArrowLeft className="text-white w-6 h-6" />
         </button>
@@ -76,7 +76,7 @@ const EnterWithSms = ({
         کنید.
       </div>
       <input
-        className="mt-1 p-2 w-full border rounded-md"
+        className="mt-1 p-2 w-full border rounded-[8px]"
         name="loginCode"
         id="loginCode"
         value={loginCode}
@@ -98,7 +98,7 @@ const EnterWithSms = ({
             disabled={!phoneNumber || !loginCode}
             onClick={(e) => loginHandler(e)}
             className="[background:linear-gradient(144deg,#af40ff,#5b42f3_50%,#00ddeb)] text-white px-4 
-            py-2 font-bold rounded-md hover:opacity-80 w-full flex justify-center items-center gap-1"
+            py-2 font-bold rounded-[8px] hover:opacity-80 w-full flex justify-center items-center gap-1"
             type="button"
           >
             ورود

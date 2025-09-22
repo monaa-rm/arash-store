@@ -58,11 +58,11 @@ const SignUpSection = () => {
       <div
         id="SignUpSection"
         className="   w-10/12 sm:w-[400px]  min-h-72  mx-auto relative overflow-hidden z-10 bg-white p-6
-         rounded-lg shadow-md before:w-24 before:h-24 before:absolute before:bg-purple-500 
+         rounded-[10px] shadow-md before:w-24 before:h-24 before:absolute before:bg-purple-500 
          before:rounded-full before:-z-10 before:blur-2xl after:w-32 after:h-32 after:absolute
           after:bg-sky-400 after:rounded-full after:-z-10 after:blur-xl after:top-24 after:-right-12"
       >
-        <div ref={innerDivRef} className="   border-gray-300  relative ">
+        <form ref={innerDivRef} className="   border-gray-300  relative ">
           {showSignUp && !enterwhitSms ? (
             <SignUp setShowSignUp={setShowSignUp} />
           ) : !enterwhitSms && !showSignUp ? (
@@ -81,6 +81,7 @@ const SignUpSection = () => {
           ) : enterwhitSms && !showSignUp ? (
             <EnterWithSms
               phoneNumber={phoneNumber}
+              setPhoneNumber={setPhoneNumber}
               setEnterWithSms={setEnterWithSms}
               enterwhitSms={enterwhitSms}
               smsError={smsError}
@@ -89,7 +90,7 @@ const SignUpSection = () => {
               setSmsMessage={setSmsMessage}
             />
           ) : null}
-        </div>
+        </form>
       </div>
     </div>
   );

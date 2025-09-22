@@ -73,7 +73,7 @@ export async function POST(req) {
           price: product.price.howMuch,
           // image:
           //   product?.imageSrc && product?.imageSrc.length > 0
-          //     ? product.imageSrc[0].file
+          //     ? product?.imageSrc[0]?.file
           //     : "/default-image.jpg",
         });
         // اطلاعات محصول اصلی را نیز می‌توانیم جمع‌آوری کنیم (در صورت نیاز به نمایش جزئیات بیشتر)
@@ -88,7 +88,7 @@ export async function POST(req) {
           quantity: requestedQuantity,
           image:
             product?.imageSrc && product?.imageSrc.length > 0
-              ? product?.imageSrc[0].file
+              ? product?.imageSrc[0]?.file
               : "/default-image.jpg",
         });
       }

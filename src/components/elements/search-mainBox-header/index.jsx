@@ -38,7 +38,7 @@ const searchHeaderItems = [
   },
 ];
 
-const SearchMainBoxHeader = () => {
+const SearchMainBoxHeader = ({ setCurrentPage }) => {
   const [showFilter, setShowFilter] = useState(false);
   const [showSort, setShowSort] = useState(false);
   const activeSearchHeaderItem = useSelector(
@@ -96,9 +96,10 @@ const SearchMainBoxHeader = () => {
                 dispatch(setActiveSearchHeaderItem(item.link));
                 dispatch(setReloadFilter());
                 setShowSort(false);
+                setCurrentPage(1);
               }}
               key={item.link}
-              className={`px-2 py-1 rounded-lg ${
+              className={`px-2 py-1 rounded-[8px] ${
                 activeSearchHeaderItem == item.link
                   ? "bg-blue-800 text-white"
                   : "bg-none hover:text-black"
@@ -112,14 +113,14 @@ const SearchMainBoxHeader = () => {
           نمایش {numberCategories} از {totalProducts} کالا
         </div>
       </div>
-      <div className=" border rounded-lg text-sm lg:hidden overflow-hidden">
+      <div className=" border rounded-[8px] text-sm lg:hidden overflow-hidden z-[4] sticky top-[75px]">
         <div className="flex justify-between items-center  py-2 px-4 border-b bg-gradient-to-l from-slate-100 to-slate-50">
           <span className="font-bold">فروشگاه</span>
           <span className="text-zinc-500 text-xs">
             نمایش {numberCategories} از {totalProducts} کالا
           </span>
         </div>
-        <div className="flex justify-around items-center  py-2 px-4">
+        <div className="flex justify-around items-center   bg-white py-2 px-4">
           <div
             onClick={() => setShowFilter(true)}
             className="flex justify-center items-center gap-2 cursor-pointer "
@@ -170,6 +171,7 @@ const SearchMainBoxHeader = () => {
                   dispatch(setActiveSearchHeaderItem(item.link));
                   dispatch(setReloadFilter());
                   setShowSort(false);
+                  setCurrentPage(1);
                 }}
                 className="sr-only peer"
                 name="futuristic-radio"

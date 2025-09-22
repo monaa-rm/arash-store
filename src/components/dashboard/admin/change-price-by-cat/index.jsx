@@ -110,7 +110,7 @@ const ChangePriceByCategory = ({ reload, setReload }) => {
     <div
       className={`w-full  ${
         openAllProduct ? "" : "overflow-hidden"
-      } border rounded-xl  p-4 transition-all duration-500  ${
+      } border rounded-[10px]  p-4 transition-all duration-500  ${
         openAllProduct ? "h-52 sm:h-48" : "h-12"
       }`}
     >
@@ -128,7 +128,7 @@ const ChangePriceByCategory = ({ reload, setReload }) => {
       <div
         className={` ${
           catErr ? "bg-red-100" : "bg-slate-100"
-        }  rounded-lg relative px-2`}
+        }  rounded-[4px] relative px-2`}
       >
         <div
           className={`cursor-pointer w-full `}
@@ -140,7 +140,7 @@ const ChangePriceByCategory = ({ reload, setReload }) => {
         </div>
         <div
           id="selectCat"
-          className={`bg-white absolute  left-0 right-0 z-[2] p-4 border rounded-lg transition-all duration-500 ${
+          className={`bg-white absolute  left-0 right-0 z-[2] p-4 border rounded-[4px] transition-all duration-500 ${
             showcat
               ? "top-full opacity-100"
               : "top-auto opacity-0 pointer-events-none"

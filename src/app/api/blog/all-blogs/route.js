@@ -14,7 +14,7 @@ export async function GET(req) {
 
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get("page")) || 1;
-    const limit = parseInt(url.searchParams.get("limit")) || 10;
+    const limit = parseInt(url.searchParams.get("limit")) || 12;
     const searchQuery = url.searchParams.get("query") || "";
 
     const indexOfLastBlog = page * limit;

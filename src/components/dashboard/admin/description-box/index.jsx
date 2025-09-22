@@ -80,14 +80,14 @@ const DescriptionBox = ({
             onClick={handleAddTodo}
             className="bg-blue-950 flex justify-center items-center gap-2  hover:bg-slate-800 transition-all duration-300
            text-white outline-none font-bold w-full sm:w-8 h-8 py-1 sm:py-0
-          rounded-md "
+          rounded-[8px] "
           >
             <span className="flex sm:hidden">افزودن</span>
             <FaPlus />
           </button>
         </div>
         {descList.length ? (
-          <div className="flex flex-col w-full gap-2 bg-blue-100  py-1 rounded-md">
+          <div className="flex flex-col w-full gap-2 bg-blue-100  py-1 rounded-[8px]">
             {textTitle ? (
               <div className="flex justify-between items-center gap-2 px-2 font-bold">
                 <span>{textTitle}</span>
@@ -120,7 +120,7 @@ const DescriptionBox = ({
           onClick={handleProductDesc}
           className="bg-blue-950 flex justify-center items-center gap-2  hover:bg-slate-800 transition-all duration-300
            text-white outline-none font-bold w-full  h-8 py-1 sm:py-0
-          rounded-md "
+          rounded-[8px] "
         >
           <span className="flex ">افزودن</span>
           <FaPlus />
@@ -130,7 +130,7 @@ const DescriptionBox = ({
         {productDesc?.map((item, index) => (
           <div
             key={index}
-            className="flex flex-col gap-2 bg-slate-50 px-2 py-1 rounded-md"
+            className="flex flex-col gap-2 bg-slate-50 px-2 py-1 rounded-[8px]"
           >
             {item?.title ? (
               <div className="flex justify-between items-center gap-2 font-bold">

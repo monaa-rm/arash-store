@@ -71,9 +71,9 @@ const CropperSliderWrapper = ({
       <div className="absolute left-0 right-0 top-0 bottom-0 bg-gray-900 bg-opacity-40"></div>
       <div className="z-[1] w-full flex flex-col md:flex-row md:items-center md:justify-center gap-4">
         <div className="w-full md:w-1/3 flex flex-col justify-center items-center gap-4 p-8">
-          <h1 className="font-bold text-2xl text-white">
-            لوله مسی بابک مس ایرانیان
-          </h1>
+          <h2 className="font-bold text-2xl text-white">
+            انواع لوله مسی
+          </h2>
           <span className="text-white text-center">
             شما میتوانید لوله های مسی با کیفیت و قیمت مناسب را از فروشگاه ما
             تهیه کنید!
@@ -83,17 +83,17 @@ const CropperSliderWrapper = ({
         justify-center items-center gap-[0.5em] overflow-hidden group hover:translate-y-[0.125em]
          duration-200 backdrop-blur-[12px]"
           >
-            <div
-              onClick={() => {
-                if (cat?._id) {
-                  dispatch(setSearchedCategory(cat));
-                  router.push("/search");
-                }
-              }}
+            <Link href={`/category/${cat?.link}`}
+              // onClick={() => {
+              //   if (cat?._id) {
+              //     dispatch(setSearchedCategory(cat));
+              //     router.push("/search");
+              //   }
+              // }}
               className="text-white"
             >
               مشاهده محصولات
-            </div>
+            </Link>
           </button>
         </div>
 

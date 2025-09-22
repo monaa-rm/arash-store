@@ -42,7 +42,7 @@ const PropertiesBox = ({ productProperties, setProductProperties , title , place
           onClick={handleAddTodo}
           className="bg-blue-950 flex justify-center items-center gap-2  hover:bg-slate-800 transition-all duration-300
            text-white outline-none font-bold w-full sm:w-8 h-8 py-1 sm:py-0
-          rounded-md "
+          rounded-[8px] "
         >
             <span className="flex sm:hidden">افزودن</span>
           <FaPlus />
@@ -53,7 +53,7 @@ const PropertiesBox = ({ productProperties, setProductProperties , title , place
         {productProperties?.map((todo, index) => (
           <div
             key={index}
-            className="flex items-center justify-between bg-slate-50 px-2 py-1 rounded-md"
+            className="flex items-center justify-between bg-slate-50 px-2 py-1 rounded-[8px]"
           >
             <span>{todo}</span>
             <button

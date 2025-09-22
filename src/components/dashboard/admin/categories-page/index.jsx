@@ -11,22 +11,22 @@ import { BsFillTrashFill } from "react-icons/bs";
 import { RiEditFill } from "react-icons/ri";
 import RemoveBox from "@/components/elements/remove-box";
 
-export const categorydata = [
-  { name: "لوله", link: "lole" },
-  { name: "آچار", link: "achar" },
-  { name: "کولر", link: "kooler" },
-  { name: "3کولر", link: "kooler3" },
-  { name: "5کولر 5کولر ", link: "kooler5" },
-  { name: "پیچ پیچ2 پیچ2 پیچ22", link: "pich2" },
-  { name: "3پیچ", link: "pich3" },
-  { name: "پیچ", link: "pich" },
-  { name: "تصفیه اب", link: "tasfie" },
-  { name: "فیلتر", link: "filter" },
-  { name: "سیم", link: "sim" },
-  { name: "شیر آب", link: "shir-ab" },
-  { name: "خازن", link: "khazan" },
-  { name: "برد", link: "bord" },
-];
+// export const categorydata = [
+//   { name: "لوله", link: "lole" },
+//   { name: "آچار", link: "achar" },
+//   { name: "کولر", link: "kooler" },
+//   { name: "3کولر", link: "kooler3" },
+//   { name: "5کولر 5کولر ", link: "kooler5" },
+//   { name: "پیچ پیچ2 پیچ2 پیچ22", link: "pich2" },
+//   { name: "3پیچ", link: "pich3" },
+//   { name: "پیچ", link: "pich" },
+//   { name: "تصفیه اب", link: "tasfie" },
+//   { name: "فیلتر", link: "filter" },
+//   { name: "سیم", link: "sim" },
+//   { name: "شیر آب", link: "shir-ab" },
+//   { name: "خازن", link: "khazan" },
+//   { name: "برد", link: "bord" },
+// ];
 const CategoriesPage = () => {
   const [catdata, setCatdata] = useState([]);
   const [showNewCat, setShowNewCat] = useState(false);
@@ -89,7 +89,7 @@ const CategoriesPage = () => {
           </div>
           <button
             onClick={() => setShowNewCat(true)}
-            className="relative px-8 py-2 w-40 h-10 font-bold rounded-md isolation-auto z-[1] text-white border-2 bg-blue-600 border-blue-500
+            className="relative px-8 py-2 w-40 h-10 font-bold rounded-[8px] isolation-auto z-[1] text-white border-2 bg-blue-600 border-blue-500
         before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full
          before:-right-full before:hover:right-0 before:rounded-full  before:bg-blue-950 before:-z-10 
           before:aspect-square before:hover:scale-150  overflow-hidden before:hover:duration-700

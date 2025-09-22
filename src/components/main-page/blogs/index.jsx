@@ -33,7 +33,7 @@ const Blogs = async () => {
   const blogData = await Blog.find().limit(3).sort({ _id: -1 });
   return (
     <div className="w-full flex flex-col gap-6 p-4  ">
-      <h1 className="font-bold text-2xl">آخرین های وبلاگ</h1>
+      <h2 className="font-bold text-2xl">آخرین های وبلاگ</h2>
       <div className="w-full flex flex-col gap-8  justify-center items-center ">
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {blogData.length &&

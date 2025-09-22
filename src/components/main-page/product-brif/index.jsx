@@ -4,6 +4,7 @@ import GlobalLoading from "@/components/elements/global-loading";
 import ProductBrifImages from "@/components/elements/produc-brif-images";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { setProductBrifItem, setShowProductBrif } from "@/features/globalSlice";
+import { slugify } from "@/utiles/utils-func";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
@@ -12,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 const ProductBrif = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
+  const [prdslug, setPrdslug] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const showProductBrif = useSelector(
     (store) => store.globalSlice.showProductBrif
@@ -46,7 +48,8 @@ const ProductBrif = () => {
         const data = await res.json();
         if (res.ok) {
           setProduct(data?.data);
-          console.log(data?.data);
+          const slug = slugify(data?.data?.title);
+          setPrdslug(slug);
         } else {
           setErrMsg(data.error);
         }
@@ -91,7 +94,7 @@ const ProductBrif = () => {
               </div>
               <div className="w-full h-full md:w-1/2 border-t md:border-0  py-2 flex flex-col md:justify-center gap-2 ">
                 <div className=" flex flex-col gap-0.5">
-                  <h1 className="font-bold text-xl">{product?.title}</h1>
+                  <h2 className="font-bold text-xl">{product?.title}</h2>
                 </div>
                 <div className="flex justify-start items-center gap-2 border-t pt-2">
                   <div className="flex justify-center items-center gap-1 rounded-[5px] bg-gray-200 px-1">
@@ -137,7 +140,7 @@ const ProductBrif = () => {
                     بستن
                   </button>
                   <Link
-                    href={`/products/${product?._id}`}
+                    href={`/products/${product?._id}/${prdslug}`}
                     type="button"
                     className="px-2 py-1 border bg-blue-600 hover:bg-blue-700 rounded-[8px] text-white transition-all duration-300"
                   >

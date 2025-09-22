@@ -10,14 +10,22 @@ import HeaderMenuMobile from "./header-menu-mobile";
 import HeaderSetting from "./HeaderSetting";
 import Category from "../../../models/Category";
 import connectDB from "@/utiles/connectDB";
+import HeaderCategories from "./header-categories";
 
-const Header = async () => {
-  await connectDB();
-  const categories = await Category.find();
+const Header = async ({ show_price }) => {
+  let categories = [];
+  try {
+    await connectDB();
+    categories = await Category.find();
+  } catch (error) {
+    throw Error("خطا در دریافت اطلاعات");
+  }
 
   return (
     <header className="pb-2 w-full shadow-md p-2 pt-3 text-sm md:text-base sticky z-[5] top-0 bg-white">
-      <HeaderSetting />
+      {/* <HeaderSetting
+        show_price={JSON.parse(JSON.stringify(show_price))}
+      /> */}
 
       <div className=" w-full hidden lg:flex items-center justify-between gap-4 ">
         <div className="flex justify-start items-center lg:gap-2 xl:gap-8">
@@ -32,6 +40,9 @@ const Header = async () => {
             </div>
           </Link>
           <HeaderContent />
+          <HeaderCategories
+            categories={JSON.parse(JSON.stringify(categories)) || []}
+          />
         </div>
         <div className="hidden lg:flex">
           <SearchBox />

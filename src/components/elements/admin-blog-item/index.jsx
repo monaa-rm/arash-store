@@ -1,5 +1,5 @@
 "use client";
-import { getJalaliDate } from "@/utiles/utils-func";
+import { getJalaliDate, slugifyBlog } from "@/utiles/utils-func";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -9,11 +9,11 @@ const AdminBlogItem = ({ blog, reload, setReload }) => {
   const [showRemoveBox, setShowRemoveBox] = useState(false);
   const [itemToRemove, setItemToRemove] = useState("");
   const [loading, setLoading] = useState(false);
+  const blogSlug = slugifyBlog(blog?.title, blog?._id);
   useEffect(() => {
     const handleClick = (event) => {
       if (!event.target.closest(`blogItemAdmin${blog?._id}`)) {
-
-       !loading && setShowRemoveBox(false);
+        !loading && setShowRemoveBox(false);
       }
     };
 
@@ -58,7 +58,7 @@ const AdminBlogItem = ({ blog, reload, setReload }) => {
         </div>
         <div className="px-4 flex flex-col gap-4 ">
           <Link
-            href={`/blogs/${blog?._id}`}
+            href={`/blogs/${blog?._id}/${blogSlug}`}
             className="line-clamp-2 hover:text-blue-800 transition-all duration-300 text-lg font-[vazirmedium]  "
           >
             {blog?.title}
@@ -69,15 +69,18 @@ const AdminBlogItem = ({ blog, reload, setReload }) => {
         </div>
         <div className="w-full h-10 absolute bottom-0 flex justify-between items-center px-4 py-2 border-t border-blue-300 text-zinc-500 text-sm">
           {getJalaliDate(blog?.createdAt)}
-          <div className="w-7 h-7 group flex justify-center items-center rounded-lg bg-rose-700 hover:bg-rose-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out ">
+          <div className="w-7 h-7 group flex justify-center items-center rounded-[8px] bg-rose-700 hover:bg-rose-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out ">
             <RiDeleteBin5Fill
-              onClick={() =>{ setShowRemoveBox(true); setItemToRemove(blog?._id)}}
+              onClick={() => {
+                setShowRemoveBox(true);
+                setItemToRemove(blog?._id);
+              }}
               className={`w-5 h-5 transition-all duration-300 ease-in-out text-white`}
             />
           </div>
           <div
             id={`blogItemAdmin${blog?._id}`}
-            className={`absolute w-40 bg-white border rounded-lg ${
+            className={`absolute w-40 bg-white border rounded-[8px] ${
               showRemoveBox
                 ? "bottom-10 left-2 opacity-100"
                 : "bottom-auto left-auto opacity-0 pointer-events-none"

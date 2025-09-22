@@ -14,6 +14,8 @@ const OrderAddToCart = ({
   productCount,
   prodId,
   setDeleted,
+  cost,
+  setCost,
 }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -135,6 +137,7 @@ const OrderAddToCart = ({
             onChange={(e) => {
               if (e.target.value < productCount + 1 && e.target.value > 1) {
                 setCount(+e.target.value);
+                countHandler(+e.target.value);
               }
             }}
             className="w-20 text-center outline-none bg-zinc-200 "

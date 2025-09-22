@@ -9,10 +9,10 @@ const Allblogs = () => {
   const [blogs, setBlogs] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [blogsPerPage] = useState(10);
+  const [blogsPerPage] = useState(12);
   const [totalblogs, setTotalBlogs] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(-1);
 
   const fetchblogs = useCallback(async () => {

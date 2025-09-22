@@ -229,6 +229,7 @@ const NewProductPage = () => {
         setProductImgs={setProductImgs}
         title={`انتخاب عکس محصول`}
         setFinallyText={setFinallyText}
+        saveIn={"products"}
       />
       <div className="w-full">
         <div

@@ -24,17 +24,16 @@ const orderSchema = new Schema({
   allCost: { type: Number, required: true },
   status: {
     type: String,
-    default: "Pending",
+    default: "pending",
     enum: [
-      "Pending",
-      "Processing",
-      "Shipped",
-      "In Transit",
-      "Out for Delivery",
-      "Delivered",
-      "Cancelled",
-      "Returned",
-      "Failed Delivery",
+      "pending",
+      // "processing",
+      "shipped",// ارسال شده
+      // "Out for Delivery",
+      "delivered",//تحویل داده شده
+      "cancelled",//لغو شده
+      "returned",//مرجوع شده
+      "failed",// ناموفق
     ],
 
   },

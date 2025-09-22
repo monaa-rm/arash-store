@@ -1,3 +1,5 @@
+import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
+
 const Pagination = ({
   items,
   loading,
@@ -37,7 +39,7 @@ const Pagination = ({
           <li>
             <button
               onClick={() => setCurrentPage(1)}
-              className="page-link p-3 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300"
+              className="page-link p-3 rounded-[4px] bg-gray-200 text-gray-700 hover:bg-gray-300"
             >
               <LuChevronLast />
             </button>
@@ -48,7 +50,7 @@ const Pagination = ({
           <li key={number} className="page-item">
             <button
               onClick={() => setCurrentPage(number)}
-              className={`page-link px-4 py-2 rounded-md ${
+              className={`page-link px-4 py-2 rounded-[4px] ${
                 currentPage === number
                   ? "bg-indigo-500 text-white"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -63,7 +65,7 @@ const Pagination = ({
           <li>
             <button
               onClick={() => setCurrentPage(totalPages)}
-              className="page-link p-3 py-3 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300"
+              className="page-link p-3 py-3 rounded-[4px] bg-gray-200 text-gray-700 hover:bg-gray-300"
             >
               <LuChevronFirst />
             </button>

@@ -12,9 +12,9 @@ const BestSellerSliderLastItem = ({ sliderTitle, clickHandler }) => {
 
       <button className="text-[0.8em] absolute bottom-[1em] left-[1em] text-blue-700 group-hover:text-[white] duration-500">
         <Link href={"/"}>
-          <span className="relative before:h-[0.16em] before:absolute before:w-full before:content-[''] before:bg-blue-700 group-hover:before:bg-[white] duration-300 before:bottom-0 before:left-0">
+          <h3 className="relative before:h-[0.16em] before:absolute before:w-full before:content-[''] before:bg-blue-700 group-hover:before:bg-[white] duration-300 before:bottom-0 before:left-0">
             فروشگاه آرش
-          </span>
+          </h3>
         </Link>
         <i className="fa-solid fa-arrow-right"></i>
       </button>

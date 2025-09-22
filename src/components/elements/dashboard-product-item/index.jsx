@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { LuBoxes } from "react-icons/lu";
-import { formatNumberToPersian } from "@/utiles/utils-func";
+import { formatNumberToPersian, slugify } from "@/utiles/utils-func";
 import { FaEdit } from "react-icons/fa";
 
 import { RiDeleteBin5Fill } from "react-icons/ri";
@@ -14,7 +14,7 @@ const DashboardProductItem = ({ item, reload, setReload }) => {
   const [loading, setLoading] = useState(false);
   const [showRmBox, setShowRmBox] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
-
+const prdslug = slugify(item?.title)
   const router = useRouter();
 
   useEffect(() => {
@@ -129,7 +129,7 @@ const DashboardProductItem = ({ item, reload, setReload }) => {
           </div>
           <div className="w-full flex flex-col gap-1 p-2">
             <Link
-              href={`/products/${item?._id}`}
+              href={`/products/${item?._id}/${prdslug}`}
               className=" cursor-pointer font-bold text-sm line-clamp-1 "
             >
               {item?.title}
@@ -144,7 +144,7 @@ const DashboardProductItem = ({ item, reload, setReload }) => {
                 <span className="text-xs text-rose-600">ناموجود</span>
               ) : (
                 <span className="text-xs text-zinc-500">
-                  {item?.unit} {item?.instock} در انبار
+                  {item?.instock} {item?.unit} در انبار
                 </span>
               )}
             </div>
@@ -152,7 +152,7 @@ const DashboardProductItem = ({ item, reload, setReload }) => {
               <div className="h-8 gap-2 flex justify-center items-center">
                 <Link
                   href={`/dashboard/admin/edit-product/${item?._id}`}
-                  className="w-7 h-7 group flex justify-center items-center rounded-lg bg-orange-700 hover:bg-orange-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out "
+                  className="w-7 h-7 group flex justify-center items-center rounded-[6px] bg-orange-700 hover:bg-orange-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out "
                 >
                   <FaEdit
                     className={`w-5 h-5  transition-all duration-300 ease-in-out text-white`}
@@ -163,7 +163,7 @@ const DashboardProductItem = ({ item, reload, setReload }) => {
                     setItemToRemove(item?._id);
                     setShowRmBox(true);
                   }}
-                  className="w-7 h-7 group flex justify-center items-center rounded-lg bg-rose-700 hover:bg-rose-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out "
+                  className="w-7 h-7 group flex justify-center items-center rounded-[6px] bg-rose-700 hover:bg-rose-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out "
                 >
                   <RiDeleteBin5Fill
                     className={`w-5 h-5 transition-all duration-300 ease-in-out text-white`}

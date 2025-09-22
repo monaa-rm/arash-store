@@ -8,7 +8,7 @@ const RandomProductItem = ({ title, imageSrc }) => {
           <div className="relative w-full h-40 rounded-2xl overflow-hidden ">
             <Image alt="image" src={imageSrc[0]?.file} fill className="object-cover" />
           </div>
-          <span className="line-clamp-1 font-bold text-sm w-full">{title}</span>
+          <h3 className="line-clamp-1 font-bold text-sm w-full">{title}</h3>
         </div>
       </div>
     </div>

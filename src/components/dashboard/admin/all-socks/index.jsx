@@ -13,10 +13,10 @@ const AllSocks = () => {
   const [searchProduct, setSearchProduct] = useState("");
   const [searchedList, setsearchedList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
+  const [productsPerPage] = useState(12);
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(-1);
   const [isSearchActive, setIsSearchActive] = useState(false);
 

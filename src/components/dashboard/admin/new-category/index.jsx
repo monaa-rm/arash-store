@@ -111,7 +111,7 @@ const NewCategory = ({
     >
       <div
         id="newCat"
-        className="  md:h-72 w-72 sm:w-2/3  bg-slate-50 border rounded-lg shadow-md flex flex-col gap-8 p-4"
+        className="  md:h-72 w-72 sm:w-2/3  bg-slate-50 border rounded-[10px] shadow-md flex flex-col gap-8 p-4"
       >
         <h3 className="">افزودن دسته بندی</h3>
         <InputTextSection
@@ -142,9 +142,9 @@ const NewCategory = ({
           {catToEdit?.name ? (
             <button
               onClick={() => editCategory(catToEdit._id)}
-              className="relative  w-36 md:w-40 h-8 md:h-10 font-bold rounded-md isolation-auto z-[1] text-white border-2 bg-blue-600 border-blue-500
+              className="relative  w-36 md:w-40 h-8 md:h-10 font-bold rounded-[8px] isolation-auto z-[1] text-white border-2 bg-blue-600 border-blue-500
         before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full
-         before:-right-full before:hover:right-0 before:rounded-full  before:bg-blue-950 before:-z-10 
+         before:-right-full before:hover:right-0 before:rounded-[8px]  before:bg-blue-950 before:-z-10 
           before:aspect-square before:hover:scale-150 text-sm md:text-base  overflow-hidden before:hover:duration-700
            flex justify-center items-center gap-2"
             >
@@ -153,7 +153,7 @@ const NewCategory = ({
           ) : (
             <button
               onClick={() => addCategory()}
-              className="relative  w-36 md:w-40 h-8 md:h-10 font-bold rounded-md isolation-auto z-[1] text-white border-2 bg-blue-600 border-blue-500
+              className="relative  w-36 md:w-40 h-8 md:h-10 font-bold rounded-[8px] isolation-auto z-[1] text-white border-2 bg-blue-600 border-blue-500
         before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full
          before:-right-full before:hover:right-0 before:rounded-full  before:bg-blue-950 before:-z-10 
           before:aspect-square before:hover:scale-150 text-sm md:text-base  overflow-hidden before:hover:duration-700

@@ -9,7 +9,6 @@ import CategoryBox from "../category-box";
 import PropertiesBox from "../properties-box";
 import DescriptionBox from "../description-box";
 import ProductImages from "../productImages";
-import EditImages from "../edit-images";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 
@@ -233,7 +232,6 @@ const ProductEditSinglePage = ({ data }) => {
         finallyText={finallyText}
         setFinallyText={setFinallyText}
       />
-      {/* {data?.imageSrc?.length ? <EditImages images={data?.imageSrc} /> : null} */}
       <ProductImages
         errorArray={errorArray}
         files={files}
@@ -242,6 +240,7 @@ const ProductEditSinglePage = ({ data }) => {
         setProductImgs={setProductImgs}
         title={`انتخاب عکس محصول`}
         setFinallyText={setFinallyText}
+        saveIn={"products"}
       />
       <div className="w-full">
         <div

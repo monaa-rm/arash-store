@@ -55,7 +55,7 @@ const ChangeAllPrices = ({ reload, setReload }) => {
   };
   return (
     <div
-      className={`w-full  overflow-hidden border rounded-xl  p-4 transition-all duration-500  ${
+      className={`w-full  overflow-hidden border rounded-[10px]  p-4 transition-all duration-500  ${
         openAllProduct ? "h-44 sm:h-36" : "h-12"
       }`}
     >

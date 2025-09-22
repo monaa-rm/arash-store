@@ -12,22 +12,22 @@ const MainCategorySection = () => {
       <MainCategoryItem
         title="لوله ها"
         icon={<GiTeePipe />}
-        cat={{ name: "لوله", link: "pipes" }}
+        cat={{ name: "لوله", link: "lule" }}
       />
       <MainCategoryItem
         title="گاز های فریونی"
         icon={<MdAcUnit />}
-        cat={{ name: "گاز فریونی", link: "refrigerant-gas" }}
+        cat={{ name: "گاز فریونی", link: "gaz-ferioni" }}
       />
       <MainCategoryItem
         title="تجهیزات کولر"
         icon={<TbAirConditioning />}
-        cat={{ name: "تجهیزات کولر", link: "air-conditioner-accessories" }}
+        cat={{ name: "تجهیزات کولر", link: "tajhizate-kooler" }}
       />
       <MainCategoryItem
         title="تجهیزات یخچال"
         icon={<TbFridge />}
-        cat={{ name: "تجهیزات یخچال", link: "refrigerator-accessories" }}
+        cat={{ name: "تجهیزات یخچال", link: "tajhizate-yakhchal" }}
       />
     </div>
   );

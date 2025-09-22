@@ -5,8 +5,8 @@ import Category from "../../../../models/Category";
 import Product from "../../../../models/Product";
 
 const CropperSlider = async () => {
-  const category = await Category.findOne({ link: "cropper" });
-  if (!category?._id) return null;
+  const category = await Category.findOne({ link: "lule-mesi" });
+  if (!category?._id) return <></>;
   const data = await Product.find({
     category: {
       //   "link": { $in: [`pipes`] },

@@ -6,9 +6,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import Product from "../../../../../models/Product";
 import mongoose from "mongoose";
+import { slugify } from "@/utiles/utils-func";
 
 export async function PATCH(req, { params }) {
-  const { catId } = params;
+  const { catId } = await params;
   try {
     await connectDB();
   } catch (error) {
@@ -25,6 +26,7 @@ export async function PATCH(req, { params }) {
     if (!name || !link || !editorInfo) {
       return NextResponse.json({ error: "اطلاعات کامل نیست" }, { status: 422 });
     }
+    const editedLink = slugify(link);
     const existingUser = await User.findOne({ phone: editorInfo });
     if (!existingUser || existingUser.role !== "admin") {
       return NextResponse.json(
@@ -33,9 +35,42 @@ export async function PATCH(req, { params }) {
       );
     }
     const existingCat = await Category.findOne({ _id: catId });
-    if (existingCat) {
-      await Category.findByIdAndUpdate(catId, { name, link });
 
+    if (existingCat) {
+      if (
+        // existingCat?.link == "cropper" ||
+        // existingCat?.link == "filter" ||
+        // existingCat?.link == "remote-control" ||
+        // existingCat?.link == "refrigerant-gas" ||
+        // existingCat?.link == "pipes"
+        existingCat?.link == "lule" ||
+        existingCat?.link == "gaz-ferioni" ||
+        existingCat?.link == "remote-control" ||
+        existingCat?.link == "tajhizate-kooler" ||
+        existingCat?.link == "tajhizate-yakhchal" ||
+        existingCat?.link == "lule-mesi" ||
+        existingCat?.link == "filter" ||
+        existingCat?.link == "remote-control"
+      ) {
+        return NextResponse.json(
+          { error: `این دسته نباید ویرایش شود` },
+          { status: 200 }
+        );
+      }
+
+      await Category.findByIdAndUpdate(catId, { name, link: editedLink });
+      await Product.updateMany(
+        { "category._id": catId }, // فیلتر: محصولاتی که در آرایه category خود، شیئی با _id این دسته دارند
+        {
+          $set: {
+            "category.$[elem].name": name, // به‌روزرسانی فیلد name در شیء یافت شده
+            "category.$[elem].link": editedLink, // به‌روزرسانی فیلد link در شیء یافت شده
+          },
+        },
+        {
+          arrayFilters: [{ "elem._id": catId }], // تعریف فیلتر آرایه: elem به شیئی اشاره دارد که _id آن برابر با catId باشد
+        }
+      );
       return NextResponse.json(
         { data: `دسته ${name} ویرایش شد` },
         { status: 200 }
@@ -84,7 +119,28 @@ export async function DELETE(req, { params }) {
       );
     }
     const existingCat = await Category.findOne({ _id: catId });
-
+    if (
+      existingCat &&
+      // existingCat?.link == "cropper" ||
+      // existingCat?.link == "filter" ||
+      // existingCat?.link == "remote-control" ||
+      // existingCat?.link == "remote-control" ||
+      // existingCat?.link == "refrigerant-gas" ||
+      // existingCat?.link == "pipes"
+      (existingCat?.link == "lule" ||
+        existingCat?.link == "gaz-ferioni" ||
+        existingCat?.link == "remote-control" ||
+        existingCat?.link == "tajhizate-kooler" ||
+        existingCat?.link == "tajhizate-yakhchal" ||
+        existingCat?.link == "lule-mesi" ||
+        existingCat?.link == "filter" ||
+        existingCat?.link == "remote-control")
+    ) {
+      return NextResponse.json(
+        { error: `این دسته نباید پاک شود` },
+        { status: 200 }
+      );
+    }
     if (existingCat) {
       await Product.updateMany(
         { "category._id": catId }, // فیلتر: محصولاتی که category با این شناسه دارند

@@ -41,9 +41,9 @@ const OrdersPage = () => {
           });
           const data = await res.json();
 
-          console.log(data);
           if (res.ok) {
             if (Array.isArray(data?.localOrders)) {
+              console.log(data?.localOrders);
               localStorage.setItem("orders", JSON.stringify(data?.localOrders));
               setOrders(data?.productsData);
               if (data?.productsData?.length) {
@@ -70,7 +70,16 @@ const OrdersPage = () => {
     }
     fetchOrderProducts();
   }, [orderProducts]);
-
+  // useEffect(() => {
+  //   if (orderProducts?.length && !draftOrders) {
+  //     orderProducts?.map((order) => {
+  //       const result = order?.quantity * order?.price;
+  //       setCost((prev) => {
+  //         return prev + result;
+  //       });
+  //     });
+  //   }
+  // }, [orderProducts]);
   useEffect(() => {
     const handleClick = (event) => {
       if (!event.target.closest("#deleteAll")) {
@@ -88,6 +97,7 @@ const OrdersPage = () => {
     try {
       localStorage.removeItem("orders");
       dispatch(setOrderProducts([]));
+      setOrders([]);
     } catch (error) {
       console.log(error);
     }
@@ -100,7 +110,11 @@ const OrdersPage = () => {
     }
   };
   return (
-    <div className="w-full px-4 pt-4 flex flex-col gap-2 pb-12 ">
+    <div
+      className={`w-full px-4 pt-4 flex flex-col gap-2 ${
+        orders?.length > 2 ? "pb-12" : " pb-96 "
+      }`}
+    >
       <div className="flex gap-1 text-sm pt-2  pb-0.5  border-b relative ">
         <div className="absolute bottom-0 h-1 rounded-full w-20 bg-blue-500"></div>
         <h1 className="font-bold text-lg">سبد خرید </h1>
@@ -119,7 +133,7 @@ const OrdersPage = () => {
                     {showPriceGlobal ? orderProducts.length : "0"} مرسوله
                   </span>
                 </div>
-                {orders.length ? (
+                {orders.length && orderProducts?.length ? (
                   <div className="relative">
                     <HiDotsVertical
                       className="w-5 h-5 cursor-pointer"
@@ -150,6 +164,9 @@ const OrdersPage = () => {
                       setDraftOrders={setDraftOrders}
                       order={order}
                       key={order?._id}
+                      cost={cost} 
+                      draftOrders={draftOrders}
+                      setCost={setCost}
                     />
                   ))}
                 </>
@@ -169,7 +186,7 @@ const OrdersPage = () => {
             </div>
           )}
         </div>
-        {!loading && orders?.length && showPriceGlobal ? (
+        {!loading && orders?.length && showPriceGlobal && orderProducts?.length ? (
           <div
             className="w-full z-[5] md:z-0 md:w-[340px] h-20 md:h-40  add_to_cart_button border justify-center items-center md:items-start bg-white  md:rounded-[8px] py-0 md:py-8 px-4 
               fixed md:sticky md:bottom-auto md:top-[222px] lg:top-[190px] flex flex-row-reverse md:flex-col gap-2 md:gap-10 "
@@ -182,7 +199,7 @@ const OrdersPage = () => {
               </div>
             </div>
             <button
-              disabled={!orders.length || !showPriceGlobal}
+              disabled={!orders.length || !showPriceGlobal }
               onClick={() => finishOrdersHandler()}
               type="button"
               className="w-full h-10 flex justify-center items-center rounded-[10px]
@@ -190,8 +207,13 @@ const OrdersPage = () => {
             >
               تایید و تکمیل سفارش
             </button>
-            <div className="text-xs text-gray-400 absolute left-0 right-0 top-full pt-2 text-justify
-            ">هزینه این سفارش هنوز پرداخت نشده‌ و در صورت اتمام موجودی، کالاها از سبد حذف می‌شوند</div>
+            <div
+              className="text-xs text-gray-400 absolute left-0 right-0 top-full pt-2 text-justify
+            "
+            >
+              هزینه این سفارش هنوز پرداخت نشده‌ و در صورت اتمام موجودی، کالاها
+              از سبد حذف می‌شوند
+            </div>
           </div>
         ) : null}
       </div>

@@ -86,7 +86,7 @@ const Login = ({
           <input
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-2 w-full border rounded-[8px]"
             type="number"
             placeholder="9123456789"
             autoComplete="off"
@@ -101,7 +101,7 @@ const Login = ({
             رمز عبور
           </label>
           <input
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-2 w-full border rounded-[8px]"
             name="password"
             id="password"
             value={password}
@@ -132,7 +132,7 @@ const Login = ({
             disabled={!phoneNumber || !password}
             onClick={(e) => loginHandler(e)}
             className="[background:linear-gradient(144deg,#af40ff,#5b42f3_50%,#00ddeb)] text-white px-4 
-            py-2 font-bold rounded-md hover:opacity-80 w-full flex justify-center items-center gap-1"
+            py-2 font-bold rounded-[8px] hover:opacity-80 w-full flex justify-center items-center gap-1"
             type="button"
           >
             ورود

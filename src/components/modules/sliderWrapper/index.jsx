@@ -60,7 +60,7 @@ const SliderWrapper = ({
 
   return (
     <section className={`p-4 w-full  ${sliderbg} flex flex-col gap-4`}>
-      <h1 className="font-bold text-2xl">{sliderTitle}</h1>
+      <h2 className="font-bold text-2xl">{sliderTitle}</h2>
 
       <div className=" w-full  h-72 px-8 relative">
         <div

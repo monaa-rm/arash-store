@@ -4,8 +4,9 @@ const initialState = {
   headerSearchValue: "",
   headerSearchedItems: [],
   searchedCategory: {},
-  searchPrice: [0, 2000000],
+  searchPrice: [0, 2000000000],
   reloadFilter: -1,
+  highestPrice: 2000000000,
   numberCategories: 0,
   totalProducts: 0,
   activeSearchHeaderItem: "default",
@@ -36,6 +37,9 @@ const filterSlice = createSlice({
     setTotalProducts: (state, action) => {
       state.totalProducts = action.payload;
     },
+    setHighestPrice: (state, action) => {
+      state.highestPrice = action.payload;
+    },
     setActiveSearchHeaderItem: (state, action) => {
       state.activeSearchHeaderItem = action.payload;
     },
@@ -54,6 +58,7 @@ export const {
   setReloadFilter,
   setNumberCategories,
   setTotalProducts,
+  setHighestPrice,
   setActiveSearchHeaderItem,
 } = filterSlice.actions;
 export default filterSlice.reducer;

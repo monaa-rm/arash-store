@@ -51,7 +51,7 @@ const AdminShowPrice = () => {
   };
 
   return (
-    <div className="flex justify-between items-center w-full sm:w-96 border rounded-lg p-2 ">
+    <div className="flex justify-between items-center w-full sm:w-96 border rounded-[10px] p-2 ">
       <h3 className="py-2 font-bold">نمایش قیمت </h3>
       <div className="flex justify-end items-center gap-2">
         <span className="text-rose-600 text-sm">{errText}</span>

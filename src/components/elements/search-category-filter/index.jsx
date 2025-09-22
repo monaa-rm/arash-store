@@ -14,7 +14,7 @@ const SearchCategoryFilter = () => {
   const showCategory = useSelector((store) => store.filterSlice.showCategory);
   const [catboxPosition, setCatboxPosition] = useState("bottom-[70px]"); // Initial position
   const [catSearch, setCatSearch] = useState("");
-  const [catActive, setCatActive] = useState("");
+  const [catActive, setCatActive] = useState({ name: "", link: "" });
   const [searchedCats, setSearchedCats] = useState([]);
   const searchedCategory = useSelector(
     (store) => store.filterSlice.searchedCategory
@@ -83,13 +83,13 @@ const SearchCategoryFilter = () => {
     }
   };
   return (
-    <div className="w-full max-w-80 bg-white rounded-lg border py-4 px-4 relative">
+    <div className="w-full max-w-80 bg-white rounded-[8px] border py-4 px-4 relative">
       <div
         className="flex flex-col gap-4 cursor-pointer "
         onClick={() => dispatch(setShowCategory(true))}
       >
         <h1 className="font-bold">دسته های محصولات</h1>
-        <div className="px-2 py-3 flex justify-between items-center border rounded-lg">
+        <div className="px-2 py-3 flex justify-between items-center border rounded-[8px]">
           <span className="text-gray-500  text-sm">
             {searchedCategory?.name?.length
               ? searchedCategory?.name
@@ -106,13 +106,13 @@ const SearchCategoryFilter = () => {
         id="catBox"
         className={`w-[90%] h-64 pt-1   absolute ${catboxPosition} ${
           showCategory ? "block" : "hidden"
-        } bg-white rounded-lg border transition-all duration-300`}
+        } bg-white rounded-[8px] border transition-all duration-300`}
       >
-        <div  className=" w-full px-1 top-1 ">
+        <div className=" w-full px-1 top-1 ">
           <input
             type="text"
             // onClick={() => dispatch(setShowCategory(true))}
-            className="w-full  h-8 border bg-white absolute top-1  border-zinc-400 p-2 outline-none z-[1] "
+            className=" h-8 border bg-white absolute top-1 left-1 right-1 border-zinc-300 rounded-[4px] p-2  outline-none z-[1] "
             value={catSearch}
             onChange={(e) => searchCategoryHandler(e)}
           />
@@ -145,7 +145,7 @@ const SearchCategoryFilter = () => {
                       }}
                       key={cat._id}
                       className={`line-clamp-1 cursor-pointer hover:bg-gray-100 transition-all duration-300 w-full h-[40px] min-h-[40px] px-4 ${
-                        cat.link == catActive?.link ? "bg-gray-100" : "bg-none"
+                        cat.link == searchedCategory?.link ? "bg-gray-100" : "bg-none"
                       } flex justify-start items-center`}
                     >
                       {cat?.name}
@@ -184,7 +184,7 @@ const SearchCategoryFilter = () => {
                   }}
                   key={cat._id}
                   className={`line-clamp-1 cursor-pointer hover:bg-gray-100 transition-all duration-300 w-full h-[40px] min-h-[40px] px-4 ${
-                    cat.link == catActive?.link ? "bg-gray-100" : "bg-none"
+                    cat.link == searchedCategory?.link ? "bg-gray-100" : "bg-none"
                   } flex justify-start items-center`}
                 >
                   {cat.name}

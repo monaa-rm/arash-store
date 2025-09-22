@@ -6,7 +6,7 @@ import { FaRegComment } from "react-icons/fa";
 import DescriptionSection from "../description-section";
 import CommentSection from "../comment-section";
 
-const ProductDescComment = ({ description, title }) => {
+const ProductDescComment = ({ description, title , id, rate }) => {
   const [menuItem, setMenuItem] = useState("description");
   const [isInitialRender, setIsInitialRender] = useState(true); // state برای بررسی بارگذاری اولیه
   const sectionRef = useRef(null);
@@ -49,7 +49,7 @@ const ProductDescComment = ({ description, title }) => {
       </div>
       <div ref={sectionRef} className="border rounded-br-2xl rounded-bl-2xl p-6 pb-10">
         {menuItem === "description" ? <DescriptionSection description={description} /> : null}
-        {menuItem === "comment" ? <CommentSection title={title} /> : null}
+        {menuItem === "comment" ? <CommentSection rate={rate} id={id} title={title} /> : null}
       </div>
     </div>
   );

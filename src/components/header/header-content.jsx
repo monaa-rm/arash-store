@@ -12,12 +12,13 @@ import { AiFillProduct } from "react-icons/ai";
 import { BiSolidInfoSquare } from "react-icons/bi";
 import { BsInfoSquareFill } from "react-icons/bs";
 import { FaHome } from "react-icons/fa";
-import { RiBloggerFill } from "react-icons/ri";
+import { RiApps2Fill, RiBloggerFill } from "react-icons/ri";
 import { TbLayoutListFilled } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 
 const HeaderContent = () => {
   const active = useSelector((store) => store.globalSlice.menuActiveItem);
+  const showMenuCategory = useSelector((store) => store.globalSlice.showMenuCategory);
   const path = usePathname();
   const dispatch = useDispatch();
   const activeHandler = (clickedItem) => {
@@ -44,7 +45,7 @@ const HeaderContent = () => {
           dispatch(setShowMenuCategory(false));
         }}
         className={` hover:text-blue-700 group flex justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700 ${
-          active == "/" &&
+          active == "/" && !showMenuCategory &&
           "text-blue-700 border-b border-blue-700 border-opacity-100"
         } transition-all duration-500 ease-in-out`}
       >
@@ -53,17 +54,18 @@ const HeaderContent = () => {
       </Link>
       <Link
         onClick={() => {
-          activeHandler("/search");
+          activeHandler("/products");
           dispatch(setShowMenu(false));
           dispatch(setShowMenuCategory(false));
         }}
-        href={"/search"}
+        href={"/products"}
         className={`hover:text-blue-700  flex justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700  ${
-          active == "/search" &&
+          active == "/products" && !showMenuCategory &&
           "text-blue-700 border-b border-blue-700 border-opacity-100"
         } transition-all duration-500 ease-in-out`}
       >
-        <AiFillProduct className="lg:hidden w-5 h-5 " />
+        {/* <AiFillProduct className="lg:hidden w-5 h-5 " /> */}
+        <RiApps2Fill  className="lg:hidden w-5 h-5 " />
         محصولات
       </Link>
       <Link
@@ -74,7 +76,7 @@ const HeaderContent = () => {
         }}
         href={"/blogs"}
         className={`hover:text-blue-700  flex justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700  ${
-          active == "/blogs" &&
+          active == "/blogs" && !showMenuCategory &&
           "text-blue-700 border-b border-blue-700 border-opacity-100"
         } transition-all duration-500 ease-in-out`}
       >
@@ -83,22 +85,26 @@ const HeaderContent = () => {
       </Link>
       <div
         onClick={() => {
+          //  dispatch(setMenuActiveItem('category'));
           dispatch(setShowMenuCategory(true));
         }}
-        className=" hover:text-blue-700  flex justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700  cursor-pointer transition-all duration-500 ease-in-out"
+        className={` hover:text-blue-700  flex justify-start gap-2 lg:justify-center items-center border-b
+           border-opacity-0 hover:border-opacity-100 border-blue-700  cursor-pointer transition-all duration-500
+            ease-in-out ${ showMenuCategory &&
+          "text-blue-700 border-b border-blue-700 border-opacity-100"}`}
       >
         <TbLayoutListFilled className="lg:hidden w-5 h-5 " />
         دسته بندی ها
-      </div>
+      </div> 
       <Link
         onClick={() => {
           activeHandler("/aboutus");
           dispatch(setShowMenu(false));
           dispatch(setShowMenuCategory(false));
         }}
-        href={"/aboutus"}
+        href={"/about-us"}
         className={`hover:text-blue-700  flex justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700  ${
-          active == "/aboutus" &&
+          active == "/aboutus" && !showMenuCategory &&
           "text-blue-700 border-b border-blue-700 border-opacity-100"
         } transition-all duration-500 ease-in-out`}
       >

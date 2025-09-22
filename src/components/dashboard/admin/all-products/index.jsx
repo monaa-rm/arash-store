@@ -10,10 +10,10 @@ const AllProducts = () => {
   const [searchProduct, setSearchProduct] = useState("");
   const [searchedList, setsearchedList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
+  const [productsPerPage] = useState(12);
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(-1);
   const [isSearchActive, setIsSearchActive] = useState(false);
 
@@ -70,7 +70,7 @@ const AllProducts = () => {
       {loading ? (
         <GlobalLoading />
       ) : (
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 p-4">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-3 p-4">
           {searchProduct && products?.length > 0 ? (
             products.map((item) => (
               <DashboardProductItem

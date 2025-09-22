@@ -110,7 +110,7 @@ const DashboardStockPriceItem = ({ item , reload , setReload}) => {
               <div className="h-8 gap-2 flex justify-center items-center">
                 <div
                   onClick={() => setOpenBox(true)}
-                  className="w-7 h-7 group flex justify-center items-center rounded-lg bg-violet-700 hover:bg-violet-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out "
+                  className="w-7 h-7 group flex justify-center items-center rounded-[8px] bg-violet-700 hover:bg-violet-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out "
                 >
                   <FaDollarSign
                     className={`w-5 h-5  transition-all duration-300 ease-in-out text-white`}
@@ -131,7 +131,7 @@ const DashboardStockPriceItem = ({ item , reload , setReload}) => {
           <div className="flex flex-col w-full h-full">
             <div
               onClick={() => setOpenBox(false)}
-              className=" w-9 h-7 flex items-center justify-center cursor-pointer rounded-lg bg-blue-700 hover:bg-blue-800 transition-all duration-300 ease-in-out "
+              className=" w-9 h-7 flex items-center justify-center cursor-pointer rounded-[8px] bg-blue-700 hover:bg-blue-800 transition-all duration-300 ease-in-out "
             >
               <FaArrowRightLong className="w-7 text-white" />
             </div>

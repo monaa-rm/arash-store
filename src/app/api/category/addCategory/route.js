@@ -2,6 +2,7 @@ import connectDB from "@/utiles/connectDB";
 import Category from "../../../../../models/Category";
 import { NextResponse } from "next/server";
 import User from "../../../../../models/User";
+import { slugify } from "@/utiles/utils-func";
 
 export async function POST(req) {
   try {
@@ -30,12 +31,14 @@ export async function POST(req) {
       );
     }
     console.log("66666666666666");
-  const newlink = link.replace(/\s+/g, '-');
-    const existingCat = await Category.findOne({ $or: [{ name : name }, { link : newlink }] });
-if(!existingCat){
-    await Category.create({
+    const newlink = slugify(link);
+    const existingCat = await Category.findOne({
+      $or: [{ name }, { link: newlink }],
+    });
+    if (!existingCat) {
+      await Category.create({
         name,
-        link : newlink,
+        link: newlink,
         creatorId: existingUser._id,
       });
       console.log("77777777777777");
@@ -43,12 +46,12 @@ if(!existingCat){
         { data: `دسته ${name} ایجاد شد` },
         { status: 201 }
       );
-}else {
-    return NextResponse.json(
-        { error: `این دسته از قبل وجود دارد`},
+    } else {
+      return NextResponse.json(
+        { error: `این دسته از قبل وجود دارد` },
         { status: 409 }
       );
-}
+    }
 
     // } else {
     //   console.log("8888888888");

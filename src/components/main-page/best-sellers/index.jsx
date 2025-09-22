@@ -3,58 +3,30 @@ import BestSellerSliderItem from "@/components/elements/best-seller-slider-item"
 import BestSellerSliderLastItem from "@/components/elements/best-seller-slider-last-item";
 
 import SliderWrapper from "@/components/modules/sliderWrapper";
+import { setActiveSearchHeaderItem } from "@/features/filterSlice";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 
-const data = [
-  {
-    id: "1",
-    title: " آب 6 مرحله ای ن",
-    price: 1855455,
-    isLiked: false,
-  },
-  {
-    id: "2",
-    title: "  دستگاه تصفیه آب 6 مرحله ای چفتن",
-    price: 1250000,
-    isLiked: true,
-  },
-  {
-    id: "3",
-    title: " آب 6 مرحله ای  6 مرحله ای چفتن",
-    price: 42585665,
-    isLiked: false,
-  },
-  {
-    id: "4",
-    title:
-      " آب 6 مرحله آب 6 مرحله ای  دستگاه تصفیه آب 6 مرحله ای چفتن آب 6 مرحله ای  دستگاه تصفیه آب 6 مرحله ای  ای چفتن",
-    price: 34585665,
-    isLiked: true,
-
-  },
-  {
-    id: "5",
-    title:
-      " آب 6 مرحله آب 6 مرحله ای  دستگاه تصفیه آب 6 مرحله ای چفتن  چفتن",
-    price: 5854587,
-    isLiked: false,
-
-  },
-  {
-    id: "6",
-    title:
-      " آب 6 مرحله چفتن",
-    price: 5000000,
-    isLiked: true,
-
-  },
-];
-const BestSellers = () => {
+const BestSellers = ({ data }) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const seeAllMuchSell = () => {
+    dispatch(setActiveSearchHeaderItem("new"));
+    router.push("/search");
+  };
+  if (!data?.length) return <></>;
   return (
     <SliderWrapper data={""} sliderTitle="پرفروش ها" link="/best-sellers">
-      {data.length && data?.map((item, i) => (
-        <BestSellerSliderItem key={item?.id} data={item} />
-      ))}
-      <BestSellerSliderLastItem sliderTitle={"پرفروش ها"} />
+      {data.length &&
+        data?.map((item, i) => (
+          <BestSellerSliderItem key={item?._id} data={item} />
+        ))}
+      {data?.length > 4 ? (
+        <BestSellerSliderLastItem
+          sliderTitle={"پرفروش ها"}
+          clickHandler={seeAllMuchSell}
+        />
+      ) : null}
     </SliderWrapper>
   );
 };

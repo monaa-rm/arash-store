@@ -2,47 +2,40 @@ import ProductSingleItemPage from "@/components/products/product-single-Item-pag
 import connectDB from "@/utiles/connectDB";
 import Product from "../../../../models/Product";
 import mongoose from "mongoose";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import GlobalLoading from "@/components/elements/global-loading";
+import { slugify } from "@/utiles/utils-func";
 
 const ProductSingleItem = async ({ params }) => {
-  await connectDB();
   const { productId } = await params;
   let data = {};
-  let similiarProducts = [];
+  let similiarProducts = []; 
 
   try {
+    await connectDB();
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       return notFound();
     }
     data = await Product.findOne({ _id: productId });
     if (data?.title) {
-      data.view = data?.view + 1;
-      await data?.save();
+      console.log("ok");
     } else {
       return notFound();
     }
-    if (data) {
-      const categoryIds = data?.category?.map((cat) => cat._id);
-      similiarProducts = await Product.find({
-        category: {
-          $elemMatch: {
-            _id: { $in: categoryIds },
-          },
-        },
-      });
-    }
   } catch (error) {
+    console.log(error);
     return notFound();
   }
-
-  return (
-    <div className="flex flex-col gap-4">
-      <ProductSingleItemPage
-        data={JSON.parse(JSON.stringify(data)) || {}}
-        similiarProducts={JSON.parse(JSON.stringify(similiarProducts)) || []}
-      />
-    </div>
-  );
+  if (data?.title) {
+      const prdslug = slugify(data?.title);
+    return redirect(`/products/${data?._id}/${prdslug}`);
+  } else {
+    return (
+      <div className="flex flex-col gap-4">
+        <GlobalLoading />
+      </div>
+    );
+  }
 };
 
 export default ProductSingleItem;

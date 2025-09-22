@@ -3,6 +3,7 @@ import { setShowLoginBox } from "@/features/globalSlice";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { PiUserCheckThin, PiUserThin } from "react-icons/pi";
@@ -12,6 +13,8 @@ import { useDispatch } from "react-redux";
 const SignIn = () => {
   const [showBox, setShowBox] = useState(false);
   const dispatch = useDispatch();
+  const path = usePathname();
+  const router = useRouter();
   const { data: session, status } = useSession();
   useEffect(() => {
     const handleClick = (event) => {
@@ -53,7 +56,7 @@ const SignIn = () => {
           <button
             onClick={() => dispatch(setShowLoginBox(true))}
             type="button"
-            className=" hidden lg:flex justify-center items-center  min-w-24 h-10 rounded-lg  bg-blue-700 hover:bg-blue-800 text-sm
+            className=" hidden lg:flex justify-center items-center  min-w-24 h-10 rounded-[10px]  bg-blue-700 hover:bg-blue-800 text-sm
      text-white transition-all duration-300 ease-in-out  "
           >
             ورود/ثبت نام
@@ -77,14 +80,21 @@ const SignIn = () => {
        }`}
       >
         <Link
-        onClick={() => setShowBox(false)}
-          href={ session?.user?.role == "admin" ? "/dashboard/admin" : "/dashboard/user"}
+          onClick={() => setShowBox(false)}
+          href={
+            session?.user?.role == "admin"
+              ? "/dashboard/admin"
+              : "/dashboard/user"
+          }
           className="w-full h-1/2 cursor-pointer border-b px-2 flex items-center hover:bg-blue-600 hover:text-white transition-all duration-300"
         >
           داشبورد
         </Link>
         <button
           onClick={() => {
+            if (path?.startsWith("/dashboard")) {
+              router.push("/");
+            }
             signOut();
             setShowBox(false);
           }}
