@@ -2,7 +2,7 @@ import MainPage from "@/components/main-page";
 import connectDB from "@/utiles/connectDB";
 import SiteSetting from "../../models/SiteSetting";
 import JsonDl from "@/components/elements/json-dl-func";
-
+export const dynamic = "force-dynamic";
 export async function generateMetadata() {
   const site_url = process.env.NEXT_PUBLIC_SERVER_URL;
   return {
