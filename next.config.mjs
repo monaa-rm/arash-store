@@ -22,6 +22,12 @@ const nextConfig = {
         // اگر مسیرها کاملاً متفاوتند، بهتر است جداگانه تعریف کنید.
         pathname: "/**/*", // این الگوی کلی‌تر است و همه چیز را پوشش می‌دهد
       },
+      {
+        protocol: "https",
+        hostname: `arash-store-bucket.storage.iran.liara.space`,
+        port: "",
+        pathname: "/**/*", // این الگوی کلی‌تر است و همه چیز را پوشش می‌دهد
+      },
     ],
     // remotePatterns: [
     //     {
