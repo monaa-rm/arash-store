@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { notFound, redirect } from "next/navigation";
 import GlobalLoading from "@/components/elements/global-loading";
 import { slugify } from "@/utiles/utils-func";
+export const dynamic = "force-dynamic";
 
 const ProductSingleItem = async ({ params }) => {
   const { productId } = await params;

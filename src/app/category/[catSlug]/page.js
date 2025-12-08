@@ -2,7 +2,7 @@ import connectDB from "@/utiles/connectDB";
 import Category from "../../../../models/Category";
 import { notFound } from "next/navigation";
 import CategorySinglePage from "@/components/category/categorySinglePage";
-
+export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }) {
   let cat = {};
   const { catSlug } = await params;

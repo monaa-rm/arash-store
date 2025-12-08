@@ -1,4 +1,6 @@
 import PrivacyPolicyPage from "@/components/informaition/privacy-policy-page";
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "حریم خصوصی",
   description:

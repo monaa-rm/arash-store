@@ -1,6 +1,8 @@
 import ContactUsPage from "@/components/informaition/contact-us-page";
 import SiteSetting from "../../../models/SiteSetting";
 import connectDB from "@/utiles/connectDB";
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "تماس با ما",
   description:

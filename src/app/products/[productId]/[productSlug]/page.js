@@ -3,6 +3,7 @@ import JsonDl from "@/components/elements/json-dl-func";
 import { notFound, redirect } from "next/navigation";
 import { slugify } from "@/utiles/utils-func";
 import GlobalLoading from "@/components/elements/global-loading";
+export const dynamic = "force-dynamic";
 
 const getData = async (productId) => {
   const data = await fetch(

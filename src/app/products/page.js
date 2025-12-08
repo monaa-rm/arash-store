@@ -1,6 +1,7 @@
 import ProductsPage from "@/components/products/products-page";
 import connectDB from "@/utiles/connectDB";
 import Product from "../../../models/Product";
+export const dynamic = "force-dynamic";
 
 // app/products/page.jsx  (یا page.js)
 export async function generateMetadata({ searchParams }) {

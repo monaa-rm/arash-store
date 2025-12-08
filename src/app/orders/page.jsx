@@ -1,4 +1,5 @@
 import OrdersPage from "@/components/orders/orders-page";
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "سبد خرید",

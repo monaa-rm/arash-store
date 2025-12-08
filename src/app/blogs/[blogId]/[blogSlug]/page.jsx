@@ -7,7 +7,7 @@ import Blog from "../../../../../models/Blog";
 import JsonDl from "@/components/elements/json-dl-func";
 import { slugifyBlog } from "@/utiles/utils-func";
 import GlobalLoading from "@/components/elements/global-loading";
-
+export const dynamic = "force-dynamic";
 const getData = async (blogId) => {
   const data = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/blog/getSingleBlog/${blogId}`,
