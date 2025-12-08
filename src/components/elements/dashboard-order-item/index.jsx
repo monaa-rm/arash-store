@@ -1,6 +1,5 @@
 import {
   getJalaliDate,
-  orderStatusItemBg,
   orderStatusToPersian,
   slugify,
   statusbg,
@@ -47,6 +46,7 @@ const DashboardOrderItem = ({ data, realod, setReload, rolePath }) => {
               <Image
                 src={item?.imageSrc[0]?.file}
                 alt={item?.title}
+                sizes="50px"
                 fill
                 className="rounded-[8px] object-cover bg-gray-500"
               />

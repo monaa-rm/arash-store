@@ -72,6 +72,7 @@ export async function POST(req) {
       whatsappLink: whatsapp,
       youtubeLink: youtube,
       welcomeImages: siteImages,
+      updatedAt: new Date(),
     };
     const existingSetting = await SiteSetting.findOne();
     if (existingSetting) {

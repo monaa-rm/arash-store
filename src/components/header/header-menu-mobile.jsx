@@ -1,14 +1,12 @@
 "use client";
 
-import { setMenuActiveItem, setShowMenu } from "@/features/globalSlice";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { CgMenuRightAlt } from "react-icons/cg";
+import { useEffect } from "react";
 import HeaderContent from "./header-content";
 import { useDispatch, useSelector } from "react-redux";
 import MenuMobileCategory from "./menu-mobile-category";
 import Image from "next/image";
 import arashStore from "../../assets/images/arashstore.png";
+import { setShowMenu } from "@/features/globalSlice";
 const HeaderMenuMobile = ({ categories }) => {
   const dispatch = useDispatch();
   const showMenu = useSelector((store) => store.globalSlice.showMenu);
@@ -37,10 +35,20 @@ const HeaderMenuMobile = ({ categories }) => {
   }, [showMenu]);
   return (
     <>
-      <CgMenuRightAlt
-        className="w-8 h-8 cursor-pointer  text-zinc-700"
-        onClick={() => dispatch(setShowMenu(!showMenu))}
-      />
+      <button
+        className="w-10  cursor-pointer  text-zinc-700"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dispatch(setShowMenu(!showMenu));
+        }}
+      >
+        <i>
+          <svg className="w-7 h-7 text-zinc-700  pointer-events-none">
+            <use href="/sprite.svg#menu_mark" />
+          </svg>
+        </i>
+      </button>
       <div
         className={`fixed top-0  right-0 ${
           showMenu
@@ -58,8 +66,9 @@ const HeaderMenuMobile = ({ categories }) => {
           <div className="w-16 h-16 relative">
             <Image
               src={arashStore}
-              alt="arash store"
+              alt="لوگو فروشگاه آرش - منو"
               fill
+              sizes="128px"
               className="object-fill"
             />
           </div>

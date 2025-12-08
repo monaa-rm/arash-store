@@ -1,12 +1,12 @@
 "use client";
 import GlobalLoading from "@/components/elements/global-loading";
 import { useState, useEffect, useCallback } from "react";
-import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
 import ChangeAllPrices from "../change-all-prices";
 import ChangePriceByCategory from "../change-price-by-cat";
 import DashboardStockPriceItem from "@/components/elements/dashboard-stock-price-item";
 import AdminShowPrice from "@/components/elements/admin-show-price";
 import Pagination from "@/components/elements/pagination";
+import AdminSendingFree from "@/components/elements/admin-sending-free";
 
 const AllSocks = () => {
   const [products, setProducts] = useState([]);
@@ -58,7 +58,6 @@ const AllSocks = () => {
     }
   };
 
-
   return (
     <div className="w-full flex flex-col gap-4 p-4">
       <div className="flex w-full top-0 items-center border-b-2 h-10 focus-within:border-indigo-500 transition duration-300 px-3 gap-2 bg-white border-gray-500/30 py-2">
@@ -71,6 +70,7 @@ const AllSocks = () => {
         />
       </div>
       <AdminShowPrice />
+      <AdminSendingFree/>
       <ChangeAllPrices reload={reload} setReload={setReload} />
       <ChangePriceByCategory reload={reload} setReload={setReload} />
       {loading ? (

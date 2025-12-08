@@ -1,12 +1,10 @@
 "use client";
 import CommentItem from "@/components/elements/comment-item";
-import DashboardProductItem from "@/components/elements/dashboard-product-item";
 import GlobalLoading from "@/components/elements/global-loading";
 import Pagination from "@/components/elements/pagination";
 import { setDashboardActiveItem } from "@/features/globalSlice";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
-import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 
 const CommentsPage = () => {

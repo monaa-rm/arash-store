@@ -2,11 +2,13 @@
 import GlobalLoading from "@/components/elements/global-loading";
 import Pagination from "@/components/elements/pagination";
 import { setDashboardActiveItem } from "@/features/globalSlice";
-import { convertGregorianToPersian, formatNumberToPersian } from "@/utiles/utils-func";
+import {
+  convertGregorianToPersian,
+  formatNumberToPersian,
+} from "@/utiles/utils-func";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
-import { GrView } from "react-icons/gr";
 import { useDispatch } from "react-redux";
 
 const DailySellpage = () => {
@@ -99,14 +101,16 @@ text-gray-700 "
                         {order?.city?.name}
                       </td>
                       <td className="p-0.5 text-center sm:p-1 border-l border-gray-300">
-                          {formatNumberToPersian(Number(order?.allCost))}
+                        {formatNumberToPersian(Number(order?.allCost))}
                       </td>
                       <td className="p-0.5 text-center sm:p-1border-gray-300">
                         <Link
                           href={`/dashboard/admin/order-list/${order?._id}`}
                           className="flex justify-center items-center"
                         >
-                          <GrView className="hover:text-blue-600 w-3 h-3 transition-all duration-300" />
+                          <svg className="hover:text-blue-600 w-3 h-3 transition-all duration-300">
+                            <use href="/sprite.svg#see_icon" />
+                          </svg>
                         </Link>
                       </td>
                     </tr>
@@ -117,8 +121,8 @@ text-gray-700 "
                     </td>
                     <td className="p-0.5 text-center sm:p-1 border-l border-gray-300"></td>
                     <td className="p-0.5 text-center sm:p-1 border-l border-gray-300"></td>
-                    <td className="p-0.5 text-center sm:p-1 border-l border-gray-300">
-                            {formatNumberToPersian(item?.dailyTotalCost?.toString())}
+                    <td className="p-0.5 text-center sm:p-1 border-l border-gray-300 font-bold">
+                      {formatNumberToPersian(item?.dailyTotalCost?.toString())}
                     </td>
                     <td className="border-gray-300 w-12"></td>
                   </tr>

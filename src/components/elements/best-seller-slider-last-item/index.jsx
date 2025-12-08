@@ -1,8 +1,3 @@
-import Image from "next/image";
-import { MdZoomOutMap } from "react-icons/md";
-import { IoIosHeartEmpty, IoIosSearch, IoMdHeartEmpty } from "react-icons/io";
-import arashstore from "../../../assets/images/arashstore.png";
-import { HiOutlineEye } from "react-icons/hi";
 import Link from "next/link";
 
 const BestSellerSliderLastItem = ({ sliderTitle, clickHandler }) => {
@@ -25,7 +20,9 @@ const BestSellerSliderLastItem = ({ sliderTitle, clickHandler }) => {
         className="z-20 w-full  text-blue-600 flex items-center justify-center gap-2 font-bold font-Poppin bg group-hover:text-white duration-500 text-[1.4em]"
       >
         <span>مشاهده همه </span>
-        <HiOutlineEye className="w-6 h-6 text-blue-600 group-hover:text-white " />
+        <svg className="w-6 h-6 text-blue-600 group-hover:text-white ">
+          <use href="/sprite.svg#see_icon" />
+        </svg>
       </div>
     </div>
   );

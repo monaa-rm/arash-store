@@ -1,39 +1,22 @@
 "use client";
 import DashboardMobileManager from "@/components/elements/dashboard-mobile-manager";
 import { useEffect, useRef, useState } from "react";
-import { AiOutlineAppstore, AiOutlineBarChart } from "react-icons/ai";
-import { MdAdminPanelSettings, MdFavorite, MdManageAccounts, MdMessage } from "react-icons/md";
-import { MdShoppingBag } from "react-icons/md";
-import { TbLogout } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
-import { setDashboardActiveItem, setUserDashboardActiveItem } from "@/features/globalSlice";
+import { setUserDashboardActiveItem } from "@/features/globalSlice";
 import Link from "next/link";
-import { RiBloggerFill, RiSettings5Fill } from "react-icons/ri";
-import { LuMessageSquareMore } from "react-icons/lu";
 
-const menuData = [ 
-    { title: "حساب کاربری", link: false, iconname: "user-account" },
-    { title: " ویرایش اطلاعات شخصی", link: "user-edit" },
-    { title: "سفارش ها و پرداخت ها", link: false, iconname: "orders" },
-    { title: "لیست سفارش ها", link: "order-list" },
-    { title: "سبد خرید", link: "order-basket" },
-    // { title: "جزئیات سفارش ها", link: "pay-details" },
-
-    { title: " پیام ها و اعلان ها", link: false, iconname: "notifications" },
-    { title: "دیدگاه ها", link: "comments" },
-    { title: "علاقه مندی ها", link: false, iconname: "favorite" },
-    { title: "محصولات مارک شده", link: "favorites" },
-
-//   { title: "لیست کاربرها", link: "users-list" },
-//   { title: "وبلاگ ها", link: "blogs" },
-//   { title: "افزودن وبلاگ", link: "add-blog" },
-//   { title: "گزارش گیری", link: false, iconname: "pay-reports" },
-//   { title: "فروش روزانه", link: "daily-sell" },
-//   { title: "تنظیمات", link: false, iconname: "setting" },
-//   { title: "تنظیمات سایت", link: "settings" },
-  // { title: "خروج", link: false, iconname: "logout" },
+const menuData = [
+  { title: "حساب کاربری", link: false, iconname: "user-account" },
+  { title: " ویرایش اطلاعات شخصی", link: "user-edit" },
+  { title: "سفارش ها و پرداخت ها", link: false, iconname: "orders" },
+  { title: "لیست سفارش ها", link: "order-list" },
+  { title: "سبد خرید", link: "order-basket" },
+  { title: " پیام ها و اعلان ها", link: false, iconname: "notifications" },
+  { title: "دیدگاه ها", link: "comments" },
+  { title: "علاقه مندی ها", link: false, iconname: "favorite" },
+  { title: "محصولات مارک شده", link: "favorites" },
 ];
-const DashboardUserLayout  = ({ children }) => {
+const DashboardUserLayout = ({ children }) => {
   const [showList, setShowList] = useState(false);
   const topRef = useRef(null);
   const dashboardActiveItem = useSelector(
@@ -42,7 +25,7 @@ const DashboardUserLayout  = ({ children }) => {
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }, [dashboardActiveItem]);
   const dispatch = useDispatch();
@@ -61,7 +44,7 @@ const DashboardUserLayout  = ({ children }) => {
   }, []);
 
   return (
-    <div className="w-full z-[0] relative  min-h-screen pb-4 pt-8 lg:pt-4 lg:flex justify-between">
+    <div className="w-full z-[0] relative  min-h-screen pb-44 pt-8 lg:pt-4 lg:flex justify-between">
       <DashboardMobileManager showList={showList} setShowList={setShowList} />
       <div
         id="userdashboardlist"
@@ -84,23 +67,23 @@ const DashboardUserLayout  = ({ children }) => {
               } ${!item?.link && i != 0 && "lg:pt-1"} `}
             >
               <span className="w-5 flex justify-center">
-                {item?.iconname == "manage" ? (
-                  <AiOutlineAppstore className="w-5 h-5" />
-                ) : item?.iconname == "notifications" ? (
-                  <MdMessage className="w-4 h-4" />
-                )  : item?.iconname == "user-account" ? (
-                  <MdManageAccounts className="w-5 h-5" />
+                {item?.iconname == "notifications" ? (
+                  <svg className="w-5 h-4 text-inherit">
+                    <use href="/sprite.svg#message_filled_icon" />
+                  </svg>
+                ) : item?.iconname == "user-account" ? (
+                  <svg className="w-5 h-5 text-inherit">
+                    <use href="/sprite.svg#user_setting_icon" />
+                  </svg>
                 ) : item?.iconname == "orders" ? (
-                  <MdShoppingBag className="w-5 h-5" />
-                )  : item?.iconname == "favorite" ? (
-                    <MdFavorite className="w-5 h-5" />
-                  ) 
-                
-                // : item?.iconname == "logout" ? (
-                //   <TbLogout className="w-5 h-5" />
-                // ) 
-                
-                : null}
+                  <svg className="w-4 h-4 text-inherit">
+                    <use href="/sprite.svg#shop_filled_icon" />
+                  </svg>
+                ) : item?.iconname == "favorite" ? (
+                  <svg className="w-4 h-4 text-inherit">
+                    <use href="/sprite.svg#filled_heart" />
+                  </svg>
+                ) : null}
               </span>
               {item?.iconname ? (
                 <span> {item?.title}</span>
@@ -136,7 +119,7 @@ const DashboardUserLayout  = ({ children }) => {
                 href={`/dashboard/user`}
                 className="w-full h-full flex justify-center items-center"
               >
-             {dashboardActiveItem?.title} 
+                {dashboardActiveItem?.title}
               </Link>
             </div>
           ) : (

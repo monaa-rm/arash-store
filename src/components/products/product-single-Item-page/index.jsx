@@ -1,35 +1,29 @@
 "use client";
-import Image from "next/image";
-import { FaBox, FaStar } from "react-icons/fa";
-import { IoIosHeartEmpty, IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
-import { IoShareSocialOutline } from "react-icons/io5";
-import { GoDotFill } from "react-icons/go";
+
 import ProductAddToCart from "@/components/elements/product-add-to-cart";
 import Link from "next/link";
-import { formatNumberToPersian } from "@/utiles/utils-func";
 import SimiliarProducts from "../similar-products";
 import ProductDescComment from "../product-desc-comment";
 import ProductSingleItemImage from "@/components/elements/product-single-item-image";
 import ProductSingleItemPrice from "@/components/elements/product-single-item-price";
-import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { setSearchedCategory } from "@/features/filterSlice";
 import { useEffect, useState } from "react";
 import { setFavorites } from "@/features/globalSlice";
 
 const ProductSingleItemPage = ({ data, similiarProducts }) => {
+
   let favorites = useSelector((store) => store?.globalSlice?.favorites) || [];
+  let freeSending = useSelector((store) => store?.globalSlice?.freeSending) || false;
   const [isLiked, setIsLiked] = useState(false);
-  const router = useRouter();
   const dispatch = useDispatch();
   useEffect(() => {
     const favs = localStorage.getItem("favorites");
     const parsedFavs = favs ? JSON.parse(favs) : [];
     dispatch(setFavorites(parsedFavs)); // به‌روزرسانی وضعیت local
-  }, [data?._id ]);
+  }, [data?._id]);
   useEffect(() => {
     favorites.includes(data?._id) ? setIsLiked(true) : setIsLiked(false);
-  }, [data?._id , favorites ]);
+  }, [data?._id, favorites]);
 
   const favoriteHandler = async () => {
     try {
@@ -65,10 +59,14 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
             <div className=" w-full flex flex-wrap justify-between items-start gap-1 pt-2">
               <div className="flex justify-start items-center gap-1">
                 <div className="flex text-white justify-center items-center gap-0.5 bg-zinc-400 rounded-[4px] px-1.5">
-                  <FaStar className="w-3.5 h-3.5 " />
+                  <svg className="w-3.5 h-3.5 text-inherit">
+                    <use href="/sprite.svg#filled_star" />
+                  </svg>
                   <span className="text-sm mt-0.5">{data?.score}</span>
                 </div>
-                <GoDotFill className="h-3 w-3 text-zinc-300" />
+                <svg className="h-3 w-3 text-zinc-300">
+                  <use href="/sprite.svg#dot_icon" />
+                </svg>
                 <div className="flex justify-center items-center gap-0.5">
                   <span className="text-sm text-zinc-400 mt-0.5">
                     {data?.commentsNumber
@@ -102,7 +100,9 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
                       key={i}
                       className="flex justify-start items-start gap-2  text-sm "
                     >
-                      <GoDotFill className="h-3 w-3 min-w-3 min-h-3 text-zinc-300 mt-1" />
+                      <svg className="h-3 w-3 min-w-3 min-h-3 text-zinc-300 mt-1">
+                        <use href="/sprite.svg#dot_icon" />
+                      </svg>
                       <span> {item}</span>
                     </div>
                   ))}
@@ -131,7 +131,6 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
                         key={cat._id}
                         className=" flex gap-1  text-sm text-zinc-400"
                         href={`/category/${cat?.link}`}
-                       
                       >
                         <span className="cursor-pointer  hover:text-blue-600 transition-all duration-300 ease-in-out">
                           {cat.name}
@@ -153,16 +152,22 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
               </div>
               <div className=" flex items-center text-zinc-500 gap-2">
                 <div className=" cursor-pointer">
-                  <IoShareSocialOutline className="w-6 h-6 hover:text-blue-600 transition-all duration-300 ease-in-out" />
+                  <svg className="w-6 h-6 hover:text-blue-600 transition-all duration-300 ease-in-out">
+                    <use href="/sprite.svg#share_icon" />
+                  </svg>
                 </div>
                 <div
                   className=" cursor-pointer"
                   onClick={() => favoriteHandler()}
                 >
                   {isLiked ? (
-                    <IoMdHeart className="w-7 h-7 cursor-pointer text-blue-700 transition-all duration-300" />
+                    <svg className="w-7 h-7 cursor-pointer hover:text-blue-700 text-zinc-800 transition-all duration-300">
+                      <use href="/sprite.svg#outline_heart" />
+                    </svg>
                   ) : (
-                    <IoMdHeartEmpty className="w-7 h-7 cursor-pointer text-zinc-500 hover:text-blue-700 transition-all duration-300" />
+                    <svg className="w-7 h-7 cursor-pointer text-blue-600 hover:text-blue-700 transition-all duration-300">
+                      <use href="/sprite.svg#filled_heart" />
+                    </svg>
                   )}
                 </div>
               </div>
@@ -170,11 +175,13 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
             {/* is available or not */}
             <div className="rounded-xl w-full flex flex-col md:flex-row justify-around gap-3 lg:gap-2 xl:gap-3 p-4 border mt-8 md:mt-4 lg:mt-6 ">
               <div className="flex justify-start items-center gap-3">
-                <FaBox
+                <svg
                   className={`w-5 h-5 ${
                     data?.instock == 0 ? "text-rose-600" : "text-blue-600"
                   } `}
-                />
+                >
+                  <use href="/sprite.svg#instock_icon" />
+                </svg>
                 {data?.instock == 0 ? (
                   <span className="text-xs ">در انبار موجود نیست</span>
                 ) : (
@@ -187,15 +194,22 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
                 <div className="item">
                   <div className="loader-pulse"></div>
                 </div>
-                <span className="text-xs font-bold">
-                  ارسال رایگان توسط فروشگاه آرش
-                </span>
+                {freeSending ? (
+                  <span className="text-xs font-bold">
+                    ارسال رایگان توسط فروشگاه آرش
+                  </span>
+                ) : (
+                  <span className="text-xs font-bold">
+                    ارسال مطمئن توسط فروشگاه آرش
+                  </span>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
       <SimiliarProducts similiarProducts={similiarProducts} />
+      
       <ProductDescComment
         rate={data?.score}
         id={data?._id}

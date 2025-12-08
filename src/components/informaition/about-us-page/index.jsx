@@ -1,18 +1,17 @@
 "use client";
 
-import { BsExclamationSquareFill } from "react-icons/bs";
 import Link from "next/link";
-import { MdLockOutline, MdOutlinePhoneEnabled } from "react-icons/md";
-import { FiFileText } from "react-icons/fi";
 
 const AboutUsPage = () => {
   return (
-    <div className="w-full flex flex-col gap-6 p-4 ">
+    <main className="w-full flex flex-col gap-6 p-4 ">
+      <h1 className="flex justify-start items-center gap-2 pb-2 pt-4 text-gray-700">
+        <svg className="w-5 h-5 text-inherit">
+          <use href="/sprite.svg#menu_info_icon" />
+        </svg>
+        <section className="font-bold text-xl">درباره‌ی ما</section>
+      </h1>
       <section className="flex flex-col gap-4 lg:min-h-96">
-        <div className="flex justify-start items-center gap-2 text-gray-700">
-          <BsExclamationSquareFill className="w-5 h-5 " />
-          <h3 className="font-bold text-xl">درباره‌ی ما</h3>
-        </div>
         <div className=" border-r-2 p-2 text-gray-500  flex flex-col gap-4">
           <p className="">
             فروشگاه اینترنتی آرش، با هدف تامین و عرضه‌ی قطعات جانبی و تجهیزات
@@ -39,25 +38,31 @@ const AboutUsPage = () => {
           href={"/contact-us"}
           className="flex justify-start items-center gap-2 text-blue-600 hover:text-blue-800  transition-all duration-300"
         >
-          <MdOutlinePhoneEnabled className="w-4 h-4" />
+          <svg className="w-5 h-5 text-inherit">
+            <use href="/sprite.svg#phone_icon" />
+          </svg>
           تماس با ما
         </Link>
         <Link
           href={"/terms"}
           className="flex justify-start items-center gap-2  text-blue-600 hover:text-blue-800 transition-all duration-300"
         >
-          <FiFileText className="w-4 h-4" />
+          <svg className="w-5 h-5 text-inherit">
+            <use href="/sprite.svg#rules_icon" />
+          </svg>
           قوانین و مقررات
         </Link>
         <Link
           href={"/privacy-policy"}
           className="flex justify-start items-center gap-2  text-blue-600 hover:text-blue-800 transition-all duration-300"
         >
-          <MdLockOutline className="w-4 h-4" />
+          <svg className="w-5 h-5 text-inherit">
+            <use href="/sprite.svg#privacy_policy_icon" />
+          </svg>
           حریم خصوصی
         </Link>
       </div>
-    </div>
+    </main>
   );
 };
 

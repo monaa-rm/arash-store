@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CgArrowLeft } from "react-icons/cg";
 import Category from "../../../../models/Category";
 
 const FilterRemoteItem = async ({
@@ -8,7 +7,6 @@ const FilterRemoteItem = async ({
   img,
   altImage,
   linkCategory,
-  linkTilte,
   bgColor,
 }) => {
   const cat = await Category.findOne({ link: linkCategory });
@@ -37,11 +35,19 @@ const FilterRemoteItem = async ({
               >
                 مشاهده محصولات
               </Link>
-              <CgArrowLeft className="md:hidden lg:block" />
+              <svg className="w-6 h-4 text-white">
+                <use href="/sprite.svg#item_arrow_left" />
+              </svg>
             </button>
           </div>
           <div className="w-1/2 h-full relative">
-            <Image src={img} fill alt={altImage} className="object-contain" />
+            <Image
+              src={img}
+              fill
+              alt={altImage}
+              sizes="256px"
+              className="object-contain"
+            />
           </div>
         </div>
       </div>

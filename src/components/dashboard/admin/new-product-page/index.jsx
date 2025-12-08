@@ -21,6 +21,9 @@ const NewProductPage = () => {
   const [productUnit, setProductUnit] = useState("");
   const [productProperties, setProductProperties] = useState([]);
   const [productDesc, setProductDesc] = useState([]);
+  const [width, setWidth] = useState("");
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
   const [errorArray, setErrorArray] = useState([]);
   const [files, setFiles] = useState([]);
   const [productImgs, setProductImgs] = useState([]);
@@ -29,7 +32,7 @@ const NewProductPage = () => {
   const { data: session, status } = useSession();
   const path = usePathname();
   const dispatch = useDispatch();
-  const router = useRouter(); 
+  const router = useRouter();
   useEffect(() => {
     dispatch(
       setDashboardActiveItem({ title: "افزودن محصول", link: "new-product" })
@@ -62,9 +65,59 @@ const NewProductPage = () => {
     // حذف صفر ابتدایی اگر عدد دیگری بعد از آن وارد شود
     if (newvalue.length > 1 && newvalue.startsWith("0")) {
       newvalue = newvalue.substring(1);
+      console.log(newvalue);
+      return newvalue;
+    }
+    setProductInsocks(newvalue);
+  };
+  const heightHandler = (value) => {
+    setFinallyText("");
+    let newvalue = value.replace(/[^0-9\-]/g, "");
+
+    // قبول فقط یک صفر
+    if (newvalue === "00") {
+      newvalue = "0";
     }
 
-    setProductInsocks(newvalue);
+    // حذف صفر ابتدایی اگر عدد دیگری بعد از آن وارد شود
+    if (newvalue.length > 1 && newvalue.startsWith("0")) {
+      newvalue = newvalue.substring(1);
+      console.log(newvalue);
+      return newvalue;
+    }
+    setHeight(newvalue);
+  };
+  const widthHandler = (value) => {
+    setFinallyText("");
+    let newvalue = value.replace(/[^0-9\-]/g, "");
+
+    // قبول فقط یک صفر
+    if (newvalue === "00") {
+      newvalue = "0";
+    }
+
+    // حذف صفر ابتدایی اگر عدد دیگری بعد از آن وارد شود
+    if (newvalue.length > 1 && newvalue.startsWith("0")) {
+      newvalue = newvalue.substring(1);
+      return newvalue;
+    }
+    setWidth(newvalue);
+  };
+  const weightHandler = (value) => {
+    setFinallyText("");
+    let newvalue = value.replace(/[^0-9\-]/g, "");
+
+    // قبول فقط یک صفر
+    if (newvalue === "00") {
+      newvalue = "0";
+    }
+
+    // حذف صفر ابتدایی اگر عدد دیگری بعد از آن وارد شود
+    if (newvalue.length > 1 && newvalue.startsWith("0")) {
+      newvalue = newvalue.substring(1);
+      return newvalue;
+    }
+    setWeight(newvalue);
   };
   const addProductHandler = async () => {
     const newErrorArray = [];
@@ -77,7 +130,9 @@ const NewProductPage = () => {
         !productUnit.length ||
         !productPrice.length ||
         !productInsocks.length ||
-        // !productCat.length ||
+        !width.length ||
+        !height.length ||
+        !weight.length ||
         !productImgs.length
       ) {
         if (!productTitle.length) {
@@ -95,9 +150,15 @@ const NewProductPage = () => {
         if (!productInsocks.length) {
           newErrorArray.push("productInsocks");
         }
-        // if (!productCat.length) {
-        //   newErrorArray.push("productCat");
-        // }
+        if (!width.length) {
+          newErrorArray.push("width");
+        }
+        if (!height.length) {
+          newErrorArray.push("height");
+        }
+        if (!weight.length) {
+          newErrorArray.push("weight");
+        }
         if (!productImgs.length) {
           newErrorArray.push("files");
         }
@@ -119,6 +180,9 @@ const NewProductPage = () => {
           productProperties,
           productDesc,
           productImgs,
+          width,
+          height,
+          weight,
           creator: session.user,
         };
         const res = await fetch("/api/product/new-product", {
@@ -200,6 +264,39 @@ const NewProductPage = () => {
           setFinallyText={setFinallyText}
         />
       </div>
+      <InputTextSection
+        id="height"
+        name="height"
+        errorArray={errorArray}
+        value={height}
+        type="text"
+        setValue={heightHandler}
+        label={"طول محصول (سانتی‌متر)"}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
+      />
+      <InputTextSection
+        id="width"
+        name="width"
+        errorArray={errorArray}
+        value={width}
+        type="text"
+        setValue={widthHandler}
+        label={"عرض محصول (سانتی‌متر)"}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
+      />
+      <InputTextSection
+        id="weight"
+        name="weight"
+        errorArray={errorArray}
+        value={weight}
+        type="text"
+        setValue={weightHandler}
+        label={"وزن محصول (گرم)"}
+        finallyText={finallyText}
+        setFinallyText={setFinallyText}
+      />
       <CategoryBox
         productCat={productCat}
         setProductCat={setProductCat}
@@ -258,6 +355,7 @@ const NewProductPage = () => {
               alt="spinner"
               width={25}
               height={25}
+              sizes="50px"
             />
           ) : null}
         </button>

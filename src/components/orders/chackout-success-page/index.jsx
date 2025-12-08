@@ -2,16 +2,17 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { IoCheckmarkCircleSharp } from "react-icons/io5";
 
 const CheckoutSuccessPage = () => {
   const { data: session, status } = useSession();
   console.log(session);
   return (
-    <div className="w-full fixed top-0 left-0 right-0 bottom-0 bg-white z-[2] flex flex-col gap-4 items-center justify-center">
+    <main className="w-full fixed top-0 left-0 right-0 bottom-0 bg-white z-[2] flex flex-col gap-4 items-center justify-center">
       <div className=" w-full flex  justify-center items-center gap-2">
-        <IoCheckmarkCircleSharp className="w-14 h-14 text-green-500" />
-        <span className="font-bold text-lg">خرید با موفقیت انجام شد</span>
+         <svg className="w-14 h-14 text-green-500">
+          <use href="/sprite.svg#checked_icon" />
+        </svg>
+        <h2 className="font-bold text-lg">خرید با موفقیت انجام شد</h2>
       </div>
       <div className="w-full flex justify-center items-center gap-4">
         <Link
@@ -27,7 +28,7 @@ const CheckoutSuccessPage = () => {
           خانه
         </Link>
       </div>
-    </div>
+    </main>
   );
 };
 

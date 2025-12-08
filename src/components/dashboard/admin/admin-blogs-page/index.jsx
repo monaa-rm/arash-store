@@ -5,7 +5,6 @@ import Pagination from "@/components/elements/pagination";
 import { setDashboardActiveItem } from "@/features/globalSlice";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
-import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 
 const AdminBlogsPage = () => {

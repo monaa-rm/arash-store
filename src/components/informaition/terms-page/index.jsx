@@ -1,22 +1,16 @@
-import { addZeroFunc } from "@/utiles/utils-func";
 import Link from "next/link";
-import { BsExclamationSquareFill } from "react-icons/bs";
-import { FiFileText } from "react-icons/fi";
-import {
-  MdLocationOn,
-  MdLockOutline,
-  MdOutlineMailOutline,
-  MdOutlinePhoneEnabled,
-} from "react-icons/md";
+
 
 const TermsPage = () => {
   return (
-    <div className="w-full flex flex-col gap-6 p-4 ">
+    <main className="w-full flex flex-col gap-6 p-4 ">
+      <h1 className="flex justify-start items-center pt-4 pb-2 gap-2 text-gray-700">
+        <svg className="w-5 h-5 text-inherit">
+          <use href="/sprite.svg#rules_icon" />
+        </svg>
+        <span className="font-bold text-xl">قوانین‌و‌مقررات</span>
+      </h1>
       <section className="flex flex-col gap-4 lg:min-h-96">
-        <div className="flex justify-start items-center gap-2 text-gray-700">
-          <FiFileText className="w-5 h-5 " />
-          <h3 className="font-bold text-xl">قوانین‌و‌مقررات</h3>
-        </div>
         <div className=" border-r-2 p-2 text-gray-500  flex flex-col gap-6">
           <div>
             <span className="font-bold text-gray-600">نحوه‌‌ی ارسال: </span>
@@ -57,25 +51,31 @@ const TermsPage = () => {
           href={"/about-us"}
           className="flex justify-start items-center gap-2  text-blue-600 hover:text-blue-800 transition-all duration-300"
         >
-          <BsExclamationSquareFill className="w-4 h-4" />
+          <svg className="w-5 h-5 text-inherit">
+            <use href="/sprite.svg#menu_info_icon" />
+          </svg>
           درباره‌ی ما
         </Link>
         <Link
           href={"/contact-us"}
           className="flex justify-start items-center gap-2  text-blue-600 hover:text-blue-800 transition-all duration-300"
         >
-          <MdOutlinePhoneEnabled className="w-4 h-4" />
+          <svg className="w-5 h-5 text-inherit">
+            <use href="/sprite.svg#phone_icon" />
+          </svg>
           تماس با ما
         </Link>
         <Link
           href={"/privacy-policy"}
           className="flex justify-start items-center gap-2  text-blue-600 hover:text-blue-800 transition-all duration-300"
         >
-          <MdLockOutline className="w-4 h-4" />
+          <svg className="w-5 h-5 text-inherit">
+            <use href="/sprite.svg#privacy_policy_icon" />
+          </svg>
           حریم خصوصی
         </Link>
       </div>
-    </div>
+    </main>
   );
 };
 

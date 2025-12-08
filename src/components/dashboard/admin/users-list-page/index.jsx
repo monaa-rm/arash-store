@@ -2,7 +2,6 @@
 import { setDashboardActiveItem } from "@/features/globalSlice";
 import { usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
-import DashboardProductItem from "@/components/elements/dashboard-product-item";
 import GlobalLoading from "@/components/elements/global-loading";
 import Pagination from "@/components/elements/pagination";
 import { useState, useEffect, useCallback } from "react";

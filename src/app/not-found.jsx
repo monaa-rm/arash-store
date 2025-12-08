@@ -1,8 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { FaArrowLeft } from "react-icons/fa";
-import { FaArrowLeftLong } from "react-icons/fa6";
 
 const NotFound = () => {
   return (
@@ -22,12 +20,14 @@ const NotFound = () => {
         <div className="mt-8">
           <Link
             href="/"
-            className="inline-flex items-center group px-4 py-2 gap-2 border border-transparent text-base font-medium
+            className="inline-flex items-center group max-h-12 px-4 py-2 gap-2 border border-transparent text-base font-medium
              rounded-[8px] text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 focus:outline-none focus:ring-2
               focus:ring-offset-2 focus:ring-indigo-500"
           >
             رفتن به خانه
-           <FaArrowLeftLong className=" w-6 pl-2 group-hover:pl-0 transition-all duration-300" />
+            <svg className=" w-6 pl-2 group-hover:pl-0 transition-all duration-300 ">
+              <use href="/sprite.svg#item_arrow_left" />
+            </svg>
           </Link>
         </div>
       </div>

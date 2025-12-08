@@ -2,16 +2,17 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { FaSadTear } from "react-icons/fa";
-import { IoCheckmarkCircleSharp } from "react-icons/io5";
 
 const CheckoutFailurePage = () => {
-  const { data: session, status } = useSession();
   return (
-    <div className="w-full fixed top-0 left-0 right-0 bottom-0 bg-white z-[2] flex flex-col gap-4 items-center justify-center">
+    <main className="w-full fixed top-0 left-0 right-0 bottom-0 bg-white z-[2] flex flex-col gap-4 items-center justify-center">
       <div className=" w-full flex  justify-center items-center gap-2">
-        <FaSadTear className="w-10 h-10 text-red-500" />
-        <span className="font-bold text-lg">متاسفانه مشکلی در فرآیند خرید پیش آمد</span>
+        <svg className="w-10 h-10 text-red-500">
+          <use href="/sprite.svg#sad_icon" />
+        </svg>
+        <h2 className="font-bold text-lg">
+          متاسفانه مشکلی در فرآیند خرید پیش آمد
+        </h2>
       </div>
       <div className="w-full flex justify-center items-center gap-4">
         <Link
@@ -27,7 +28,7 @@ const CheckoutFailurePage = () => {
           خانه
         </Link>
       </div>
-    </div>
+    </main>
   );
 };
 

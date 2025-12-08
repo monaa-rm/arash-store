@@ -3,12 +3,8 @@
 import InputTextSection from "@/components/elements/input-text-section";
 import SelectProvince from "@/components/elements/select-location";
 import SendFree from "@/components/elements/send-free";
-import { citiesList } from "@/utiles/cities";
-import { provinceList } from "@/utiles/provinces";
 import { useEffect, useState } from "react";
 import YourOrders from "../your-orders";
-import { IoInformationCircle } from "react-icons/io5";
-import { IoMdLock } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setClientAdditionalInfo,
@@ -26,11 +22,13 @@ import {
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { citiesList } from "@/utiles/cities";
 
-const ChackoutPage = () => {
+const ChackoutPage = ({ snapCitites }) => {
   const [cost, setCost] = useState(0);
   const orderProducts =
     useSelector((store) => store.orderSlice.orderProducts) || [];
+  const [postcost, setPostCost] = useState(0);
   const clientName = useSelector((store) => store.orderSlice.clientName) || "";
   const clientLastName =
     useSelector((store) => store.orderSlice.clientLastName) || "";
@@ -49,12 +47,13 @@ const ChackoutPage = () => {
     useSelector((store) => store.orderSlice.clientEmail) || "";
   const clientAdditionalInfo =
     useSelector((store) => store.orderSlice.clientAdditionalInfo) || "";
-  const [selectedProvinceCity, setSelectedProvinceCity] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const freeSending =
+    useSelector((store) => store.orderSlice.freeSending) || false;
 
+  // const [selectedProvinceCity, setSelectedProvinceCity] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [errorArray, setErrorArray] = useState([]);
   const [finallyText, setFinallyText] = useState("");
-
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -63,13 +62,43 @@ const ChackoutPage = () => {
   useEffect(() => {
     let selectedCityList = [];
     if (clientProvince?.id) {
-      console.log(citiesList);
       selectedCityList = citiesList?.filter(
         (city) => city.province_id == clientProvince?.id
       );
       setSelectedProvinceCity(selectedCityList);
     }
   }, [clientProvince]);
+
+  useEffect(() => {
+    async function fetchEstimate() {
+      console.log("start");
+      let totalWeight = 0;
+      orderProducts?.map((item) => {
+        console.log(item);
+        totalWeight = totalWeight + +item?.quantity * +item?.weight;
+      });
+      const formdata = {
+        destinationCityId: clientCity?.id,
+        weight: totalWeight,
+        insuranceValue: cost,
+      };
+      console.log(formdata);
+      const res = await fetch(`/api/order/estimate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formdata),
+      });
+      const data = await res.json();
+      console.log(data?.data?.finalPrice);
+      const tomanSendinsCost = +data?.data?.finalPrice / 10;
+
+      setPostCost(Math.ceil(tomanSendinsCost / 1000) * 1000);
+    }
+    if (!freeSending && clientCity?.id) {
+      fetchEstimate();
+    }
+  }, [clientCity, freeSending]);
+
   const checkoutHandler = async (e) => {
     e.preventDefault();
     const newErrorArray = [];
@@ -77,13 +106,14 @@ const ChackoutPage = () => {
     setLoading(true);
     if (status !== "authenticated") {
       console.log("status not authenticated");
+      setLoading(false);
       return setFinallyText("لطفا وارد سایت شوید");
     }
     try {
       if (
         !clientName.length ||
         !clientLastName.length ||
-        !clientProvince?.id ||
+        // !clientProvince?.id ||
         !clientCity?.id ||
         !clientAddress.length ||
         !clientPostalCode.length ||
@@ -105,9 +135,9 @@ const ChackoutPage = () => {
         if (!clientMobileNumber.length) {
           newErrorArray.push("clientMobileNumber");
         }
-        if (!clientProvince?.id) {
-          newErrorArray.push("clientProvince");
-        }
+        // if (!clientProvince?.id) {
+        //   newErrorArray.push("clientProvince");
+        // }
         if (!clientCity?.id) {
           newErrorArray.push("clientCity");
         }
@@ -116,7 +146,6 @@ const ChackoutPage = () => {
           ...prevErrorArray,
           ...newErrorArray,
         ]); // Update using callback
-        console.log(errorArray);
         setFinallyText("اطلاعات کامل نیست");
       } else {
         const formData = {
@@ -131,10 +160,9 @@ const ChackoutPage = () => {
           clientEmail,
           clientAdditionalInfo,
           items: orderProducts,
-          allCost: cost,
+          allCost: cost ,
           client: session?.user,
         };
-        console.log({ formData });
         const res = await fetch("/api/order/checkout", {
           method: "POST",
           body: JSON.stringify(formData),
@@ -142,14 +170,11 @@ const ChackoutPage = () => {
         });
         const data = await res.json();
         if (!res.ok) {
-          console.log(data);
           setFinallyText(data?.error);
         } else {
           router.push("/checkout/success");
-          console.log("hooooraaaaaaaa");
           dispatch(setOrderProducts([]));
           localStorage.removeItem("orders");
-
         }
       }
     } catch (error) {
@@ -188,18 +213,7 @@ const ChackoutPage = () => {
           setFinallyText={setFinallyText}
           usedStore={true}
         />
-        <SelectProvince
-          errorArray={errorArray}
-          value={clientProvince}
-          setValue={setClientProvince}
-          finallyText={finallyText}
-          setFinallyText={setFinallyText}
-          id="clientProvince"
-          name="clientProvince"
-          list={provinceList}
-          title={"استان"}
-          available={true}
-        />
+
         <SelectProvince
           errorArray={errorArray}
           value={clientCity}
@@ -208,9 +222,9 @@ const ChackoutPage = () => {
           setFinallyText={setFinallyText}
           id="clientCity"
           name="clientCity"
-          list={selectedProvinceCity}
+          list={snapCitites}
           title={"شهر"}
-          available={clientProvince?.id ? true : false}
+          available={true}
         />
         <InputTextSection
           id="clientAddress"
@@ -257,9 +271,10 @@ const ChackoutPage = () => {
           setValue={setClientPhoneNumber}
           type="number"
           usedStore={true}
-          placeholder={
-            clientProvince?.id ? `${clientProvince?.tel_prefix}00000000` : ""
-          }
+          // placeholder={
+          //   clientProvince?.id ? `${clientProvince?.tel_prefix}00000000` : ""
+          // }
+          placeholder={`01300000000`}
           label={"شماره تلفن (اختیاری)"}
           finallyText={finallyText}
           setFinallyText={setFinallyText}
@@ -290,9 +305,11 @@ const ChackoutPage = () => {
           usedStore={true}
         />
       </div>
-      <YourOrders cost={cost} setCost={setCost} />
+      <YourOrders cost={cost} setCost={setCost} postcost={postcost} />
       <div className="flex gap-1 items-center justify-start">
-        <IoInformationCircle className="w-5 h-5 text-blue-400" />
+        <svg className="w-8 h-8 sm:w-4 sm:h4  text-blue-400">
+          <use href="/sprite.svg#menu_info_icon" />
+        </svg>
         <p className="text-gray-500 text-sm">
           اطلاعات شخصی شما برای پردازش سفارش شما و پشتیبانی از تجربه ی شما در
           این وبسایت استفاده میشود.
@@ -312,7 +329,7 @@ const ChackoutPage = () => {
           className="relative cursor-pointer w-full py-2 flex gap-2 justify-center items-center
          text-gray-100 text-sm md:text-base font-bold overflow-hidden bg-gradient-to-r from-blue-600
           to-blue-950 rounded-[8px] transition-all duration-400 ease-in-out
-           shadow-md hover:scale-100 hover:text-white hover:shadow-lg   z-[5] active:scale-90 
+           shadow-md hover:scale-100 hover:text-white hover:shadow-lg   active:scale-90 
            before:absolute before:top-0 before:-left-full before:w-full before:h-full
     before:bg-gradient-to-r before:from-blue-700 before:to-blue-950 before:transition-all 
     before:duration-500 before:ease-in-out before:z-[-1] before:rounded-[8px]
@@ -326,7 +343,9 @@ const ChackoutPage = () => {
               height={25}
             />
           ) : (
-            <IoMdLock className="w-5 h-5 text-white" />
+            <svg className="w-5 h-5 text-white">
+              <use href="/sprite.svg#filled_lock_icon" />
+            </svg>
           )}
           ثبت سفارش
         </button>

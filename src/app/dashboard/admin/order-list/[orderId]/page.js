@@ -3,14 +3,20 @@ import connectDB from "@/utiles/connectDB";
 import Order from "../../../../../../models/order";
 import mongoose from "mongoose";
 import { notFound } from "next/navigation";
-import Product from "../../../../../../models/Product";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
+export const metadata = {
+  title: "داشبورد ادمین",
+  description: "صفحه سفارش تکی",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 const SingleOrder = async ({ params }) => {
   const { orderId } = await params;
-  const { user } = await getServerSession(authOptions);
-  if (!user || user?.role !== "admin") {
+  const session = await getServerSession(authOptions);
+  if (!session?.user ||session?.user?.role !== "admin") {
     return notFound();
   }
   await connectDB();

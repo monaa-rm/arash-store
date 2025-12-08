@@ -1,12 +1,9 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { LuBoxes } from "react-icons/lu";
 import { formatNumberToPersian, slugify } from "@/utiles/utils-func";
-import { FaCheck } from "react-icons/fa";
 
 import { useRouter } from "next/navigation";
-import { IoAdd } from "react-icons/io5";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 
@@ -48,6 +45,7 @@ const DashboardSuggestionItem = ({ item, reload, setReload }) => {
             <Image
               src={item?.imageSrc[0]?.file}
               fill
+              sizes="256px"
               className="object-fill"
               alt={item?.title}
             />
@@ -63,11 +61,13 @@ const DashboardSuggestionItem = ({ item, reload, setReload }) => {
               {item?.title}
             </Link>
             <div className="flex justify-start items-center gap-1 pt-3">
-              <LuBoxes
+              <svg
                 className={`w-4 h-4 ${
                   item?.instock == 0 ? "text-rose-600" : "text-blue-400"
                 } `}
-              />
+              >
+                <use href="/sprite.svg#instock_icon" />
+              </svg>
               {item?.instock == 0 ? (
                 <span className="text-xs text-rose-600">ناموجود</span>
               ) : (
@@ -84,18 +84,22 @@ const DashboardSuggestionItem = ({ item, reload, setReload }) => {
                     ${
                       item?.suggest
                         ? "bg-green-500 hover:bg-green-600"
-                        : "bg-orange-700 hover:bg-orange-800"
-                    }  hover:w-8 hover:h-8 cursor-pointer  transition-all
+                        : "bg-orange-500 hover:bg-orange-600"
+                    }  cursor-pointer  transition-all
                       duration-300 ease-in-out `}
                 >
                   {item?.suggest ? (
-                    <FaCheck
+                    <svg
                       className={`w-5 h-5  transition-all duration-300 ease-in-out text-white`}
-                    />
+                    >
+                      <use href="/sprite.svg#done_icon" />
+                    </svg>
                   ) : (
-                    <IoAdd
+                    <svg
                       className={`w-5 h-5  transition-all duration-300 ease-in-out text-white`}
-                    />
+                    >
+                      <use href="/sprite.svg#plus_icon" />
+                    </svg>
                   )}
                 </div>
               </div>

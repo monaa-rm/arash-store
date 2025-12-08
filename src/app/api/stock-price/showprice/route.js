@@ -14,6 +14,7 @@ export async function POST(req) {
     const existingSetting = await SiteSetting.findOne();
     if (existingSetting) {
       existingSetting.showPrice = showPriceOrNot;
+      existingSetting.updatedAt = new Date();
       await existingSetting.save();
       return NextResponse.json({ data : "succes"}, { status: 200 });
     }

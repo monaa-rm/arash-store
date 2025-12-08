@@ -1,12 +1,5 @@
 "use client";
 import Image from "next/image";
-import { MdZoomOutMap } from "react-icons/md";
-import {
-  IoIosHeartEmpty,
-  IoIosSearch,
-  IoMdHeart,
-  IoMdHeartEmpty,
-} from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setFavorites,
@@ -19,7 +12,6 @@ import { useEffect, useState } from "react";
 
 const BestSellerSliderItem = ({ data, hideBreef }) => {
   let favorites = useSelector((store) => store?.globalSlice?.favorites) || [];
-  // const [favorites, setFavorites] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const showPriceGlobal =
     useSelector((store) => store.globalSlice.showPriceGlobal) || false;
@@ -51,7 +43,7 @@ const BestSellerSliderItem = ({ data, hideBreef }) => {
         dispatch(setFavorites(newFavorites));
       }
     } catch (error) {
-      // setIsLiked(isLiked);
+      setIsLiked(isLiked);
     }
   };
   return (
@@ -60,26 +52,27 @@ const BestSellerSliderItem = ({ data, hideBreef }) => {
         <div className="relative top-0  w-full h-56 left-0 right-0">
           <Image
             src={imageSrc[0].file}
-            alt={imageSrc[0].file}
+            alt={title}
             fill
             className="object-cover"
+            sizes="(max-width : 600px) 100vw,(max-width : 800px) 50vw , 25vw"
           />
         </div>
-        {/* <div className="w-full h-72 text-gray-800">
-          <div className="flex flex-row justify-between"> */}
-        <div
+
+        <button
+          type="button"
           className={`${
             hideBreef && "hidden"
-          } absolute left-2 top-2 rounded-[4px]  bg-white bg-opacity-50 p-0.5`}
+          } absolute left-2 top-2 rounded-[4px] cursor-pointer  bg-white bg-opacity-50 p-0.5`}
+          onClick={() => {
+            dispatch(setProductBrifItem(_id));
+            dispatch(setShowProductBrif(true));
+          }}
         >
-          <MdZoomOutMap
-            className="cursor-pointer"
-            onClick={() => {
-              dispatch(setProductBrifItem(_id));
-              dispatch(setShowProductBrif(true));
-            }}
-          />
-        </div>
+          <svg className="w-4 h-4 text-white ">
+            <use href="/sprite.svg#arrow_pointing_out" />
+          </svg>
+        </button>
 
         <div className="absolute bg-gradient-to-b from-gray-50 to-gray-200 -bottom-12 w-full px-2 py-3 flex flex-col gap-1 group-hover:-bottom-0 group-hover:duration-600 duration-500">
           <Link
@@ -94,21 +87,27 @@ const BestSellerSliderItem = ({ data, hideBreef }) => {
               : "تماس بگیرید "}
           </div>
           <div className="flex justify-center items-center gap-1 border-t pt-2">
-            <div
+            <button type="button"
               onClick={() => {
                 dispatch(setProductBrifItem(_id));
                 dispatch(setShowProductBrif(true));
               }}
             >
-              <IoIosSearch className="w-7 h-7 cursor-pointer text-zinc-800 hover:text-blue-700 transition-all duration-300" />
-            </div>
-            <div onClick={() => favoriteHandler()}>
+              <svg className="w-7 h-7 cursor-pointer bg-none  text-zinc-600 hover:text-blue-700 transition-all duration-300">
+                <use href="/sprite.svg#search_mark" />
+              </svg>
+            </button>
+            <button type="button" onClick={() => favoriteHandler()}>
               {isLiked ? (
-                <IoMdHeart className="w-7 h-7 cursor-pointer text-blue-700 transition-all duration-300" />
+                <svg className="w-7 h-7 cursor-pointer hover:text-blue-700 text-zinc-800 transition-all duration-300">
+                  <use href="/sprite.svg#outline_heart" />
+                </svg>
               ) : (
-                <IoMdHeartEmpty className="w-7 h-7 cursor-pointer text-zinc-800 hover:text-blue-700 transition-all duration-300" />
+                <svg className="w-7 h-7 cursor-pointer text-blue-600 hover:text-blue-700 transition-all duration-300">
+                  <use href="/sprite.svg#filled_heart" />
+                </svg>
               )}
-            </div>
+            </button>
           </div>
         </div>
       </div>

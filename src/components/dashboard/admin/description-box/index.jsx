@@ -2,9 +2,7 @@
 
 import InputTextSection from "@/components/elements/input-text-section";
 import { useState } from "react";
-import { AiOutlineClose } from "react-icons/ai"; // یا هر آیکون حذف دیگری که دوست داری
-import { FaPlus } from "react-icons/fa";
-import { IoMdRemoveCircleOutline } from "react-icons/io";
+
 
 const DescriptionBox = ({
   productDesc,
@@ -55,7 +53,7 @@ const DescriptionBox = ({
           finallyText={finallyText}
           setFinallyText={setFinallyText}
         />
-        <div className="flex w-full items-center gap-2">
+        <div className="flex flex-col sm:flex-row w-full items-center gap-2">
           <div className="relative w-full">
             <textarea
               id="productDescId"
@@ -78,12 +76,14 @@ const DescriptionBox = ({
           </div>
           <button
             onClick={handleAddTodo}
-            className="bg-blue-950 flex justify-center items-center gap-2  hover:bg-slate-800 transition-all duration-300
+            className="sm:bg-blue-950 bg-gray-200 hover:bg-gray-300 flex justify-center items-center gap-2  sm:hover:bg-slate-800 transition-all duration-300
            text-white outline-none font-bold w-full sm:w-8 h-8 py-1 sm:py-0
           rounded-[8px] "
           >
-            <span className="flex sm:hidden">افزودن</span>
-            <FaPlus />
+            {/* <span className="flex sm:hidden">افزودن</span> */}
+            <svg className="w-5 h-5 text-inherit">
+              <use href="/sprite.svg#plus_icon" />
+            </svg>
           </button>
         </div>
         {descList.length ? (
@@ -95,7 +95,10 @@ const DescriptionBox = ({
                   onClick={() => setTextTitle("")}
                   className="text-red-500"
                 >
-                  <IoMdRemoveCircleOutline />
+                  {/* <IoMdRemoveCircleOutline /> */}
+                  <svg className="w-5 h-5 text-inherit">
+                    <use href="/sprite.svg#remove_circle_icon" />
+                  </svg>
                 </button>
               </div>
             ) : null}
@@ -109,7 +112,9 @@ const DescriptionBox = ({
                   onClick={() => handleDeleteTodo(index)}
                   className="text-red-500"
                 >
-                  <IoMdRemoveCircleOutline />
+                  <svg className="w-5 h-5 text-inherit">
+                    <use href="/sprite.svg#remove_circle_icon" />
+                  </svg>
                 </button>
               </div>
             ))}
@@ -123,7 +128,9 @@ const DescriptionBox = ({
           rounded-[8px] "
         >
           <span className="flex ">افزودن</span>
-          <FaPlus />
+          <svg className="w-5 h-5 text-inherit">
+            <use href="/sprite.svg#plus_icon" />
+          </svg>
         </button>
       </div>
       <div className="flex flex-col w-full gap-1">
@@ -139,7 +146,9 @@ const DescriptionBox = ({
                   onClick={() => handleDeleteItem(index)}
                   className="text-red-500"
                 >
-                  <IoMdRemoveCircleOutline />
+                  <svg className="w-5 h-5 text-inherit">
+                    <use href="/sprite.svg#remove_circle_icon" />
+                  </svg>
                 </button>
               </div>
             ) : null}
@@ -154,7 +163,9 @@ const DescriptionBox = ({
                     onClick={() => handleDeleteItem(index)}
                     className="text-red-500"
                   >
-                    <IoMdRemoveCircleOutline />
+                    <svg className="w-5 h-5 text-inherit">
+                      <use href="/sprite.svg#remove_circle_icon" />
+                    </svg>
                   </button>
                 ) : null}
               </div>

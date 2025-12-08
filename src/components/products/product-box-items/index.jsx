@@ -1,27 +1,20 @@
 "use client";
-import DashboardProductItem from "@/components/elements/dashboard-product-item";
 import GlobalLoading from "@/components/elements/global-loading";
 import { useState, useEffect, useCallback } from "react";
-import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setHeaderSearchValue,
   setNumberCategories,
   setTotalProducts,
 } from "@/features/filterSlice";
 import Pagination from "@/components/elements/pagination";
-import { BsWindowSidebar } from "react-icons/bs";
-import { usePathname } from "next/navigation";
 import SearchBoxItem from "@/components/search/search-box-item";
 
 const ProductBoxItems = ({ currentPage, setCurrentPage }) => {
   const [products, setProducts] = useState([]);
-  const path = usePathname();
   const [productsPerPage] = useState(12);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const searchPrice = useSelector((store) => store.filterSlice.searchPrice);
-
   const activeSearchHeaderItem = useSelector(
     (store) => store.filterSlice.activeSearchHeaderItem
   );
@@ -39,14 +32,13 @@ const ProductBoxItems = ({ currentPage, setCurrentPage }) => {
         }&maxprice=${searchPrice[1]}&category=${
           searchedCategory?.link || ""
         }&sortby=${activeSearchHeaderItem}`
-        // `/api/search?page=${currentPage}&limit=${productsPerPage}`
       );
       const data = await response.json();
 
       if (response.ok) {
         setProducts(data?.data?.sendProducts);
         setTotalPages(data?.data?.totalPages);
-
+console.log(data)
         dispatch(setTotalProducts(data?.data?.totalProducts || 0));
         dispatch(setNumberCategories(data?.data?.sendProducts?.length || 0));
       }
@@ -77,7 +69,7 @@ const ProductBoxItems = ({ currentPage, setCurrentPage }) => {
           {products?.length > 0 ? (
             products.map((item) => <SearchBoxItem item={item} key={item._id} />)
           ) : (
-            <div className="pb-4 text-sm text-gray-500">
+            <div className="pb-[206px] text-sm text-gray-500">
               محصولی برای نمایش وجود ندارد.
             </div>
           )}

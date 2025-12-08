@@ -1,12 +1,11 @@
+"use client";
+import { provinceList } from "@/utiles/provinces";
 import { useEffect, useState } from "react";
-import { FaAngleDown } from "react-icons/fa";
-import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { useDispatch } from "react-redux";
 
 const SelectLocation = ({
   value,
   setValue,
-  finallyText,
   setFinallyText,
   errorArray,
   id,
@@ -18,7 +17,7 @@ const SelectLocation = ({
   const [showBox, setShowBox] = useState(false);
   const [searchedValue, setSearchedValue] = useState("");
   const [searchedList, setSearchedList] = useState([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     const handleClick = (event) => {
       if (!event.target?.closest(`#${id}`)) {
@@ -33,10 +32,14 @@ const SelectLocation = ({
       document.body.removeEventListener("click", handleClick);
     };
   }, []);
+  // const cityProvince = (id) => {
+  //   const nameprov = provinceList.find((prov) => prov.id == id);
+  //  if(nameprov) return nameprov?.name;
+  // };
   const searchHandler = (e) => {
     setSearchedValue(e?.target?.value);
     const listSearch = list?.filter((item) =>
-      item?.name?.includes(searchedValue)
+      item?.title?.includes(searchedValue)
     );
     setSearchedList(listSearch);
   };
@@ -64,7 +67,9 @@ const SelectLocation = ({
                : null
            }`}
         >
-          <div className="text-[#5c5c5c]">{value?.name}</div>
+          <div className="text-[#5c5c5c]">
+            {value?.title} - {/* {cityProvince(value?.province_id)} */}{value?.stateTitle}
+          </div>
         </div>
         <div
           onClick={() => {
@@ -79,11 +84,14 @@ const SelectLocation = ({
           `}
         >
           {title}
-          <FaAngleDown
+
+          <svg
             className={`w-4 h-4 mt-0.5 transition-all duration-300 ${
               showBox ? "rotate-180" : "rotate-0"
             }`}
-          />
+          >
+            <use href="/sprite.svg#dropdown_icon" />
+          </svg>
         </div>
       </div>
       <div
@@ -121,7 +129,7 @@ const SelectLocation = ({
   }
                 } cursor-pointer  transition-all duration-300`}
               >
-                {item?.name}
+                {item?.title} - {/* {cityProvince(item?.province_id)} */} {item?.stateTitle}
               </div>
             ))
           ) : searchedValue && !searchedValue?.length ? (
@@ -139,7 +147,7 @@ const SelectLocation = ({
                     }
                  cursor-pointer  transition-all duration-300 `}
               >
-                {item?.name}
+                {item?.title} - {item?.stateTitle}
               </div>
             ))
           )}

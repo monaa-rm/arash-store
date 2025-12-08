@@ -7,7 +7,7 @@ const initialState = {
   dashboardUserActiveItem: { title: "داشبورد", link: "mainmanager" },
   showLoginBox: false,
   showPriceGlobal: false,
-
+  freeSending: false,
   showMenu: false,
   showMenuCategory: false,
   favorites: [],
@@ -37,6 +37,9 @@ const globalSlice = createSlice({
     setShowPriceGlobal: (state, action) => {
       state.showPriceGlobal = action.payload;
     },
+    setFreeSending: (state, action) => {
+      state.freeSending = action.payload;
+    },
     setShowMenu: (state, action) => {
       state.showMenu = action.payload;
     },
@@ -55,6 +58,7 @@ export const {
   setMenuActiveItem,
   setDashboardActiveItem,
   setShowLoginBox,
+  setFreeSending,
   setUserDashboardActiveItem,
   setShowPriceGlobal,
   setShowMenuCategory,

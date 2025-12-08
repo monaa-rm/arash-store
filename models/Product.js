@@ -9,10 +9,10 @@ const ProductSchema = new Schema({
     type: Array,
     required: true,
   },
-  productId : {
+  productId: {
     type: String,
     required: true,
-    default: 0
+    default: 0,
   },
   score: {
     type: Number,
@@ -32,33 +32,47 @@ const ProductSchema = new Schema({
   },
   category: {
     type: [Object],
-  
   },
   properties: {
     type: Array,
   },
-  
+
   description: {
     type: [Object],
   },
   instock: {
     type: Number,
   },
+  width: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
+  height: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
+  weight: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
   unit: {
     type: String,
-    required: true
+    required: true,
   },
   creator: {
     type: String,
-    required: true
+    required: true,
   },
   view: {
     type: Number,
-    default: 0
+    default: 0,
   },
   suggest: {
     type: Boolean,
-    default: false
+    default: false,
   },
 
   createdAt: {

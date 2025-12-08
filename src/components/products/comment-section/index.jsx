@@ -2,32 +2,32 @@
 
 import AddCommentButton from "@/components/elements/add-cm-btn";
 import ProductRating from "@/components/elements/product-rating";
-import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import SetCommentSection from "../set-comment-section";
-import { FaCaretDown } from "react-icons/fa";
 import UsersComments from "../users-comments";
-import { useSession } from "next-auth/react";
 import GlobalLoading from "@/components/elements/global-loading";
 
-
-
-const CommentSection = ({ title, id , rate }) => {
+const CommentSection = ({ title, id, rate }) => {
   const [rating, setRating] = useState(rate || 0);
   const [showCm, setShowCm] = useState(false);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
-  const params = useParams();
-   const cmtRef = useRef(null);
- useEffect(() => {
-    // 2. کد اسکرول را داخل useEffect قرار می‌دهیم
-    if (cmtRef.current) {
-      cmtRef.current.scrollIntoView({
-        behavior: 'smooth', // 3. برای اسکرول نرم و روان
-        block: 'start',     // 4. اسکرول به ابتدای عنصر
-      });
-    }
-  }, []);
+  const cmtRef = useRef(null);
+  // useEffect(() => {
+  //   // 2. کد اسکرول را داخل useEffect قرار می‌دهیم
+  //   if (cmtRef.current) {
+  //     const yOffset = -300; // فاصله از بالا (به صورت منفی)
+  //     const y =
+  //       cmtRef.current.getBoundingClientRect().top +
+  //       window.scrollY +
+  //       yOffset;
+
+  //     cmtRef.current.scrollIntoView({
+  //       behavior: "smooth", // 3. برای اسکرول نرم و روان
+  //       top: y, // 4. اسکرول به ابتدای عنصر
+  //     });
+  //   }
+  // }, []);
   useEffect(() => {
     async function fetchComments() {
       try {
@@ -78,11 +78,16 @@ const CommentSection = ({ title, id , rate }) => {
       </div>
       <div className="pt-8">
         <div className="flex justify-start items-center gap-1 border-b pb-2">
-          <FaCaretDown className="w-4 h-4 text-blue-700 rotate-45" />
+          <svg className="w-5 h-5 text-blue-700 rotate-45">
+            <use href="/sprite.svg#caret_down" />
+          </svg>
           <h3 className="font-bold ">نظرات کاربران</h3>
         </div>
-        {loading ? <GlobalLoading /> : ( <UsersComments  comments={comments} setComments={setComments} />)}
-       
+        {loading ? (
+          <GlobalLoading />
+        ) : (
+          <UsersComments comments={comments} setComments={setComments} />
+        )}
       </div>
     </section>
   );

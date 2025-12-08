@@ -1,27 +1,20 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { LuBoxes, LuShoppingCart } from "react-icons/lu";
-import { FaArrowRightLong, FaCartShopping } from "react-icons/fa6";
-import { CiShoppingCart } from "react-icons/ci";
 import {
   formatNumberToPersian,
   getFromLocalStorage,
   slugify,
 } from "@/utiles/utils-func";
 import { useEffect, useState } from "react";
-import { FaArrowRight } from "react-icons/fa";
-import ProductAddToCart from "@/components/elements/product-add-to-cart";
 import SearchItemAddToCart from "@/components/elements/search-item-add-to-cart";
-import { useDispatch, useSelector } from "react-redux";
-import { setOrderProducts } from "@/features/orderSlice";
+import { useSelector } from "react-redux";
 
 const SearchBoxItem = ({ item }) => {
   const [shopping, setShopping] = useState(false);
   const [count, setCount] = useState(0);
   const [msg, setMsg] = useState("");
   const [reload, setReload] = useState(-1);
-  const dispatch = useDispatch();
   const prdslug = slugify(item?.title);
   const showPriceGlobal =
     useSelector((store) => store.globalSlice.showPriceGlobal) || false;
@@ -53,7 +46,7 @@ const SearchBoxItem = ({ item }) => {
   // console.log({ orderedProduct });
 
   return (
-    <div
+    <article
       id={`searchBoxItem${item?._id}`}
       className="group mb-2 relative w-full h-72 flex justify-center items-center z-0  [perspective:1000px]"
     >
@@ -71,8 +64,9 @@ const SearchBoxItem = ({ item }) => {
             <Image
               src={item?.imageSrc[0]?.file}
               fill
+              sizes="256px"
               className="object-fill"
-              alt={item?.imageSrc[0]?.file}
+              alt={item?.title}
             />
           </div>
           <div className="w-full flex flex-col gap-1 p-2">
@@ -83,11 +77,18 @@ const SearchBoxItem = ({ item }) => {
               {item?.title}
             </Link>
             <div className="flex justify-start items-center gap-1 pt-3">
-              <LuBoxes
+              {/* <LuBoxes
                 className={`w-4 h-4 ${
                   item?.instock == 0 ? "text-rose-600" : "text-blue-400"
                 } `}
-              />
+              /> */}
+              <svg
+                className={`w-4 h-4 ${
+                  item?.instock == 0 ? "text-rose-600" : "text-blue-400"
+                } `}
+              >
+                <use href="/sprite.svg#instock_icon" />
+              </svg>
               {item?.instock == 0 ? (
                 <span className="text-xs text-rose-600">ناموجود</span>
               ) : (
@@ -116,10 +117,12 @@ const SearchBoxItem = ({ item }) => {
                   >
                     {count}
                   </div>
-                  <LuShoppingCart
-                    className={`w-5 h-5 group-hover:w-[22px] group-hover:h-[22px] transition-all
+                  <svg
+                    className={`w-6 h-6  transition-all
                        duration-300 ease-in-out text-white`}
-                  />
+                  >
+                    <use href="/sprite.svg#shopp_icon" />
+                  </svg>
                 </div>
               </div>
               {showPriceGlobal ? (
@@ -148,7 +151,10 @@ const SearchBoxItem = ({ item }) => {
               onClick={() => setShopping(false)}
               className=" w-9 h-7 flex items-center justify-center cursor-pointer rounded-[4px] bg-blue-700 hover:bg-blue-800 transition-all duration-300 ease-in-out "
             >
-              <FaArrowRightLong className="w-7 text-white" />
+
+              <svg className="w-6 h-6 text-white rotate-180">
+                <use href="/sprite.svg#item_arrow_left" />
+              </svg>
             </div>
             <div className="flex flex-col gap-4 w-full pt-4 text-blue-950 font-bold relative ">
               <p className="text-sm line-clamp-2">{item?.title}</p>
@@ -167,7 +173,7 @@ const SearchBoxItem = ({ item }) => {
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

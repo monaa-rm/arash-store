@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FaAngleDown } from "react-icons/fa";
-import { IoMdRemoveCircleOutline } from "react-icons/io";
 
 const CategoryBox = ({
   productCat,
@@ -101,11 +99,18 @@ const CategoryBox = ({
           `}
         >
           انتخاب دسته بندی
-          <FaAngleDown
+          {/* <FaAngleDown
             className={`w-4 h-4 mt-0.5 transition-all duration-300 ${
               showCats ? "rotate-180" : "rotate-0"
             }`}
-          />
+          /> */}
+          <svg
+            className={`w-4 h-4 mt-0.5 transition-all duration-300 ${
+              showCats ? "rotate-180" : "rotate-0"
+            }`}
+          >
+            <use href="/sprite.svg#dropdown_icon" />
+          </svg>
         </div>
       </div>
 
@@ -136,10 +141,13 @@ const CategoryBox = ({
                 className={`flex justify-center items-center gap-0.5 rounded-full px-1 bg-slate-200 text-sm text-blue-700 cursor-pointer `}
               >
                 {cat?.name}
-                <IoMdRemoveCircleOutline
+                <svg
                   onClick={() => productCatListHandler(cat)}
-                  className="text-rose-600 hover:text-rose-800 transition-all duration-300"
-                />
+                  className=" w-3 h-3 text-rose-600 hover:text-rose-800 transition-all duration-300"
+                >
+                  {" "}
+                  <use href="/sprite.svg#remove_circle_icon" />
+                </svg>
               </div>
             ))}
           </div>

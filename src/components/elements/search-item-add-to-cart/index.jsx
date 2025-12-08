@@ -4,8 +4,7 @@ import {
   formatNumberToPersian,
   getFromLocalStorage,
 } from "@/utiles/utils-func";
-import React, { useState } from "react";
-import { FiMinus, FiPlus } from "react-icons/fi";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const SearchItemAddToCart = ({
@@ -94,7 +93,9 @@ const SearchItemAddToCart = ({
             className="h-full p-2 hover:bg-blue-600 hover:text-zinc-200 active:bg-blue-800  transition-all duration-300 ease-in-out"
             onClick={handleDecrement}
           >
-            <FiMinus />
+            <svg className={`w-4 h-4 text-inherit`}>
+              <use href="/sprite.svg#minus_icon" />
+            </svg>
           </button>
           <input
             type="number"
@@ -115,7 +116,9 @@ const SearchItemAddToCart = ({
             className="h-full p-2 hover:bg-blue-600 hover:text-zinc-200 active:bg-blue-800  transition-all duration-300 ease-in-out"
             onClick={handleIncrement}
           >
-            <FiPlus />
+            <svg className={`w-4 h-4 text-inherit`}>
+              <use href="/sprite.svg#plus_icon" />
+            </svg>
           </button>
         </div>
       </div>

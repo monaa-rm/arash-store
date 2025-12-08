@@ -1,5 +1,5 @@
 "use client";
-import { setShowMenu, setShowMenuCategory } from "@/features/globalSlice";
+import { setMenuActiveItem, setShowMenu, setShowMenuCategory } from "@/features/globalSlice";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 const HeaderCategories = ({ categories }) => {
   const showMenu = useSelector((store) => store.globalSlice.showMenuCategory);
   const dispatch = useDispatch();
-  console.log({ showMenu });
   useEffect(() => {
     const handleClick = (event) => {
       if (!event.target.closest("#headerCatlg")) {
@@ -21,15 +20,7 @@ const HeaderCategories = ({ categories }) => {
       document.body.removeEventListener("click", handleClick);
     };
   }, []);
-  //   useEffect(() => {
-  //     if (showMenu) {
-  //       document.body.style.overflowY = "hidden";
-  //     }
 
-  //     return () => {
-  //       document.body.style.overflowY = "auto";
-  //     };
-  //   }, [showMenu]);
   return (
     <div
       id="headerCatlg"
@@ -39,7 +30,7 @@ const HeaderCategories = ({ categories }) => {
     >
       <div className={`w-full h-full ${categories?.length> 16 ? "overflow-y-scroll" : "overflow-auto"}  p-2 gap-1 grid grid-cols-4 justify-start items-start`}>
         {categories?.map((cat) => (
-          <Link onClick={() =>  dispatch(setShowMenuCategory(false))} href={`/category/${cat?.link}`}
+          <Link onClick={() => { dispatch(setShowMenuCategory(false)); dispatch(setMenuActiveItem("/category"));}} href={`/category/${cat?.link}`}
             key={cat?._id}
             className={`h-10 hover:bg-blue-600 hover:text-white  transition-all duration-300 flex justify-center items-center cursor-pointer rounded-full`}
           >

@@ -5,7 +5,6 @@ import Order from "../../../../../models/order";
 export async function GET(req) {
   try {
     await connectDB();
-    console.log("ok");
   } catch (error) {
     return NextResponse.json({ error: "خطا از سمت سرور" }, { status: 500 });
   }
@@ -110,7 +109,6 @@ export async function GET(req) {
     const sendOrders = results[0]?.data || [];
     const totalOrders = results[0]?.totalCount[0]?.totalOrders || 0;
     const totalPages = Math.ceil(totalOrders / limit);
-    console.log({ results });
     return NextResponse.json(
       { data: { sendOrders, totalPages, totalOrders } },
       { status: 200 }

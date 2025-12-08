@@ -41,11 +41,8 @@ export async function POST(req) {
 
     // ۳. پردازش هر سفارش
     for (const order of orders) {
-      // console.log(";;;;;;;;;;;;;;;;;" , order)
       // const objectId = Types.ObjectId.createFromHexString(order.id)
-      // console.log({id:order.id , obj : objectId })
       const product = productMap.get(order.id);
-      console.log("product", product);
       // اگر محصول در دیتابیس پیدا نشد (نباید اتفاق بیفتد اگر داده‌ها درست باشند)
       if (!product) {
         console.warn(`Product with ID ${order.id} not found in database.`);
@@ -67,10 +64,11 @@ export async function POST(req) {
       if (requestedQuantity > 0) {
         localOrders.push({
           id: order.id,
-          quantity: requestedQuantity, 
+          quantity: requestedQuantity,
           // اطلاعات اضافی برای نمایش در فرانت
           title: product.title,
           price: product.price.howMuch,
+          weight: product.weight,
           // image:
           //   product?.imageSrc && product?.imageSrc.length > 0
           //     ? product?.imageSrc[0]?.file
@@ -83,6 +81,7 @@ export async function POST(req) {
           title: product.title,
           instock: product.instock,
           price: product.price.howMuch,
+          weight: product.weight,
           unit: product.unit,
           category: product.category,
           quantity: requestedQuantity,
@@ -93,8 +92,6 @@ export async function POST(req) {
         });
       }
     }
-console.log("........................")
-console.log({ localOrders, productsData })
     return NextResponse.json({ localOrders, productsData }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: "خطا از سمت سرور" }, { status: 500 });

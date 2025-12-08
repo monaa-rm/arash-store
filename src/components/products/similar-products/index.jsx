@@ -1,6 +1,5 @@
 "use client";
 import BestSellerSliderItem from "@/components/elements/best-seller-slider-item";
-import BestSellerSliderLastItem from "@/components/elements/best-seller-slider-last-item";
 
 import SliderWrapper from "@/components/modules/sliderWrapper";
 

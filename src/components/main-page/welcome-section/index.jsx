@@ -1,6 +1,6 @@
 "use client";
 import WelcomeSlider from "@/components/modules/welcomeSlider";
-import { setMenuActiveItem, setShowPriceGlobal } from "@/features/globalSlice";
+import { setMenuActiveItem } from "@/features/globalSlice";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -12,7 +12,7 @@ const WelcomeSection = ({ data }) => {
   }, []);
 
   return (
-    <section className={`w-full h-[150px] sm:h-[400px] relative`}>
+    <section className={`w-full max-h-[200px] sm:max-h-[400px]  overflow-hidden relative`}>
       <WelcomeSlider welcomeImages={data?.welcomeImages} />
       <div className=" w-full absolute top-0 h-full flex justify-center items-center ">
         <div className="w-full sm:w-[600px] flex flex-col items-center gap-6 ">

@@ -1,18 +1,11 @@
 "use client";
 import React, { useRef } from "react";
 import Slider from "react-slick";
-import { MdZoomOutMap } from "react-icons/md";
-import BestSellerSliderItem from "@/components/elements/best-seller-slider-item";
-import {
-  IoIosArrowDropleftCircle,
-  IoIosArrowDroprightCircle,
-} from "react-icons/io";
+
 
 const SliderWrapper = ({
   children,
-  dataLength,
   sliderTitle,
-  link,
   sliderbg,
   rmInfinite,
 }) => {
@@ -67,12 +60,17 @@ const SliderWrapper = ({
           className="absolute  h-16 rounded-full top-1/2 -translate-y-1/2 left-0 right-0
         flex justify-between items-center px-2 "
         >
-          <button className="button outline-0  z-[1]" onClick={next}>
-            <IoIosArrowDroprightCircle className="w-10 h-10 text-gray-300 opacity-50 hover:opacity-100 transition-all duration-300" />
-          </button>
-          <button className="button outline-0 z-[1]" onClick={previous}>
-            <IoIosArrowDropleftCircle className="w-10 h-10 text-gray-300 opacity-50 hover:opacity-100 transition-all duration-300" />
-          </button>
+         <button className="button outline-0 w-10 h-10  z-[1]" onClick={next}>
+              <svg className="w-10 h-10 text-gray-300 opacity-50 hover:opacity-100 transition-all rotate-180 duration-300">
+                <use href="/sprite.svg#slider_arrow_left" />
+              </svg>
+            </button> 
+            <button className="button outline-0 w-10 h-10 z-[1]" onClick={previous}>
+              <svg className="w-10 h-10 text-gray-300 opacity-50 hover:opacity-100 transition-all duration-300">
+                <use href="/sprite.svg#slider_arrow_left" />
+              </svg>
+            </button>
+          
         </div>
         <div className=" w-full h-full">
           <Slider

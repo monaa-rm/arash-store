@@ -1,11 +1,7 @@
 "use client";
 import { setOrderProducts } from "@/features/orderSlice";
-import {
-  formatNumberToPersian,
-  getFromLocalStorage,
-} from "@/utiles/utils-func";
+import { getFromLocalStorage } from "@/utiles/utils-func";
 import React, { useState } from "react";
-import { FiMinus, FiPlus } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 
 const OrderAddToCart = ({
@@ -14,15 +10,9 @@ const OrderAddToCart = ({
   productCount,
   prodId,
   setDeleted,
-  cost,
-  setCost,
 }) => {
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const showPriceGlobal = useSelector(
-    (store) => store.globalSlice.showPriceGlobal
-  );
   const countHandler = (value) => {
     let orders = getFromLocalStorage("orders");
 
@@ -68,7 +58,6 @@ const OrderAddToCart = ({
     if (count < productCount) {
       setCount(count + 1);
       try {
-        setLoading(true);
         const res = await fetch(`/api/order/getInStock`, {
           method: "POST",
           body: JSON.stringify({ id: prodId, quantity: count + 1 }),
@@ -84,8 +73,6 @@ const OrderAddToCart = ({
         }
       } catch (error) {
         setCount(count);
-      } finally {
-        setLoading(false);
       }
     }
   };
@@ -94,7 +81,6 @@ const OrderAddToCart = ({
     if (count > 0) {
       setCount(count - 1);
       try {
-        setLoading(true);
         const res = await fetch(`/api/order/getInStock`, {
           method: "POST",
           body: JSON.stringify({ id: prodId, quantity: count - 1 }),
@@ -110,8 +96,6 @@ const OrderAddToCart = ({
         }
       } catch (error) {
         setCount(count);
-      } finally {
-        setLoading(false);
       }
     }
   };
@@ -129,7 +113,10 @@ const OrderAddToCart = ({
             className="h-full p-2 hover:bg-blue-600 hover:text-zinc-200 active:bg-blue-800 transition-all duration-300 ease-in-out"
             onClick={handleDecrement}
           >
-            <FiMinus />
+            {/* <FiMinus /> */}
+            <svg className="w-3 h-3 text-inherit">
+              <use href="/sprite.svg#minus_icon" />
+            </svg>
           </button>
           <input
             type="number"
@@ -148,7 +135,10 @@ const OrderAddToCart = ({
             className="h-full p-2 hover:bg-blue-600 hover:text-zinc-200 active:bg-blue-800 transition-all duration-300 ease-in-out"
             onClick={handleIncrement}
           >
-            <FiPlus />
+            {/* <FiPlus /> */}
+            <svg className="w-3 h-3 text-inherit">
+              <use href="/sprite.svg#plus_icon" />
+            </svg>
           </button>
         </div>
       </div>

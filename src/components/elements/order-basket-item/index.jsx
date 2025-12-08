@@ -1,7 +1,5 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import { FaBox } from "react-icons/fa";
-import { TbCategoryFilled } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setSearchedCategory } from "@/features/filterSlice";
@@ -26,6 +24,7 @@ const OrderBasketItem = ({ order }) => {
             src={order?.image}
             alt={order?.title}
             fill
+            sizes="128px"
             className="object-fill rounded-[8px]"
           />
         </div>
@@ -37,7 +36,11 @@ const OrderBasketItem = ({ order }) => {
             {order?.title}
           </Link>
           <div className="flex gap-2">
-            <TbCategoryFilled className="w-4 h-4" />
+              <svg
+                className={`w-4 h-4 text-inherit `}
+              >
+                <use href="/sprite.svg#category_icon_2" />
+              </svg>
             <div className="flex gap-1">
               {order?.category?.map((cat, i) => (
                 <div
@@ -57,11 +60,14 @@ const OrderBasketItem = ({ order }) => {
             </div>
           </div>
           <div className="flex justify-start items-center gap-3">
-            <FaBox
-              className={`w-3 h-3 ${
-                order?.instock == 0 ? "text-rose-600" : "text-blue-600"
-              } `}
-            />
+ 
+              <svg
+                className={`w-3 h-3 ${
+                  item?.instock == 0 ? "text-rose-600" : "text-blue-400"
+                } `}
+              >
+                <use href="/sprite.svg#instock_icon" />
+              </svg>
             {order?.instock == 0 ? (
               <span className="text-xs ">در انبار موجود نیست</span>
             ) : (

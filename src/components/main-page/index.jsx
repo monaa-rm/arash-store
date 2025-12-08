@@ -1,4 +1,3 @@
-import React from "react";
 import WelcomeSection from "./welcome-section";
 import MainCategorySection from "./main-category-section";
 import BestSellers from "./best-sellers";
@@ -10,98 +9,29 @@ import FilterRemoteSection from "./filter-remote-section";
 import RandomProducts from "./random-products";
 import Blogs from "./blogs";
 import ArashStoreIntroduce from "./arashstore-introduce";
-import SiteSetting from "../../../models/SiteSetting";
-import Product from "../../../models/Product";
-import connectDB from "@/utiles/connectDB";
-import Order from "../../../models/order";
+async function getData() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/pages/main-page`,
+    { next: { revalidate: 60 } }
+  );
+  const result = await res.json();
+  return result;
+}
 
 const MainPage = async () => {
-  await connectDB();
-  const welcomeData = await SiteSetting.findOne();
-  const newproducts = await Product.find().limit(6).sort({ _id: -1 });
-  const suggestions = await Product.find({ suggest: true }).limit(6);
-  const randomProduct = await Product.aggregate([
-    { $sample: { size: 5 } },
-    {
-      $project: {
-        _id: 1,
-        title: 1,
-        imageSrc: 1,
-      },
-    },
-  ]);
-
-  ///////////////////////////////////////////////////////////////////
- const bestSellingProducts = await Order.aggregate([
-        // مرحله 1: باز کردن آرایه `items`
-        { $unwind: '$items' },
-
-        // مرحله جدید: تبدیل 'items.id' از رشته به ObjectId
-        {
-          $addFields: {
-            // یک فیلد جدید به نام `convertedItemId` ایجاد می‌کنیم
-            // که 'items.id' رو به ObjectId تبدیل می‌کنه.
-            convertedItemId: { $toObjectId: '$items.id' },
-          },
-        },
-
-        // مرحله 2: گروه بندی بر اساس `convertedItemId` و شمردن تکرارها
-        {
-          $group: {
-            _id: '$convertedItemId', // حالا بر اساس ObjectId گروه بندی می‌کنیم
-            totalSold: { $sum: '$items.quantity' },
-          },
-        },
-
-        // مرحله 3: مرتب سازی بر اساس `totalSold` نزولی
-        { $sort: { totalSold: -1 } },
-
-        // مرحله 4: محدود کردن تعداد نتایج
-        { $limit: 10 },
-
-        // مرحله 5: پیوست کردن اطلاعات کامل محصول از کالکشن `Product`
-        {
-          $lookup: {
-            from: Product.collection.name,
-            localField: '_id', // حالا _id در این مرحله ObjectId هست
-            foreignField: '_id', // و این هم ObjectId هست، پس match میشه
-            as: 'productDetails',
-          },
-        },
-
-        // مرحله 6: باز کردن آرایه `productDetails`
-        { $unwind: '$productDetails' },
-
-        // مرحله 7: انتخاب فیلدهای مورد نیاز و تغییر نام
-        {
-          $project: {
-            _id:'$productDetails._id' ,
-            productId: '$productDetails.productId',
-            title: '$productDetails.title',
-            price: '$productDetails.price',
-            imageSrc: '$productDetails.imageSrc',
-            // image: { $arrayElemAt: ['$productDetails.imageSrc.file', 0] },
-            instock: '$productDetails.instock',
-            unit: '$productDetails.unit',
-            totalSold: 1,
-          },
-        },
-      ]);
-
-////////////////////////////////////////////////
-console.log(bestSellingProducts)
+  const data = await getData();
 
   return (
     <main className=" flex flex-col gap-10">
-      <WelcomeSection data={JSON.parse(JSON.stringify(welcomeData)) || {}} />
+      <WelcomeSection data={data?.data?.welcomeData} />
       <MainCategorySection />
       <CropperSlider />
-      <NewProducts newproducts={JSON.parse(JSON.stringify(newproducts))} />
-      <BestSellers data={JSON.parse(JSON.stringify(bestSellingProducts))}   />
-      <ArashSuggestion data={JSON.parse(JSON.stringify(suggestions))} />
+      <NewProducts newproducts={data?.data?.newproducts} />
+      <BestSellers data={data?.data?.bestSellingProducts} />
+      <ArashSuggestion data={data?.data?.suggestions} />
       <FilterRemoteSection />
-      <RandomProducts data={JSON.parse(JSON.stringify(randomProduct))} />
-      <Blogs />
+      <RandomProducts data={data?.data?.randomProduct} />
+      <Blogs blogData={data?.data?.blogData} />
       <ArashStoreIntroduce />
       <ProductBrif />
     </main>

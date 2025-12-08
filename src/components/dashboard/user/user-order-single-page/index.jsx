@@ -7,9 +7,7 @@ import {
   orderStatusToPersian,
 } from "@/utiles/utils-func";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaAngleDown, FaCheck } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
 const statusItems = [
@@ -37,26 +35,6 @@ const UserOrderSinglePage = ({ data }) => {
  dispatch(setUserDashboardActiveItem({ title: "لیست سفارش ها", link: "order-list" }))
   }, []);
 
-//   const statusHandler = async (sts) => {
-//     try {
-//       setStsItem(sts);
-//       setShowStatus(false);
-//       const res = await fetch(`/api/order/status`, {
-//         method: "POST",
-//         body: JSON.stringify({
-//           status: sts,
-//           user: session.user,
-//           orderId: data?._id,
-//         }),
-//         headers: { "Content-Type": "application/json" },
-//       });
-//       if (!res.ok) {
-//         setStsItem(stsItem);
-//       }
-//     } catch (error) {
-//       setStsItem(stsItem);
-//     }
-//   };
 
   return (
     <div className="w-full flex flex-col gap-2 p-4 text-gray-600 text-sm 
@@ -95,37 +73,12 @@ const UserOrderSinglePage = ({ data }) => {
             <span className="text-xs text-gray-500">تومان</span>
           </div>
           <div
-            // onClick={() => setShowStatus(true)}
             className={`w-[150px] cursor-pointer border min-w-[150px] relative  flex items-center justify-center gap-2 ${statusbg[stsItem]} rounded-[8px] px-2 py-1 sm:py-2 text-sm font-bold`}
           >
-            {/* <FaAngleDown
-              className={`w-5 h-5  right-2 ${
-                showStatus ? "rotate-180" : "rotate-0"
-              } transition-all duration-500`}
-            /> */}
+
             {orderStatusToPersian(stsItem)}
           </div>
-          {/* <div
-            id="statusitems"
-            className={`absolute cursor-pointer z-[3] bg-white border top-10 left-0 right-0 rounded-[8px] overflow-hidden transition-all duration-500 ${
-              showStatus ? " opacity-100" : "opacity-0 pointer-events-none"
-            }`}
-          >
-            {statusItems.map((sts) => (
-              <div
-                onClick={() => {
-                  statusHandler(sts);
-                }}
-                key={sts}
-                className={`p-2 ${statusbg[sts]} flex justify-between items-center border-b  hover:bg-opacity-100`}
-              >
-                {orderStatusToPersian(sts)}
-                <div className="w-5 h-5">
-                  {stsItem == sts ? <FaCheck /> : <></>}
-                </div>
-              </div>
-            ))}
-          </div> */}
+        
         </div>
       </div>
       <div className="w-full  border-t py-2">

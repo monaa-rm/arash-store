@@ -59,6 +59,8 @@ export const getSortQuery = (sortOrder) => {
       return { _id: -1 }; // Assuming you have a createdAt field
     case "visit":
       return { view: -1 }; // Assuming you have a createdAt field
+    case "suggested":
+      return { suggest: -1 }; // Assuming you have a createdAt field
     default:
       return { _id: -1 }; // Default to latest
   }

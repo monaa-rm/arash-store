@@ -1,8 +1,4 @@
 "use client";
-import { GiTeePipe } from "react-icons/gi";
-import { MdAcUnit } from "react-icons/md";
-import { TbAirConditioning } from "react-icons/tb";
-import { TbFridge } from "react-icons/tb";
 
 import MainCategoryItem from "./main-category-item";
 
@@ -11,22 +7,23 @@ const MainCategorySection = () => {
     <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-4 p-2 font-[vazirbold]">
       <MainCategoryItem
         title="لوله ها"
-        icon={<GiTeePipe />}
+        icon="pipes_icon"
         cat={{ name: "لوله", link: "lule" }}
       />
       <MainCategoryItem
         title="گاز های فریونی"
-        icon={<MdAcUnit />}
+        icon={"gas_ferioni_icon"}
         cat={{ name: "گاز فریونی", link: "gaz-ferioni" }}
       />
+
       <MainCategoryItem
         title="تجهیزات کولر"
-        icon={<TbAirConditioning />}
+        icon="cooler_icon"
         cat={{ name: "تجهیزات کولر", link: "tajhizate-kooler" }}
       />
       <MainCategoryItem
         title="تجهیزات یخچال"
-        icon={<TbFridge />}
+        icon="fridge_icon"
         cat={{ name: "تجهیزات یخچال", link: "tajhizate-yakhchal" }}
       />
     </div>

@@ -2,7 +2,14 @@ import SearchPage from "@/components/search/search-page";
 import connectDB from "@/utiles/connectDB";
 import Product from "../../../models/Product";
 
-
+export const metadata = {
+  title: "جستجو‌ی محصولات | فروشگاه آرش",
+  description: "نتایج جستجوی شما در میان محصولات فروشگاه آرش",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 const Search = async () => {
   let highestPrice = 0;
 
@@ -35,9 +42,7 @@ const Search = async () => {
     console.error("Error fetching highest price:", error);
     throw Error("erroooor");
   }
-  return (
-    <SearchPage highestPrice={JSON.parse(JSON.stringify(highestPrice))} />
-  );
+  return <SearchPage highestPrice={JSON.parse(JSON.stringify(highestPrice))} />;
 };
 
 export default Search;

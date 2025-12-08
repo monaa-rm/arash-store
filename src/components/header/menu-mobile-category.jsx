@@ -4,8 +4,6 @@ import { setSearchedCategory } from "@/features/filterSlice";
 import { setShowMenu, setShowMenuCategory } from "@/features/globalSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FaArrowRightLong } from "react-icons/fa6";
-import { MdChevronLeft } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 
 const MenuMobileCategory = ({ categories }) => {
@@ -25,7 +23,9 @@ const MenuMobileCategory = ({ categories }) => {
         onClick={() => dispatch(setShowMenuCategory(false))}
         className="p-4 h-10 cursor-pointer border-b-2 flex justify-start items-center gap-2"
       >
-        <FaArrowRightLong />
+        <svg className="w-4 h-4 text-gray-900">
+          <use href="/sprite.svg#back_icon" />
+        </svg>
         دسته بندی ها
       </div>
       <div
@@ -34,7 +34,7 @@ const MenuMobileCategory = ({ categories }) => {
       >
         {categories?.map((cat) => (
           <Link
-          href={`/category/${cat?.link}`}
+            href={`/category/${cat?.link}`}
             onClick={() => {
               dispatch(setSearchedCategory(cat));
               dispatch(setShowMenuCategory(false));
@@ -46,7 +46,9 @@ const MenuMobileCategory = ({ categories }) => {
             className={`h-9 group border-b cursor-pointer hover:text-blue-700 transition-all duration-300 flex justify-between items-center pr-4 pl-2 `}
           >
             {cat.name}
-            <MdChevronLeft className=" ml-2 group-hover:ml-1 w-5 h-5 transition-all duration-200" />
+            <svg className=" ml-2 group-hover:ml-1 w-3 h-3 text-inherit transition-all duration-200">
+              <use href="/sprite.svg#show_arrow_left" />
+            </svg>
           </Link>
         ))}
       </div>

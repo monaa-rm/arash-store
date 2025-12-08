@@ -7,11 +7,18 @@ import Product from "../../../../../../models/Product";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import UserOrderSinglePage from "@/components/dashboard/user/user-order-single-page";
-
+export const metadata = {
+  title: "داشبورد کاربر",
+  description: " صفحه سفارش تکی",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 const SingleOrder = async ({ params }) => {
   const { orderId } = await params;
-  const { user } = await getServerSession(authOptions);
-  if (!user || user?.role !== "user") {
+  const session = await getServerSession(authOptions);
+  if (!session?.user || session?.user?.role !== "user") {
     return notFound();
   }
   await connectDB();

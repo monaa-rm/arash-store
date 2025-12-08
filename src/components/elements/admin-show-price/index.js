@@ -1,34 +1,12 @@
 import { setShowPriceGlobal } from "@/features/globalSlice";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const AdminShowPrice = () => {
-  // const [showPrice, setShowPrice] = useState(false);
   const showPriceGlobal =
   useSelector((store) => store.globalSlice.showPriceGlobal) || false;
-  const dispatch = useDispatch();
+ const dispatch = useDispatch();
   const [errText, setErrorText] = useState("");
-
-  // useEffect(() => {
-  //   async function fetchPriceSetting() {
-  //     setErrorText("");
-
-  //     try {
-  //       const res = await fetch("/api/stock-price/show-price-setting");
-  //       const data = await res.json();
-  //       if (res.ok) {
-  //         console.log(data.data);
-  //         dispatch(setShowPriceGlobal(data?.data?.showPrice))
-  //         // setShowPrice(data?.data?.showPrice);
-  //       } else {
-  //         setErrorText("خطا");
-  //       }
-  //     } catch (error) {
-  //       setErrorText("خطا");
-  //     }
-  //   }
-  //   fetchPriceSetting();
-  // }, []);
 
   const setShowPriceHandler = async () => {
     dispatch(setShowPriceGlobal(!showPriceGlobal));
@@ -52,7 +30,7 @@ const AdminShowPrice = () => {
 
   return (
     <div className="flex justify-between items-center w-full sm:w-96 border rounded-[10px] p-2 ">
-      <h3 className="py-2 font-bold">نمایش قیمت </h3>
+      <h3 className="py-2 font-bold">نمایش قیمت</h3>
       <div className="flex justify-end items-center gap-2">
         <span className="text-rose-600 text-sm">{errText}</span>
         <label className="relative inline-flex items-center cursor-pointer">

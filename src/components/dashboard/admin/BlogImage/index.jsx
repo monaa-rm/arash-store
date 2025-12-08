@@ -1,22 +1,15 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
-import { LuImagePlus, LuX } from "react-icons/lu";
-import { FiUploadCloud } from "react-icons/fi";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
-// import heic2any from "heic2any";
 import { normalizeFileName } from "@/utiles/utils-func";
 import { useSession } from "next-auth/react";
 
 const ProductImages = ({
   files,
   setFiles,
-  productImgs,
-  setProductImgs,
   errorArray,
   title,
   setFinallyText,
-  selectedFile,
-  setSelectedFile,
 }) => {
   const fileInputRef = useRef(null);
   const [errormsg, setErrormsg] = useState("");
@@ -24,13 +17,11 @@ const ProductImages = ({
   const { data: session, status } = useSession();
 
   const handleFileChange = async (e) => {
-    console.log(e.target.files);
     const file = e.target.files[0];
     if (file) {
       try {
         setErrormsg("");
         setFinallyText("");
-        // setSelectedFile(file);
         setLoading(true);
         const fileName = file?.name;
         const allowedExtensions = ["jpeg", "jpg", "png", "heic", "heif"];
@@ -104,7 +95,7 @@ const ProductImages = ({
   };
   const handleRemoveFile = async () => {
     setErrormsg("");
-    console.log(files)
+    console.log(files);
     if (files?.length) {
       try {
         setLoading(true);
@@ -177,7 +168,9 @@ const ProductImages = ({
                 loading ? "hidden" : "flex"
               }  flex-col items-center justify-center pt-5 pb-6 `}
             >
-              <LuImagePlus className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" />
+              <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400">
+                <use href="/sprite.svg#image_plus_icon" />
+              </svg>
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                 <span className="font-semibold">
                   برای انتخاب عکس اینجا کلیک کنید
@@ -207,13 +200,16 @@ const ProductImages = ({
                   fill
                   src={files}
                   alt={files}
+                  sizes="384px"
                   className={`rounded-[8px] object-fill overflow-hidden `}
                 />
                 <button
                   onClick={() => handleRemoveFile()}
                   className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
                 >
-                  <LuX />
+                  <svg className="w-5 h-5 text-inherit">
+                    <use href="/sprite.svg#x_mark_icon" />
+                  </svg>
                 </button>
               </div>
             </div>

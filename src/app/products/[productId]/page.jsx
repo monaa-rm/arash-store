@@ -1,4 +1,3 @@
-import ProductSingleItemPage from "@/components/products/product-single-Item-page";
 import connectDB from "@/utiles/connectDB";
 import Product from "../../../../models/Product";
 import mongoose from "mongoose";
@@ -9,7 +8,6 @@ import { slugify } from "@/utiles/utils-func";
 const ProductSingleItem = async ({ params }) => {
   const { productId } = await params;
   let data = {};
-  let similiarProducts = []; 
 
   try {
     await connectDB();

@@ -4,6 +4,14 @@ import { notFound } from "next/navigation";
 import User from "../../../../../models/User";
 import AdminEditPage from "@/components/dashboard/admin/admin-edit-page";
 
+export const metadata = {
+  title: "داشبورد ادمین",
+  description: "ویراش اطلاعات ادمین",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 const AdminEdit = async () => {
   const session = await getServerSession(authOptions);
   console.log({ role: session?.user?.role });

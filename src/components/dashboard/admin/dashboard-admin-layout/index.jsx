@@ -1,14 +1,9 @@
 "use client";
 import DashboardMobileManager from "@/components/elements/dashboard-mobile-manager";
 import { useEffect, useRef, useState } from "react";
-import { AiOutlineAppstore, AiOutlineBarChart } from "react-icons/ai";
-import { MdAdminPanelSettings, MdManageAccounts } from "react-icons/md";
-import { MdShoppingBag } from "react-icons/md";
-import { TbLogout } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { setDashboardActiveItem } from "@/features/globalSlice";
 import Link from "next/link";
-import { RiBloggerFill, RiSettings5Fill } from "react-icons/ri";
 
 const menuData = [
   { title: "مدیریت محصولات", link: false, iconname: "manage" },
@@ -19,7 +14,6 @@ const menuData = [
   { title: "مدیریت موجودی و قیمت ها", link: "price-inStock" },
   { title: "سفارش ها و پرداخت ها", link: false, iconname: "orders" },
   { title: "لیست سفارش ها", link: "order-list" },
-  // { title: "جزئیات پرداخت ها", link: "pay-details" },
   { title: "مدیریت کاربران", link: false, iconname: "users" },
   { title: " ویرایش اطلاعات شخصی", link: "admin-edit" },
   { title: "لیست کاربرها", link: "users-list" },
@@ -31,7 +25,6 @@ const menuData = [
   { title: "فروش روزانه", link: "daily-sell" },
   { title: "تنظیمات", link: false, iconname: "setting" },
   { title: "تنظیمات سایت", link: "settings" },
-  // { title: "خروج", link: false, iconname: "logout" },
 ];
 const DashboardAdminLayout = ({ children }) => {
   const [showList, setShowList] = useState(false);
@@ -42,7 +35,7 @@ const DashboardAdminLayout = ({ children }) => {
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }, [dashboardActiveItem]);
   const dispatch = useDispatch();
@@ -61,7 +54,7 @@ const DashboardAdminLayout = ({ children }) => {
   }, []);
 
   return (
-    <div className="w-full z-[0] relative  min-h-screen pb-4 pt-8 lg:pt-4 lg:flex justify-between">
+    <div className="w-full z-[0] relative  min-h-screen pb-44 pt-8 lg:pt-4 lg:flex justify-between">
       <DashboardMobileManager showList={showList} setShowList={setShowList} />
       <div
         id="admindashboardlist"
@@ -85,26 +78,30 @@ const DashboardAdminLayout = ({ children }) => {
             >
               <span className="w-5 flex justify-center">
                 {item?.iconname == "manage" ? (
-                  <AiOutlineAppstore className="w-5 h-5" />
+                  <svg className="w-4 h-4 text-inherit">
+                    <use href="/sprite.svg#products_icon" />
+                  </svg>
                 ) : item?.iconname == "orders" ? (
-                  <MdShoppingBag className="w-4 h-4" />
-                ) : item?.iconname == "admin-info" ? (
-                  <MdAdminPanelSettings className="w-4 h-4" />
+                  <svg className="w-4 h-4 text-inherit">
+                    <use href="/sprite.svg#shop_filled_icon" />
+                  </svg>
                 ) : item?.iconname == "users" ? (
-                  <MdManageAccounts className="w-5 h-5" />
+                  <svg className="w-5 h-5 text-inherit">
+                    <use href="/sprite.svg#user_setting_icon" />
+                  </svg>
                 ) : item?.iconname == "pay-reports" ? (
-                  <AiOutlineBarChart className="w-5 h-5" />
+                  <svg className="w-4 h-4 text-inherit">
+                    <use href="/sprite.svg#report_chart_icon" />
+                  </svg>
                 ) : item?.iconname == "setting" ? (
-                  <RiSettings5Fill className="w-5 h-5" />
+                  <svg className="w-5 h-5 text-inherit">
+                    <use href="/sprite.svg#setting_icon" />
+                  </svg>
                 ) : item?.iconname == "blog" ? (
-                  <RiBloggerFill className="w-5 h-5" />
-                ) 
-                
-                // : item?.iconname == "logout" ? (
-                //   <TbLogout className="w-5 h-5" />
-                // ) 
-                
-                : null}
+                  <svg className="w-4 h-4 text-inherit">
+                    <use href="/sprite.svg#blog_icon" />
+                  </svg>
+                ) : null}
               </span>
               {item?.iconname ? (
                 <span> {item?.title}</span>

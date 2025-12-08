@@ -2,12 +2,11 @@
 
 import { setHeaderSearchValue } from "@/features/filterSlice";
 import { useEffect } from "react";
-import { GrFormNextLink } from "react-icons/gr";
-import { IoMdCloseCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import GlobalLoading from "../elements/global-loading";
 import Link from "next/link";
 import { slugify } from "@/utiles/utils-func";
+import { useRouter } from "next/navigation";
 
 const SearchResult = ({ SetShowSearchResult, loading }) => {
   const headerSearchValue =
@@ -15,6 +14,7 @@ const SearchResult = ({ SetShowSearchResult, loading }) => {
   const searchItems =
     useSelector((store) => store.filterSlice.headerSearchedItems) || "";
   const dispatch = useDispatch();
+  const router = useRouter();
   useEffect(() => {
     const handleClick = (event) => {
       if (!event.target.closest("#searchResult")) {
@@ -35,25 +35,41 @@ const SearchResult = ({ SetShowSearchResult, loading }) => {
       className={`w-full overflow-y-auto   lg:h-[500px] bg-white rounded-[10px] border border-zinc-300 fixed lg:absolute top-0 left-0 right-0 bottom-0 lg:top-[120%] z-10`}
     >
       <div className="w-full lg:hidden flex justify-between gap-3 items-center border-b border-zinc-300 p-2">
-        <GrFormNextLink
-          className="w-8 min-w-9 h-8 cursor-pointer"
+        
+        <i
+          className="w-8 min-w-8  h-8 cursor-pointer flex items-center"
           onClick={() => {
             dispatch(setHeaderSearchValue(""));
+
             SetShowSearchResult(false);
           }}
-        />
+        >
+          <svg className="w-8 h-5 text-zinc-600 hover:text-zinc-700 transition-all duration-300 ease-in-out">
+            <use href="/sprite.svg#back_icon" />
+          </svg>
+        </i>
         <input
           type="text"
           value={headerSearchValue}
-          onChange={(e) => dispatch(setHeaderSearchValue(e.target.value))}
+          onChange={(e) => {
+            dispatch(setHeaderSearchValue(e.target.value));
+            router.push(
+              {
+                pathname: "/search",
+                query: e.target.value ? { q: e.target.value } : {},
+              },
+              undefined,
+              { shallow: true }
+            );
+          }}
           className="outline-none w-full"
         />
         {headerSearchValue && (
-          <div className="">
-            <IoMdCloseCircle
-              className="text-zinc-700 hover:text-zinc-800 transition-all duration-300 text-xl cursor-pointer w-8 h-8 "
-              onClick={() => dispatch(setHeaderSearchValue(""))}
-            />
+          <div onClick={() => dispatch(setHeaderSearchValue(""))} className="">
+            <svg className=" text-zinc-600 hover:text-zinc-700 transition-all duration-300 text-xl cursor-pointer w-8 h-8 ">
+              <use href="/sprite.svg#close_circle_icon" />
+            </svg>
+        
           </div>
         )}
       </div>
@@ -76,7 +92,10 @@ const SearchResult = ({ SetShowSearchResult, loading }) => {
                 <div className="flex gap-1">
                   <span className="text-gray-400 text-xs">- از دسته</span>
                   {item?.category?.map((cat, i) => (
-                    <span className="text-blue-500 line-clamp-1 text-xs" key={cat?._id}>
+                    <span
+                      className="text-blue-500 line-clamp-1 text-xs"
+                      key={cat?._id}
+                    >
                       {cat?.name} {i !== item?.category?.length - 1 && "،"}
                     </span>
                   ))}
@@ -88,7 +107,10 @@ const SearchResult = ({ SetShowSearchResult, loading }) => {
             onClick={() => {
               SetShowSearchResult(false);
             }}
-            href={`/search`}
+            href={{
+              pathname: "/search",
+              query: { q: headerSearchValue },
+            }}
             className="text-gray-600 text-sm px-4 py-2 hover:text-black transition-all duration-300 ease-in-out"
           >
             دیدن همه موارد...

@@ -1,26 +1,20 @@
 "use client";
-import DashboardProductItem from "@/components/elements/dashboard-product-item";
 import GlobalLoading from "@/components/elements/global-loading";
 import { useState, useEffect, useCallback } from "react";
-import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
 import SearchBoxItem from "../search-box-item";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setHeaderSearchValue,
-  setNumberCategories,
-  setTotalProducts,
-} from "@/features/filterSlice";
+import { setNumberCategories, setTotalProducts } from "@/features/filterSlice";
 import Pagination from "@/components/elements/pagination";
-import { BsWindowSidebar } from "react-icons/bs";
-import { usePathname } from "next/navigation";
+import {  useSearchParams } from "next/navigation";
 
 const SearchBoxItems = ({ currentPage, setCurrentPage }) => {
   const [products, setProducts] = useState([]);
-  const path = usePathname();
   const [productsPerPage] = useState(12);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const searchPrice = useSelector((store) => store.filterSlice.searchPrice);
+  const searchParams = useSearchParams();
+  const q = searchParams.get("q") || null;
   const headerSearchValue = useSelector(
     (store) => store.filterSlice.headerSearchValue
   );
@@ -34,6 +28,7 @@ const SearchBoxItems = ({ currentPage, setCurrentPage }) => {
   const dispatch = useDispatch();
   const fetchProducts = useCallback(async () => {
     setLoading(true);
+
     try {
       const response = await fetch(
         `/api/search?page=${currentPage}&limit=${productsPerPage}&minprice=${
@@ -43,7 +38,6 @@ const SearchBoxItems = ({ currentPage, setCurrentPage }) => {
         }&sortby=${activeSearchHeaderItem}&searchvalue=${
           headerSearchValue || ""
         }`
-        // `/api/search?page=${currentPage}&limit=${productsPerPage}`
       );
       const data = await response.json();
 
@@ -56,7 +50,6 @@ const SearchBoxItems = ({ currentPage, setCurrentPage }) => {
       }
     } catch (error) {
       console.error("Failed to fetch products:", error);
-      // Handle error appropriately, e.g., display an error message
     } finally {
       setLoading(false);
     }
@@ -70,11 +63,12 @@ const SearchBoxItems = ({ currentPage, setCurrentPage }) => {
   // useEffect برای فراخوانی API
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+
     fetchProducts();
   }, [fetchProducts]);
 
   return (
-    <div className="w-full p-4">
+    <section className="w-full p-4">
       {loading ? (
         <GlobalLoading />
       ) : (
@@ -95,7 +89,7 @@ const SearchBoxItems = ({ currentPage, setCurrentPage }) => {
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
       />
-    </div>
+    </section>
   );
 };
 

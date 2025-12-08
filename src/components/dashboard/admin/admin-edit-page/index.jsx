@@ -5,10 +5,6 @@ import { setDashboardActiveItem, setUserDashboardActiveItem } from "@/features/g
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import CategoryBox from "../category-box";
-import PropertiesBox from "../properties-box";
-import DescriptionBox from "../description-box";
-import ProductImages from "../productImages";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 

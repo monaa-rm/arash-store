@@ -25,6 +25,9 @@ export async function PATCH(req, { params }) {
       productProperties,
       productDesc,
       productImgs,
+      width,
+      height,
+      weight,
       editor,
     } = await req.json();
     const existingProduct = await Product.findOne({ _id: prdID });
@@ -38,7 +41,9 @@ export async function PATCH(req, { params }) {
       !productTitle ||
       !productId ||
       !productPrice ||
-      // !productCat ||
+      !width ||
+      !height ||
+      !weight ||
       !productInsocks ||
       !productUnit ||
       !productImgs ||
@@ -72,7 +77,13 @@ export async function PATCH(req, { params }) {
       description: productDesc,
       imageSrc: productImgs,
       suggest: existingProduct?.suggest,
+      height : +height,
+      width : +width ,
+      weight : +weight,
+      editor,
+      updatedAt: new Date(),
     };
+    console.log(updates)
     await Product.findByIdAndUpdate(prdID, updates, {
       new: true,
       runValidators: true,

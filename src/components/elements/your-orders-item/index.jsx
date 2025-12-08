@@ -1,25 +1,10 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import { FaBox, FaMoneyCheck, FaShoppingCart } from "react-icons/fa";
-import { TbCategoryFilled } from "react-icons/tb";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { setSearchedCategory } from "@/features/filterSlice";
 import { formatNumberToPersian } from "@/utiles/utils-func";
-import OrderAddToCart from "../order-add-to-cart";
-import { MdPriceCheck } from "react-icons/md";
-import { HiCurrencyDollar } from "react-icons/hi";
-import { PiCurrencyCircleDollar, PiCurrencyDollar } from "react-icons/pi";
-import { FaRegMoneyBill1 } from "react-icons/fa6";
-import { AiFillDollarCircle } from "react-icons/ai";
-import { CgDollar } from "react-icons/cg";
+
 
 const YourOrdersItem = ({ order }) => {
-  const [count, setCount] = useState(order?.quantity);
-  const [deleted, setDeleted] = useState(false);
-  const router = useRouter();
-  const dispatch = useDispatch();
-  if (deleted) return <></>;
+
   return (
     <div
       className={`border rounded-[8px] p-2 flex flex-col md:flex-row items-center  gap-2 text-gray-500 w-full `}
@@ -30,6 +15,7 @@ const YourOrdersItem = ({ order }) => {
             src={order.image}
             alt={order.title}
             fill
+            sizes="50px"
             className="object-fill rounded-[8px]"
           />
         </div>
@@ -38,25 +24,27 @@ const YourOrdersItem = ({ order }) => {
             {order?.title}
           </h1>
           <div className="flex justify-start items-center gap-1  ">
-            <FaShoppingCart className={`w-3.5 h-3.5 text-gray-500 `} />
+            <svg className={`w-5 h-5 text-gray-500 `}>
+              <use href="/sprite.svg#shopp_icon" />
+            </svg>
 
             <span className="text-sm text-gray-500">
               {order?.quantity} {order?.unit}
             </span>
           </div>
           <div className="flex gap-1 items-center">
-            <CgDollar className="w-4 h-4 text-gray-500" />
+            <svg className={`w-5 h-5 text-gray-500 `}>
+              <use href="/sprite.svg#dollar_icon" />
+            </svg>
             <div className=" text-sm flex gap-1 items-center">
               <span className="text-blue-600">
-                {formatNumberToPersian(count * order?.price)}
+                {formatNumberToPersian(order?.quantity * order?.price)}
               </span>
               <span className="text-blue-600">تومان</span>
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
   );
 };

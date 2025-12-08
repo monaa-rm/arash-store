@@ -1,13 +1,10 @@
 "use client";
 import { setShowLoginBox } from "@/features/globalSlice";
 import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LuLayoutDashboard } from "react-icons/lu";
-import { PiUserCheckThin, PiUserThin } from "react-icons/pi";
-import { TbLayoutDashboard } from "react-icons/tb";
+
 import { useDispatch } from "react-redux";
 
 const SignIn = () => {
@@ -34,7 +31,6 @@ const SignIn = () => {
       {status === "authenticated" ? (
         <>
           <button
-            // onClick={() => dispatch(setShowLoginBox(true))}
             onClick={() => setShowBox(true)}
             type="button"
             className=" hidden lg:flex justify-center items-center  min-w-24 h-10 rounded-[10px]  bg-blue-700 hover:bg-blue-800 text-sm
@@ -45,10 +41,12 @@ const SignIn = () => {
           <button
             onClick={() => setShowBox(true)}
             type="button"
-            className="  relative flex lg:hidden justify-center items-center  w-9 min-w-9  h-9
+            className="  relative flex lg:hidden justify-center items-center  w-7 min-w-7  h-10
       transition-all duration-300 ease-in-out  "
           >
-            <PiUserCheckThin className="w-full h-full font-thin" />
+            <svg className="w-full h-full text-zinc-600 hover:text-zinc-700 transition-all duration-300 ease-in-out">
+              <use href="/sprite.svg#user_icon_logged_in" />
+            </svg>
           </button>
         </>
       ) : (
@@ -64,10 +62,12 @@ const SignIn = () => {
           <button
             onClick={() => dispatch(setShowLoginBox(true))}
             type="button"
-            className=" flex lg:hidden justify-center items-center  w-9 min-w-9  h-10
+            className=" flex lg:hidden justify-center items-center  w-7 min-w-7  h-10
       transition-all duration-300 ease-in-out  "
           >
-            <PiUserThin className="w-full h-full font-thin" />
+            <svg className="w-full h-full text-zinc-600 hover:text-zinc-700 transition-all duration-300 ease-in-out">
+              <use href="/sprite.svg#user_icon" />
+            </svg>
           </button>
         </>
       )}
@@ -91,10 +91,9 @@ const SignIn = () => {
           داشبورد
         </Link>
         <button
-          onClick={() => {
-            if (path?.startsWith("/dashboard")) {
-              router.push("/");
-            }
+          onClick={(e) => {
+            e.preventDefault()
+
             signOut();
             setShowBox(false);
           }}

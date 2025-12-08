@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 const ProductSingleItemPrice = ({ price }) => {
   const showPriceGlobal =
     useSelector((store) => store.globalSlice.showPriceGlobal);
-    console.log(showPriceGlobal)
   return (
     <div className="flex  justify-center items-center gap-1 px-1.5 sm:pt-0">
       <span className="">قیمت:</span>

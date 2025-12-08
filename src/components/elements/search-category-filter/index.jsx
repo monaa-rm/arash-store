@@ -5,11 +5,9 @@ import {
   setShowCategory,
 } from "@/features/filterSlice";
 import { useEffect, useState } from "react";
-import { FaCaretDown } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import SearchPriceFilter from "../search-price-filter";
 
-const SearchCategoryFilter = () => {
+const SearchCategoryFilter = ({currentPage, setCurrentPage}) => {
   const [categories, setCategories] = useState([]);
   const showCategory = useSelector((store) => store.filterSlice.showCategory);
   const [catboxPosition, setCatboxPosition] = useState("bottom-[70px]"); // Initial position
@@ -95,11 +93,13 @@ const SearchCategoryFilter = () => {
               ? searchedCategory?.name
               : "  یک دسته بندی انتخاب کنید"}
           </span>
-          <FaCaretDown
-            className={`w-4 h-4 ${
+          <svg
+            className={`w-5 h-4 ${
               showCategory ? "rotate-180" : "rotate-0"
             } transition-all duration-300 `}
-          />
+          >
+            <use href="/sprite.svg#dropdown_icon" />
+          </svg>
         </div>
       </div>
       <div
@@ -111,7 +111,6 @@ const SearchCategoryFilter = () => {
         <div className=" w-full px-1 top-1 ">
           <input
             type="text"
-            // onClick={() => dispatch(setShowCategory(true))}
             className=" h-8 border bg-white absolute top-1 left-1 right-1 border-zinc-300 rounded-[4px] p-2  outline-none z-[1] "
             value={catSearch}
             onChange={(e) => searchCategoryHandler(e)}
@@ -145,7 +144,9 @@ const SearchCategoryFilter = () => {
                       }}
                       key={cat._id}
                       className={`line-clamp-1 cursor-pointer hover:bg-gray-100 transition-all duration-300 w-full h-[40px] min-h-[40px] px-4 ${
-                        cat.link == searchedCategory?.link ? "bg-gray-100" : "bg-none"
+                        cat.link == searchedCategory?.link
+                          ? "bg-gray-100"
+                          : "bg-none"
                       } flex justify-start items-center`}
                     >
                       {cat?.name}
@@ -162,7 +163,6 @@ const SearchCategoryFilter = () => {
             <div
               className={` w-full h-[241px] overflow-y-scroll catbox flex pb-4 flex-col gap-1 pt-4`}
             >
-              {" "}
               <div
                 onClick={() => {
                   dispatch(setSearchedCategory({}));
@@ -181,10 +181,13 @@ const SearchCategoryFilter = () => {
                     dispatch(setSearchedCategory(cat));
                     dispatch(setShowCategory(false));
                     dispatch(setReloadFilter());
+                    setCurrentPage(1)
                   }}
                   key={cat._id}
                   className={`line-clamp-1 cursor-pointer hover:bg-gray-100 transition-all duration-300 w-full h-[40px] min-h-[40px] px-4 ${
-                    cat.link == searchedCategory?.link ? "bg-gray-100" : "bg-none"
+                    cat.link == searchedCategory?.link
+                      ? "bg-gray-100"
+                      : "bg-none"
                   } flex justify-start items-center`}
                 >
                   {cat.name}

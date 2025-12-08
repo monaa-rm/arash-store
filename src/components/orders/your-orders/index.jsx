@@ -1,29 +1,23 @@
 "use client";
 
-import OrderItem from "@/components/elements/order-item";
 import GlobalLoading from "@/components/elements/global-loading";
 import { setOrderProducts } from "@/features/orderSlice";
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { HiDotsVertical } from "react-icons/hi";
-import { FiDelete } from "react-icons/fi";
-import { RiDeleteBin5Line } from "react-icons/ri";
 import { formatNumberToPersian } from "@/utiles/utils-func";
 import { useSession } from "next-auth/react";
-import { setShowLoginBox } from "@/features/globalSlice";
-import { useRouter } from "next/navigation";
 import YourOrdersItem from "@/components/elements/your-orders-item";
-import { IoInformationCircle } from "react-icons/io5";
 
-const YourOrders = ({cost, setCost}) => {
+const YourOrders = ({ cost, setCost, postcost }) => {
   const [orders, setOrders] = useState([]);
   const [draftOrders, setDraftOrders] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showDeleteAll, setShowDeleteAll] = useState(false);
+  const freeSending =
+    useSelector((store) => store.orderSlice.freeSending) || false;
 
   const dispatch = useDispatch();
-  const router = useRouter();
   const { data: session, status } = useSession();
   const orderProducts =
     useSelector((store) => store.orderSlice.orderProducts) || [];
@@ -31,7 +25,6 @@ const YourOrders = ({cost, setCost}) => {
     useSelector((store) => store.globalSlice.showPriceGlobal) || false;
   useEffect(() => {
     async function fetchOrderProducts() {
-      console.log(orderProducts);
       if (orderProducts.length && !draftOrders) {
         try {
           setLoading(true);
@@ -49,6 +42,7 @@ const YourOrders = ({cost, setCost}) => {
               localStorage.setItem("orders", JSON.stringify(data?.localOrders));
               setOrders(data?.productsData);
               if (data?.productsData?.length) {
+                setCost(0);
                 data?.productsData?.map((order) => {
                   const result = order?.quantity * order?.price;
                   setCost((prev) => {
@@ -86,21 +80,7 @@ const YourOrders = ({cost, setCost}) => {
       document.body.removeEventListener("click", handleClick);
     };
   }, []);
-  // const deleteAllHandler = () => {
-  //   try {
-  //     localStorage.removeItem("orders");
-  //     dispatch(setOrderProducts([]));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // const finishOrdersHandler = () => {
-  //   if (status == "authenticated") {
-  //     router.push("/checkout");
-  //   } else {
-  //     dispatch(setShowLoginBox(true));
-  //   }
-  // };
+
   return (
     <div className="w-full pt-4 flex flex-col gap-2 pb-12 ">
       <div className="flex gap-1 text-sm pt-2  pb-0.5  border-b relative ">
@@ -112,16 +92,6 @@ const YourOrders = ({cost, setCost}) => {
         <div className="flex flex-col md:grid md:grid-cols-2 gap-1 md:gap-4 w-full">
           {showPriceGlobal ? (
             <>
-              {/* <div className="flex justify-between items-center gap-2 text-gray-500">
-                <div className="flex gap-1 text-sm pt-1 py-2 ">
-                  <span className="font-bold">سبد خرید شما</span>
-                  <span className="text-gray-500">.</span>
-                  <span className="text-gray-500">
-                    {showPriceGlobal ? orderProducts.length : "0"} مرسوله
-                  </span>
-                </div>
-  
-              </div> */}
               {!loading && orders?.length ? (
                 <>
                   {orders?.map((order) => (
@@ -149,12 +119,39 @@ const YourOrders = ({cost, setCost}) => {
           )}
         </div>
       </div>
-      <div className="flex font-bold text-sm md:text-base gap-2 border-t-2 py-4">
-        <span className="">مجموع قیمت سفارش:</span>
-        <div className="flex justify-end items-center gap-0.5 text-gray-700">
-          {formatNumberToPersian(cost)}
-          <span className="text-xs text-gray-500">تومان</span>
+      <div className="flex flex-col font-bold text-sm md:text-base gap-2 border-t-2 py-4">
+        <div className="flex items-center justify-between md:justify-start gap-2">
+          <span className="">هزینه سفارش:</span>
+          <div className="flex justify-end items-center gap-0.5 text-gray-700">
+            {formatNumberToPersian(cost)}
+            <span className="text-xs text-gray-500">تومان</span>
+          </div>
         </div>
+        {!freeSending ? (
+          <>
+            {/* <div className="flex items-center font-normal justify-between md:justify-start gap-2">
+              <span className="">هزینه سفارش:</span>
+              <div className="flex justify-end items-center gap-0.5 text-gray-700">
+                {formatNumberToPersian(cost)}
+                <span className="text-xs text-gray-500">تومان</span>
+              </div>
+            </div> */}
+            <div className="flex items-center font-normal justify-between md:justify-start gap-2">
+              <span className="text-sm">نوع ارسال:</span>
+              <div className="flex justify-end items-center gap-0.5 text-gray-700">
+                <span className="text-xs text-gray-500">
+                  {" "}
+                  تیپاکس -{" "}
+                  {typeof postcost == "number" && postcost != 0
+                    ? `${formatNumberToPersian(
+                        postcost
+                      )} تومان (پرداخت در مقصد)`
+                    : "پرداخت در مقصد"}
+                </span>
+              </div>
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   );

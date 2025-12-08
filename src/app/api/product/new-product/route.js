@@ -7,7 +7,7 @@ export async function POST(req) {
   try {
     await connectDB();
   } catch (error) {
-    return NextResponse.json({ error: "خطا از سمت سرور" }, { status: 500 }); 
+    return NextResponse.json({ error: "خطا از سمت سرور" }, { status: 500 });
   }
   try {
     const {
@@ -19,7 +19,11 @@ export async function POST(req) {
       productUnit,
       productProperties,
       productDesc,
+      width,
+      height,
+      weight,
       productImgs,
+
       creator,
     } = await req.json();
     console.log({
@@ -33,12 +37,14 @@ export async function POST(req) {
       productDesc,
       productImgs,
       creator,
-    })
+    });
     if (
       !productTitle ||
       !productId ||
       !productPrice ||
-      // !productCat ||
+      !width ||
+      !height ||
+      !weight ||
       !productInsocks ||
       !productUnit ||
       !productImgs ||
@@ -63,16 +69,19 @@ export async function POST(req) {
     const sendData = {
       title: productTitle,
       productId,
-      price: {howMuch : +productPrice , date : Date.now() },
+      price: { howMuch: +productPrice, date: Date.now() },
       category: productCat,
       instock: productInsocks,
       unit: productUnit,
       properties: productProperties,
       description: productDesc,
+      height : +height,
+      width : +width ,
+      weight : +weight,
       imageSrc: productImgs,
       creator: existingUser._id,
     };
-await Product.create(sendData)
+    await Product.create(sendData);
     // console.log(    productTitle,
     //   productId,
     //   productPrice,

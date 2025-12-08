@@ -6,9 +6,6 @@ import { setOrderProducts } from "@/features/orderSlice";
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { HiDotsVertical } from "react-icons/hi";
-import { FiDelete } from "react-icons/fi";
-import { RiDeleteBin5Line } from "react-icons/ri";
 import { formatNumberToPersian } from "@/utiles/utils-func";
 import { useSession } from "next-auth/react";
 import { setShowLoginBox } from "@/features/globalSlice";
@@ -22,18 +19,16 @@ const OrdersPage = () => {
   const [cost, setCost] = useState(0);
   const dispatch = useDispatch();
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const {  status } = useSession();
   const orderProducts =
     useSelector((store) => store.orderSlice.orderProducts) || [];
   const showPriceGlobal =
     useSelector((store) => store.globalSlice.showPriceGlobal) || false;
   useEffect(() => {
     async function fetchOrderProducts() {
-      console.log(orderProducts);
       if (orderProducts.length && !draftOrders) {
         try {
           setLoading(true);
-          console.log(orderProducts);
           const res = await fetch(`/api/order/getOrders`, {
             method: "POST",
             body: JSON.stringify({ orders: orderProducts }),
@@ -43,7 +38,6 @@ const OrdersPage = () => {
 
           if (res.ok) {
             if (Array.isArray(data?.localOrders)) {
-              console.log(data?.localOrders);
               localStorage.setItem("orders", JSON.stringify(data?.localOrders));
               setOrders(data?.productsData);
               if (data?.productsData?.length) {
@@ -70,16 +64,7 @@ const OrdersPage = () => {
     }
     fetchOrderProducts();
   }, [orderProducts]);
-  // useEffect(() => {
-  //   if (orderProducts?.length && !draftOrders) {
-  //     orderProducts?.map((order) => {
-  //       const result = order?.quantity * order?.price;
-  //       setCost((prev) => {
-  //         return prev + result;
-  //       });
-  //     });
-  //   }
-  // }, [orderProducts]);
+
   useEffect(() => {
     const handleClick = (event) => {
       if (!event.target.closest("#deleteAll")) {
@@ -119,26 +104,28 @@ const OrdersPage = () => {
         <div className="absolute bottom-0 h-1 rounded-full w-20 bg-blue-500"></div>
         <h1 className="font-bold text-lg">سبد خرید </h1>
       </div>
-      <div className="w-full flex gap-2 relative pt-2">
-        <div className="flex flex-col gap-1 w-full">
+      <main className="w-full flex gap-2 relative pt-2">
+        <section className="flex flex-col gap-1 w-full">
           {loading && !orders?.length ? <GlobalLoading /> : <></>}
-
-          {showPriceGlobal ? (
+  
+          {showPriceGlobal && orders.length ? (
             <>
-              <div className="flex justify-between items-center gap-2 text-gray-500">
-                <div className="flex gap-1 text-sm pt-1 py-2 ">
+              <header className="flex justify-between items-center gap-2 text-gray-500">
+                <h2 className="flex gap-1 text-sm pt-1 py-2 ">
                   <span className="font-bold">سبد خرید شما</span>
                   <span className="text-gray-500">.</span>
                   <span className="text-gray-500">
-                    {showPriceGlobal ? orderProducts.length : "0"} مرسوله
+                    {orderProducts.length} مرسوله
                   </span>
-                </div>
+                </h2>
                 {orders.length && orderProducts?.length ? (
                   <div className="relative">
-                    <HiDotsVertical
-                      className="w-5 h-5 cursor-pointer"
-                      onClick={() => setShowDeleteAll(true)}
-                    />
+
+                    <i onClick={() => setShowDeleteAll(true)}>
+                      <svg className="w-6 h-6 cursor-pointer text-inherit">
+                        <use href="/sprite.svg#dots_icon" />
+                      </svg>
+                    </i>
                     <div
                       id="deleteAll"
                       onClick={() => deleteAllHandler()}
@@ -149,45 +136,51 @@ const OrdersPage = () => {
                        : " opacity-0 pointer-events-none"
                    } transition-all duration-300`}
                     >
-                      <RiDeleteBin5Line className="w-5 h-5 group-hover:text-blue-600" />
+                      <svg className="w-5 h-5 text-inherit group-hover:text-blue-600">
+                        <use href="/sprite.svg#delete_icon" />
+                      </svg>
                       <span className="text-sm group-hover:text-blue-600">
                         حذف همه
                       </span>
                     </div>
                   </div>
                 ) : null}
-              </div>
+              </header>
               {!loading && orders?.length ? (
-                <>
+                <div>
                   {orders?.map((order) => (
                     <OrderItem
                       setDraftOrders={setDraftOrders}
                       order={order}
                       key={order?._id}
-                      cost={cost} 
+                      cost={cost}
                       draftOrders={draftOrders}
                       setCost={setCost}
                     />
                   ))}
-                </>
+                </div>
               ) : !loading && !orders?.length ? (
                 <div className="min-h-96">هیج سفارشی موجود نیست</div>
               ) : null}
             </>
           ) : (
-            <div
+null
+          )}
+          <div
               className={`${
-                !loading && showPriceGlobal
+                !loading && !showPriceGlobal
                   ? " opacity-100"
                   : " opacity-0 pointer-events-none"
               } p-4 min-h-96 transition-all duration-1000 `}
             >
               لطفا جهت سفارش تماس بگیرید
             </div>
-          )}
-        </div>
-        {!loading && orders?.length && showPriceGlobal && orderProducts?.length ? (
-          <div
+        </section>
+        {!loading &&
+        orders?.length &&
+        showPriceGlobal &&
+        orderProducts?.length ? (
+          <aside
             className="w-full z-[5] md:z-0 md:w-[340px] h-20 md:h-40  add_to_cart_button border justify-center items-center md:items-start bg-white  md:rounded-[8px] py-0 md:py-8 px-4 
               fixed md:sticky md:bottom-auto md:top-[222px] lg:top-[190px] flex flex-row-reverse md:flex-col gap-2 md:gap-10 "
           >
@@ -199,7 +192,7 @@ const OrdersPage = () => {
               </div>
             </div>
             <button
-              disabled={!orders.length || !showPriceGlobal }
+              disabled={!orders.length || !showPriceGlobal}
               onClick={() => finishOrdersHandler()}
               type="button"
               className="w-full h-10 flex justify-center items-center rounded-[10px]
@@ -207,16 +200,16 @@ const OrdersPage = () => {
             >
               تایید و تکمیل سفارش
             </button>
-            <div
+            <p
               className="text-xs text-gray-400 absolute left-0 right-0 top-full pt-2 text-justify
             "
             >
               هزینه این سفارش هنوز پرداخت نشده‌ و در صورت اتمام موجودی، کالاها
               از سبد حذف می‌شوند
-            </div>
-          </div>
+            </p>
+          </aside>
         ) : null}
-      </div>
+      </main>
     </div>
   );
 };

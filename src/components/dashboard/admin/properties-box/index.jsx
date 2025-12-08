@@ -2,13 +2,17 @@
 
 import InputTextSection from "@/components/elements/input-text-section";
 import { useState } from "react";
-import { AiOutlineClose } from "react-icons/ai"; // یا هر آیکون حذف دیگری که دوست داری
-import { FaPlus } from "react-icons/fa";
-import { IoMdRemoveCircleOutline } from "react-icons/io";
 
-const PropertiesBox = ({ productProperties, setProductProperties , title , placeholder, finallyText, setFinallyText }) => {
+
+const PropertiesBox = ({
+  productProperties,
+  setProductProperties,
+  title,
+  placeholder,
+  finallyText,
+  setFinallyText,
+}) => {
   const [text, setText] = useState("");
-  //   const [productProperties, setProductProperties] = useState([]);
 
   const handleAddTodo = () => {
     if (text.trim() !== "") {
@@ -44,8 +48,10 @@ const PropertiesBox = ({ productProperties, setProductProperties , title , place
            text-white outline-none font-bold w-full sm:w-8 h-8 py-1 sm:py-0
           rounded-[8px] "
         >
-            <span className="flex sm:hidden">افزودن</span>
-          <FaPlus />
+          <span className="flex sm:hidden">افزودن</span>
+          <svg className="w-5 h-5 text-inherit">
+            <use href="/sprite.svg#plus_icon" />
+          </svg>
         </button>
       </div>
 
@@ -60,7 +66,9 @@ const PropertiesBox = ({ productProperties, setProductProperties , title , place
               onClick={() => handleDeleteTodo(index)}
               className="text-red-500"
             >
-              <IoMdRemoveCircleOutline />
+              <svg className="w-5 h-5 text-inherit">
+                <use href="/sprite.svg#remove_circle_icon" />
+              </svg>
             </button>
           </div>
         ))}

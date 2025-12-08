@@ -1,11 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { LuBoxes } from "react-icons/lu";
 import { formatNumberToPersian, slugify } from "@/utiles/utils-func";
-import { FaEdit } from "react-icons/fa";
-
-import { RiDeleteBin5Fill } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -14,7 +10,7 @@ const DashboardProductItem = ({ item, reload, setReload }) => {
   const [loading, setLoading] = useState(false);
   const [showRmBox, setShowRmBox] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
-const prdslug = slugify(item?.title)
+  const prdslug = slugify(item?.title);
   const router = useRouter();
 
   useEffect(() => {
@@ -73,6 +69,7 @@ const prdslug = slugify(item?.title)
               alt="spinner"
               width={25}
               height={25}
+              sizes="64px"
               className="text-blue-500 "
             />
           </div>
@@ -122,6 +119,7 @@ const prdslug = slugify(item?.title)
               fill
               className="object-fill"
               alt={item?.title}
+              sizes="256px"
             />
             <div className="absolute left-0 bottom-0 bg-gradient-to-r from-white to-transparent min-w-20 px-2 text-left rounded-r-full text-gray-700 font-bold text-sm ">
               {item?.productId}
@@ -135,11 +133,13 @@ const prdslug = slugify(item?.title)
               {item?.title}
             </Link>
             <div className="flex justify-start items-center gap-1 pt-3">
-              <LuBoxes
+              <svg
                 className={`w-4 h-4 ${
                   item?.instock == 0 ? "text-rose-600" : "text-blue-400"
                 } `}
-              />
+              >
+                <use href="/sprite.svg#instock_icon" />
+              </svg>
               {item?.instock == 0 ? (
                 <span className="text-xs text-rose-600">ناموجود</span>
               ) : (
@@ -152,22 +152,27 @@ const prdslug = slugify(item?.title)
               <div className="h-8 gap-2 flex justify-center items-center">
                 <Link
                   href={`/dashboard/admin/edit-product/${item?._id}`}
-                  className="w-7 h-7 group flex justify-center items-center rounded-[6px] bg-orange-700 hover:bg-orange-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out "
+                  className="w-7 h-7 group flex justify-center items-center rounded-[6px] bg-orange-500 hover:bg-orange-600  cursor-pointer  transition-all duration-300 ease-in-out "
                 >
-                  <FaEdit
+                  <svg
                     className={`w-5 h-5  transition-all duration-300 ease-in-out text-white`}
-                  />
+                  >
+                    <use href="/sprite.svg#edit_icon" />
+                  </svg>
                 </Link>
                 <div
                   onClick={() => {
                     setItemToRemove(item?._id);
                     setShowRmBox(true);
                   }}
-                  className="w-7 h-7 group flex justify-center items-center rounded-[6px] bg-rose-700 hover:bg-rose-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out "
+                  className="w-7 h-7 group flex justify-center items-center rounded-[6px] bg-rose-500 hover:bg-rose-600  cursor-pointer  transition-all duration-300 ease-in-out "
                 >
-                  <RiDeleteBin5Fill
-                    className={`w-5 h-5 transition-all duration-300 ease-in-out text-white`}
-                  />
+     
+                  <svg
+                    className={`w-5 h-5  transition-all duration-300 ease-in-out text-white`}
+                  >
+                    <use href="/sprite.svg#delete_icon" />
+                  </svg>
                 </div>
               </div>
               <div className="flex justify-center items-center gap-1">

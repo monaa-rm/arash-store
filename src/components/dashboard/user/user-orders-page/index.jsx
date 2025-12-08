@@ -1,15 +1,10 @@
 "use client";
 import DashboardOrderItem from "@/components/elements/dashboard-order-item";
-import DashboardProductItem from "@/components/elements/dashboard-product-item";
 import GlobalLoading from "@/components/elements/global-loading";
 import Pagination from "@/components/elements/pagination";
-import {
-  setDashboardActiveItem,
-  setUserDashboardActiveItem,
-} from "@/features/globalSlice";
+import { setUserDashboardActiveItem } from "@/features/globalSlice";
 import { useSession } from "next-auth/react";
 import { useState, useEffect, useCallback } from "react";
-import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 
 const UserOrdersPage = () => {
@@ -23,7 +18,7 @@ const UserOrdersPage = () => {
   const [loading, setLoading] = useState(false);
   const [reload, setReload] = useState(-1);
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const {data :session} = useSession();
+  const { data: session } = useSession();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
@@ -78,7 +73,7 @@ const UserOrdersPage = () => {
         <GlobalLoading />
       ) : (
         <div className="w-full flex flex-col gap-3 p-4">
-          { orders?.length === 0 ? (
+          {orders?.length === 0 ? (
             <div className="pb-4 text-sm text-gray-500">محصولی یافت نشد</div>
           ) : orders?.length > 0 ? (
             orders.map((item) => (

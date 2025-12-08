@@ -1,11 +1,8 @@
 "use client";
-import DashboardProductItem from "@/components/elements/dashboard-product-item";
 import DashboardSuggestionItem from "@/components/elements/dashboard-suggestion-item";
 import GlobalLoading from "@/components/elements/global-loading";
 import Pagination from "@/components/elements/pagination";
 import { useState, useEffect, useCallback } from "react";
-import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
-import { useSelector } from "react-redux";
 
 const SelectSuggestions = () => {
   const [products, setProducts] = useState([]);

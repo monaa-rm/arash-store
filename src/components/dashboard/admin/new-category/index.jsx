@@ -1,7 +1,6 @@
 import InputTextSection from "@/components/elements/input-text-section";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const NewCategory = ({

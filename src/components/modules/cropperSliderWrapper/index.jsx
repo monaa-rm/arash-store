@@ -1,27 +1,10 @@
 "use client";
 import React, { useRef } from "react";
 import Slider from "react-slick";
-import {
-  IoIosArrowDropleftCircle,
-  IoIosArrowDroprightCircle,
-} from "react-icons/io";
 import Link from "next/link";
-import { CgArrowLeft } from "react-icons/cg";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { setSearchedCategory } from "@/features/filterSlice";
 
-const CropperSliderWrapper = ({
-  children,
-  data,
-  sliderTitle,
-  link,
-  sliderbg,
-  cat,
-}) => {
+const CropperSliderWrapper = ({ children, cat }) => {
   let sliderRef = useRef(null);
-  const router = useRouter();
-  const dispatch = useDispatch();
   const next = () => {
     sliderRef.slickNext();
   };
@@ -36,9 +19,6 @@ const CropperSliderWrapper = ({
     slidesToShow: 2,
     slidesToScroll: 1,
     initialSlide: 0,
-    // nextArrow: <SampleNextArrow />,
-    // prevArrow: <SamplePrevArrow />,
-    // rtl: true,
     responsive: [
       {
         breakpoint: 1024,
@@ -66,14 +46,12 @@ const CropperSliderWrapper = ({
 
   return (
     <section
-      className={`px-4 py-8 w-full  bg-[url("/images/cropperbg.jpg")]  flex flex-col gap-4 relative`}
+      className={`px-4 py-8 w-full  bg-[url("/images/cropperbg.webp")]  flex flex-col gap-4 relative`}
     >
-      <div className="absolute left-0 right-0 top-0 bottom-0 bg-gray-900 bg-opacity-40"></div>
+      <div className="absolute left-0 right-0 top-0 bottom-0 bg-gray-900 bg-opacity-60"></div>
       <div className="z-[1] w-full flex flex-col md:flex-row md:items-center md:justify-center gap-4">
         <div className="w-full md:w-1/3 flex flex-col justify-center items-center gap-4 p-8">
-          <h2 className="font-bold text-2xl text-white">
-            انواع لوله مسی
-          </h2>
+          <h2 className="font-bold text-2xl text-white">انواع لوله مسی</h2>
           <span className="text-white text-center">
             شما میتوانید لوله های مسی با کیفیت و قیمت مناسب را از فروشگاه ما
             تهیه کنید!
@@ -83,15 +61,7 @@ const CropperSliderWrapper = ({
         justify-center items-center gap-[0.5em] overflow-hidden group hover:translate-y-[0.125em]
          duration-200 backdrop-blur-[12px]"
           >
-            <Link href={`/category/${cat?.link}`}
-              // onClick={() => {
-              //   if (cat?._id) {
-              //     dispatch(setSearchedCategory(cat));
-              //     router.push("/search");
-              //   }
-              // }}
-              className="text-white"
-            >
+            <Link href={`/category/${cat?.link}`} className="text-white">
               مشاهده محصولات
             </Link>
           </button>
@@ -103,10 +73,14 @@ const CropperSliderWrapper = ({
         flex justify-between items-center px-2 "
           >
             <button className="button outline-0  z-[1]" onClick={next}>
-              <IoIosArrowDroprightCircle className="w-10 h-10 text-gray-300 opacity-50 hover:opacity-100 transition-all duration-300" />
+              <svg className="w-8 h-8 text-gray-300 opacity-50 hover:opacity-100 transition-all rotate-180 duration-300">
+                <use href="/sprite.svg#slider_arrow_left" />
+              </svg>
             </button>
             <button className="button outline-0 z-[1]" onClick={previous}>
-              <IoIosArrowDropleftCircle className="w-10 h-10 text-gray-300 opacity-50 hover:opacity-100 transition-all duration-300" />
+              <svg className="w-8 h-8 text-gray-300 opacity-50 hover:opacity-100 transition-all duration-300">
+                <use href="/sprite.svg#slider_arrow_left" />
+              </svg>
             </button>
           </div>
           <div className=" w-full h-full">

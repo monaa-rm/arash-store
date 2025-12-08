@@ -1,11 +1,52 @@
 import ProductsPage from "@/components/products/products-page";
-import { NextResponse } from "next/server";
 import connectDB from "@/utiles/connectDB";
 import Product from "../../../models/Product";
 
+// app/products/page.jsx  (یا page.js)
+export async function generateMetadata({ searchParams }) {
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+  // const page = Math.max(1, Number(searchParams?.page) || 1);
+  const canonical = page
+    ? `${process.env.NEXT_PUBLIC_SERVER_URL}/products?page=${page}`
+    : `${process.env.NEXT_PUBLIC_SERVER_URL}/products`;
+
+  const title = page
+    ? `محصولات — صفحه ${page} | فروشگاه آرش`
+    : "محصولات | فروشگاه آرش";
+
+  const description = page
+    ? `صفحه ${page} از لیست محصولات فروشگاه آرش. مشاهده و خرید آنلاین انواع کالا.`
+    : "لیست کامل محصولات فروشگاه آرش. مشاهده و خرید جدیدترین محصولات با بهترین قیمت.";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: "فروشگاه آرش",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
+
 const Products = async () => {
   let highestPrice = 0;
- 
+
   try {
     await connectDB();
     // پایپ‌لاین Aggregation برای پیدا کردن گران‌ترین قیمت
@@ -35,7 +76,10 @@ const Products = async () => {
     console.error("Error fetching highest price:", error);
     throw Error("erroooor");
   }
-  return <ProductsPage highestPrice={JSON.parse(JSON.stringify(highestPrice))} />;
+
+  return (
+    <ProductsPage highestPrice={JSON.parse(JSON.stringify(highestPrice))} />
+  );
 };
 
 export default Products;

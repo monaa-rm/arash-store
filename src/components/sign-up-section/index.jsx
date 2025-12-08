@@ -1,10 +1,7 @@
 "use client";
 
-import SignUpSectionImages from "@/components/elements/produc-brif-images";
 import { setShowLoginBox } from "@/features/globalSlice";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import Login from "./login";
 import EnterWithSms from "./Enter-with-sms";

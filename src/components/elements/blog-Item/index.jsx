@@ -5,15 +5,17 @@ import React from "react";
 
 const BlogItem = ({ blog }) => {
   const blugSlug = slugifyBlog(blog?.title, blog?._id);
+  
   return (
-    <div className={`w-full h-[380px] flex justify-center items-center `}>
+    <article className={`w-full h-[380px] flex justify-center items-center `}>
       <div className="relative w-full max-w-[320px] sm:w-[330px] h-[380px] flex flex-col gap-3 overflow-hidden rounded-2xl shadow-lg bg-zinc-100 shadow-zinc-200 ">
         <div className="relative w-full h-[150px]">
           <Image
             src={blog?.imageSrc}
-            alt={blog?.imageSrc}
+            alt={blog?.title}
             fill
             className="object-cover"
+            sizes="380px"
           />
         </div>
         <div className="px-4 flex flex-col gap-4 ">
@@ -31,7 +33,7 @@ const BlogItem = ({ blog }) => {
           {blog?.createdAt ? getJalaliDate(blog?.createdAt) : ""}
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

@@ -58,7 +58,11 @@ export async function PATCH(req, { params }) {
         );
       }
 
-      await Category.findByIdAndUpdate(catId, { name, link: editedLink });
+      await Category.findByIdAndUpdate(catId, {
+        name,
+        link: editedLink,
+        updatedAt: new Date(),
+      });
       await Product.updateMany(
         { "category._id": catId }, // فیلتر: محصولاتی که در آرایه category خود، شیئی با _id این دسته دارند
         {

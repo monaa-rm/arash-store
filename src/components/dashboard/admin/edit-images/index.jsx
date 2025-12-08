@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import { RiDeleteBin5Fill } from "react-icons/ri";
 
 const EditImages = ({ images }) => {
   return (
@@ -19,12 +18,13 @@ const EditImages = ({ images }) => {
                 alt={img || "image"}
                 className="object-cover rounded-lg"
               />
-               <div className="w-7 h-7 absolute bottom-2 right-2 group flex justify-center items-center rounded-lg bg-rose-700 hover:bg-rose-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out ">
-                    <RiDeleteBin5Fill
-                      className={`w-5 h-5 transition-all duration-300 ease-in-out text-white`}
-                    />
-                  </div>
-            
+              <div className="w-7 h-7 absolute bottom-2 right-2 group flex justify-center items-center rounded-lg bg-rose-700 hover:bg-rose-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out ">
+                <svg
+                  className={`w-5 h-5 transition-all duration-300 ease-in-out text-white`}
+                >
+                  <use href="/sprite.svg#delete_icon" />
+                </svg>
+              </div>
             </div>
           </div>
         ))}

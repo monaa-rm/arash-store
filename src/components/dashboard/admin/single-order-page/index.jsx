@@ -9,7 +9,6 @@ import {
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaAngleDown, FaCheck } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
 const statusItems = [
@@ -32,11 +31,12 @@ const SingleOrderPage = ({ data }) => {
   const [showStatus, setShowStatus] = useState(false);
   const [stsItem, setStsItem] = useState(data?.status);
   const { data: session } = useSession();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
- dispatch(setDashboardActiveItem({ title: "لیست سفارش ها", link: "order-list" }))
+    dispatch(
+      setDashboardActiveItem({ title: "لیست سفارش ها", link: "order-list" })
+    );
   }, []);
-
 
   useEffect(() => {
     const handleClick = (event) => {
@@ -60,7 +60,7 @@ const SingleOrderPage = ({ data }) => {
         method: "POST",
         body: JSON.stringify({
           status: sts,
-          user: session.user,
+          user: session?.user,
           orderId: data?._id,
         }),
         headers: { "Content-Type": "application/json" },
@@ -74,8 +74,10 @@ const SingleOrderPage = ({ data }) => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 p-4 text-gray-600 text-sm 
-    ">
+    <div
+      className="w-full flex flex-col gap-2 p-4 text-gray-600 text-sm 
+    "
+    >
       <div className={`w-full flex justify-center items-center gap-2 relative`}>
         <Link
           href={`/dashboard/admin/users-list/${data?.client}`}
@@ -114,11 +116,13 @@ const SingleOrderPage = ({ data }) => {
             onClick={() => setShowStatus(true)}
             className={`w-[150px] cursor-pointer border min-w-[150px] relative  flex items-center gap-2 ${statusbg[stsItem]} rounded-[8px] px-2 py-1 sm:py-2 text-sm font-bold`}
           >
-            <FaAngleDown
+            <svg
               className={`w-5 h-5  right-2 ${
                 showStatus ? "rotate-180" : "rotate-0"
               } transition-all duration-500`}
-            />
+            >
+              <use href="/sprite.svg#dropdown_icon" />
+            </svg>
             {orderStatusToPersian(stsItem)}
           </div>
           <div
@@ -137,7 +141,13 @@ const SingleOrderPage = ({ data }) => {
               >
                 {orderStatusToPersian(sts)}
                 <div className="w-5 h-5">
-                  {stsItem == sts ? <FaCheck /> : <></>}
+                  {stsItem == sts ? (
+                    <svg className="w-5 h-5 text-inherit">
+                      <use href="/sprite.svg#done_icon" />
+                    </svg>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
             ))}

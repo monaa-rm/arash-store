@@ -2,10 +2,14 @@ import ProductRating from "@/components/elements/product-rating";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FaCheck } from "react-icons/fa";
-import { IoCheckmark } from "react-icons/io5";
 
-const SetCommentSection = ({ showCm, setShowCm, id ,comments , setComments }) => {
+const SetCommentSection = ({
+  showCm,
+  setShowCm,
+  id,
+  comments,
+  setComments,
+}) => {
   const [rating, setRating] = useState(0);
   const [cmText, setCmText] = useState("");
   const [cmName, setCmName] = useState("");
@@ -24,14 +28,13 @@ const SetCommentSection = ({ showCm, setShowCm, id ,comments , setComments }) =>
         setCmName(details?.name);
         setCmEmail(details?.email);
         setSaveCmDetail(true);
-      
       }
     } catch (error) {
       console.log(error);
     }
   }, []);
   const addCmHandler = async () => {
-    setFinallyText("")
+    setFinallyText("");
     const newErrorArray = [];
     setErrorArray([]);
     setLoading(true);
@@ -77,10 +80,9 @@ const SetCommentSection = ({ showCm, setShowCm, id ,comments , setComments }) =>
         if (!res.ok) {
           console.log(data);
           setFinallyText(data?.error);
-        }
-         else {
-           setComments([ data?.data,...comments ,])
-           setCmText("")
+        } else {
+          setComments([data?.data, ...comments]);
+          setCmText("");
         }
       }
     } catch (error) {
@@ -164,11 +166,18 @@ const SetCommentSection = ({ showCm, setShowCm, id ,comments , setComments }) =>
               console.log(!saveCmDetail);
             }}
           />
-          
-          <span className={`absolute right-[-20px] top-2 md:top-1/2 h-5   w-5 -translate-x-full -translate-y-1/2
-             rounded-[0.25em] border-[2px] border-zinc-500 border-opacity-70`} ></span>
-          <IoCheckmark className={`absolute -right-0 top-0 h-5 text-zinc-500 z-[1]  ${saveCmDetail ? "w-5" : " w-0"}`} />
 
+          <span
+            className={`absolute right-[-20px] top-2 md:top-1/2 h-5   w-5 -translate-x-full -translate-y-1/2
+             rounded-[0.25em] border-[2px] border-zinc-500 border-opacity-70`}
+          ></span>
+          <svg
+            className={`absolute -right-0 top-0 h-5 text-zinc-500 z-[1]  ${
+              saveCmDetail ? "w-5" : " w-0"
+            }`}
+          >
+            <use href="/sprite.svg#done_icon" />
+          </svg>
         </label>
       </div>
       <div className="w-full flex flex-col justify-start  pt-2">

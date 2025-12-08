@@ -6,7 +6,14 @@ import { notFound } from "next/navigation";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
-
+export const metadata = {
+  title: "داشبورد ادمین",
+  description: "ویرایش محصول",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 const ProductEditSingle = async ({ params }) => {
   const session = await getServerSession(authOptions);
   if (!session || session?.user?.role !== "admin") {

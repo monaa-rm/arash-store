@@ -5,28 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import NewCategory from "../new-category";
-import { FaPlus } from "react-icons/fa";
-import { FiSearch } from "react-icons/fi";
-import { BsFillTrashFill } from "react-icons/bs";
-import { RiEditFill } from "react-icons/ri";
 import RemoveBox from "@/components/elements/remove-box";
 
-// export const categorydata = [
-//   { name: "لوله", link: "lole" },
-//   { name: "آچار", link: "achar" },
-//   { name: "کولر", link: "kooler" },
-//   { name: "3کولر", link: "kooler3" },
-//   { name: "5کولر 5کولر ", link: "kooler5" },
-//   { name: "پیچ پیچ2 پیچ2 پیچ22", link: "pich2" },
-//   { name: "3پیچ", link: "pich3" },
-//   { name: "پیچ", link: "pich" },
-//   { name: "تصفیه اب", link: "tasfie" },
-//   { name: "فیلتر", link: "filter" },
-//   { name: "سیم", link: "sim" },
-//   { name: "شیر آب", link: "shir-ab" },
-//   { name: "خازن", link: "khazan" },
-//   { name: "برد", link: "bord" },
-// ];
 const CategoriesPage = () => {
   const [catdata, setCatdata] = useState([]);
   const [showNewCat, setShowNewCat] = useState(false);
@@ -85,7 +65,9 @@ const CategoriesPage = () => {
               onChange={(e) => searchCatHandler(e)}
               className="w-full h-full pl-4 outline-none placeholder-gray-500 text-sm"
             />
-            <FiSearch className="w-5 h-5" />
+            <svg className="w-4  h-4 text-inherit">
+              <use href="/sprite.svg#search_icon" />
+            </svg>
           </div>
           <button
             onClick={() => setShowNewCat(true)}
@@ -96,7 +78,9 @@ const CategoriesPage = () => {
            flex justify-center items-center gap-2"
           >
             <span>افزودن</span>
-            <FaPlus />
+            <svg className="w-4  h-4 text-inherit">
+              <use href="/sprite.svg#plus_icon" />
+            </svg>
           </button>
         </div>
         <NewCategory
@@ -124,20 +108,40 @@ const CategoriesPage = () => {
                 <div className="line-clamp-1">{item.name}</div>
                 <div className=" line-clamp-1">{item.link}</div>
                 <div className="flex items-center gap-4">
-                  <RiEditFill
+                  {/* <RiEditFill
                     onClick={() => {
                       setCatToEdit(item);
                       setShowNewCat(true);
                     }}
-                    className="w-5 h-5 cursor-pointer text-blue-400 hover:text-blue-600 transition-all duration-300 ease-in-out"
-                  />
-                  <BsFillTrashFill
+                    className="w-4  h-4 cursor-pointer text-blue-400 hover:text-blue-600 transition-all duration-300 ease-in-out"
+                  /> */}
+                  <i
+                    onClick={() => {
+                      setCatToEdit(item);
+                      setShowNewCat(true);
+                    }}
+                  >
+                    <svg className="w-4  h-4 cursor-pointer text-blue-400 hover:text-blue-600 transition-all duration-300 ease-in-out">
+                      <use href="/sprite.svg#edit_icon" />
+                    </svg>
+                  </i>
+                  {/* <BsFillTrashFill
                     onClick={() => {
                       setCatToRemove(item);
                       setShowRemove(true);
                     }}
                     className="w-4 h-4 cursor-pointer text-rose-400 hover:text-rose-600 transition-all duration-300 ease-in-out"
-                  />
+                  /> */}
+                  <i
+                    onClick={() => {
+                      setCatToRemove(item);
+                      setShowRemove(true);
+                    }}
+                  >
+                    <svg className="w-4 h-4 cursor-pointer text-rose-400 hover:text-rose-600 transition-all duration-300 ease-in-out">
+                      <use href="/sprite.svg#delete_icon" />
+                    </svg>
+                  </i>
                 </div>
               </div>
             ))
@@ -154,20 +158,29 @@ const CategoriesPage = () => {
                 <div className="line-clamp-1">{item.name}</div>
                 <div className=" line-clamp-1">{item.link}</div>
                 <div className="flex items-center gap-4">
-                  <RiEditFill
+
+                  <i
                     onClick={() => {
                       setCatToEdit(item);
                       setShowNewCat(true);
                     }}
-                    className="w-5 h-5 cursor-pointer text-blue-400 hover:text-blue-600 transition-all duration-300 ease-in-out"
-                  />
-                  <BsFillTrashFill
+                  >
+                    <svg className="w-4 h-4 cursor-pointer text-blue-400 hover:text-blue-600 transition-all duration-300 ease-in-out">
+                      <use href="/sprite.svg#edit_icon" />
+                    </svg>
+                  </i>
+
+                  <i
                     onClick={() => {
                       setCatToRemove(item);
                       setShowRemove(true);
                     }}
-                    className="w-4 h-4 cursor-pointer text-rose-400 hover:text-rose-600 transition-all duration-300 ease-in-out"
-                  />
+                  >
+                    <svg className="w-4 h-4 cursor-pointer text-rose-400 hover:text-rose-600 transition-all duration-300 ease-in-out">
+                      {" "}
+                      <use href="/sprite.svg#delete_icon" />
+                    </svg>
+                  </i>
                 </div>
               </div>
             ))

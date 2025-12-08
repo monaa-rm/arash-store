@@ -9,7 +9,6 @@ const CropperSlider = async () => {
   if (!category?._id) return <></>;
   const data = await Product.find({
     category: {
-      //   "link": { $in: [`pipes`] },
       $elemMatch: { link: category?.link },
     },
   })
@@ -18,8 +17,6 @@ const CropperSlider = async () => {
       properties: 1,
     })
     .limit(10);
-  console.log(data);
-  console.log(category);
   return (
     <CropperSliderWrapper
       data={""}

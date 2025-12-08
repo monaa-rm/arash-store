@@ -4,21 +4,16 @@ import InputTextSection from "@/components/elements/input-text-section";
 import { setDashboardActiveItem } from "@/features/globalSlice";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { FaImage } from "react-icons/fa";
-import { FaFileCirclePlus } from "react-icons/fa6";
-import { IoClose, IoCloudUploadOutline } from "react-icons/io5";
-import { MdDone } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import BlogImage from "../BlogImage";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-
+ 
 const AddBlogPage = () => {
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDesc, setBlogDesc] = useState("");
   const [files, setFiles] = useState("");
   const [errorArray, setErrorArray] = useState("");
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
   const [productImgs, setProductImgs] = useState([]);
   const [finallyText, setFinallyText] = useState("");
@@ -161,6 +156,7 @@ const AddBlogPage = () => {
             alt="spinner"
             width={25}
             height={25}
+            sizes="50px"
           />
         ) : null}
       </div>

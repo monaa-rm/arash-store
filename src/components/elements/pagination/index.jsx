@@ -1,4 +1,3 @@
-import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
 
 const Pagination = ({
   items,
@@ -7,6 +6,7 @@ const Pagination = ({
   setCurrentPage,
   totalPages,
 }) => {
+
   const getVisiblePageNumbers = () => {
     const maxVisiblePages = 5;
     let startPage = currentPage - Math.floor(maxVisiblePages / 2);
@@ -35,13 +35,16 @@ const Pagination = ({
   return (
     <nav className={`${loading || !items?.length ? "hidden" : "block"}`}>
       <ul className="pagination flex justify-center items-center gap-2 mt-4">
+        
         {totalPages > 5 && currentPage > 3 && (
           <li>
             <button
               onClick={() => setCurrentPage(1)}
               className="page-link p-3 rounded-[4px] bg-gray-200 text-gray-700 hover:bg-gray-300"
             >
-              <LuChevronLast />
+              <svg className="text-inherit w-4 h-4">
+                <use href="/sprite.svg#show_arrow_right" />
+              </svg>
             </button>
           </li>
         )}
@@ -67,7 +70,9 @@ const Pagination = ({
               onClick={() => setCurrentPage(totalPages)}
               className="page-link p-3 py-3 rounded-[4px] bg-gray-200 text-gray-700 hover:bg-gray-300"
             >
-              <LuChevronFirst />
+              <svg className="text-inherit w-4 h-4">
+                <use href="/sprite.svg#show_arrow_left" />
+              </svg>
             </button>
           </li>
         )}

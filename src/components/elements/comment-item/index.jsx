@@ -1,7 +1,4 @@
 import { useState } from "react";
-import { CiMail } from "react-icons/ci";
-import { FaAngleDoubleLeft, FaAngleDown } from "react-icons/fa";
-import { MdDeleteForever, MdMailOutline } from "react-icons/md";
 import ProductRating from "../product-rating";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -40,15 +37,18 @@ const CommentItem = ({ item, comments, setComments }) => {
     <div className="w-full p-4 flex flex-col gap-4 rounded border text-sm relative">
       <div
         onClick={() => cmDeleteHandler(item?._id)}
-        className="absolute left-4 top-4 w-5 h-5 flex text-center items-center
+        className="absolute  justify-center left-4 top-4 w-5 h-5 flex text-center items-center
        text-gray-500 cursor-pointer active:bg-blue-600 rounded bg-zinc-200 hover:bg-blue-500
         hover:text-white transition-all duration-300"
       >
-        <MdDeleteForever className={`${loading ? "hidden" : "flex"} w-5 h-5`} />
+        <svg className={`${loading ? "hidden" : "flex"} w-4 h-4`}>
+          <use href="/sprite.svg#delete_x_icon" />
+        </svg>
         <Image
           src={"/images/spinner.svg"}
           alt="spinner"
           fill
+          sizes="50px"
           className={`${loading ? "flex" : "hidden"}`}
         />
       </div>
@@ -71,14 +71,19 @@ const CommentItem = ({ item, comments, setComments }) => {
           <ProductRating rating={item?.rating} readOnly={true} />
         </div>
         <div className="flex justify-end items-center gap-1 text-xs">
-          {item?.email} <CiMail className="w-5 h-5" />
+          {item?.email}
+          <svg className="w-4 h-4 text-inherit">
+            <use href="/sprite.svg#mail_icon" />
+          </svg>
         </div>
       </div>
       <Link
         href={`/products/${item?.productDetails?._id}/${prdslug}`}
         className="p-1 rounded bg-zinc-100 flex justify-start items-center  gap-2 text-gray-400 hover:pr-2 transition-all duration-300 line-clamp-1"
       >
-        <FaAngleDoubleLeft className="w-3 h-3" />
+        <svg className="w-3 h-3 text-gray-600">
+          <use href="/sprite.svg#double_left_icon" />
+        </svg>
         {item?.productDetails?.title}
       </Link>
     </div>

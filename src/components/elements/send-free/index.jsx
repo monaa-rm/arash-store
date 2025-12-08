@@ -1,5 +1,8 @@
+import { useSelector } from "react-redux";
 
 const SendFree = () => {
+    let freeSending = useSelector((store) => store?.globalSlice?.freeSending) || false;
+
   return (
     <div className="w-full flex justify-center py-1 sm:justify-end sm:absolute sm:left-4">
 
@@ -9,8 +12,10 @@ const SendFree = () => {
      transform transition-all duration-300 
      shadow-[6px_6px_10px_rgba(0,0,0,0.1),-6px_-6px_10px_rgba(255,255,255,0.1)] 
      "
-      >
-        ارسال رایگان توسط فروشگاه آرش
+      >{
+        freeSending ? "ارسال رایگان توسط فروشگاه آرش" : "ارسال مطمئن توسط فروشگاه آرش"
+      }
+        
       </div>
 
       <div className="absolute -top-2 -right-0 w-3 h-3 bg-blue-500 rounded-full animate-ping shadow-lg"></div>

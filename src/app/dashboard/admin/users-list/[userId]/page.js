@@ -6,7 +6,14 @@ import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import User from "../../../../../../models/User";
 import Order from "../../../../../../models/order";
-
+export const metadata = {
+  title: "داشبورد ادمین",
+  description: "صفحه کاربر",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 const UserListSingle = async ({ params }) => {
   const { userId } = params;
 

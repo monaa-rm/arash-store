@@ -1,6 +1,5 @@
-import React from 'react'
 
-const AddCommentButton = ({showCm, setShowCm }) => {
+const AddCommentButton = ({setShowCm }) => {
   return (
     <button
     onClick={() => setShowCm(true) }

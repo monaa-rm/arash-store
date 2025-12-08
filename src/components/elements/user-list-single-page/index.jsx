@@ -1,8 +1,9 @@
 "use client";
+import { useSession } from "next-auth/react";
 import DashboardOrderItem from "../dashboard-order-item";
-import OrderSingleItem from "../order-single-item";
 
 const UserListSinglePage = ({ user, orders }) => {
+  const {data :session} = useSession();
   return (
     <div className="w-full flex flex-col gap-4 px-4 lg:px-0">
       <div className="w-full grid grid-cols-1 sm:grid-cols-4 gap-2 border-b  py-2  ">
@@ -26,7 +27,7 @@ const UserListSinglePage = ({ user, orders }) => {
         <h1 className="font-bold text-gray-700 ">سفارش ها</h1>
         <div className="flex flex-col gap-4">
          {orders?.map((order) => (
-            <DashboardOrderItem  data={order} key={order?._id} />
+            <DashboardOrderItem rolePath={session?.user?.role}  data={order} key={order?._id} />
           ))} 
         </div>
       </div>

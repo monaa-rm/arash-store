@@ -1,6 +1,5 @@
 "use client";
 import DashboardOrderItem from "@/components/elements/dashboard-order-item";
-import DashboardProductItem from "@/components/elements/dashboard-product-item";
 import GlobalLoading from "@/components/elements/global-loading";
 import Pagination from "@/components/elements/pagination";
 import {
@@ -8,7 +7,6 @@ import {
   setUserDashboardActiveItem,
 } from "@/features/globalSlice";
 import { useState, useEffect, useCallback } from "react";
-import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 
 const OrderListPage = () => {

@@ -2,7 +2,6 @@ import InputTextSection from "@/components/elements/input-text-section";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { FaChevronDown } from "react-icons/fa";
 
 const ChangeAllPrices = ({ reload, setReload }) => {
   const [openAllProduct, setOpenAllProduct] = useState(false);
@@ -65,11 +64,13 @@ const ChangeAllPrices = ({ reload, setReload }) => {
       >
         <h3 className="font-bold">تغییر قیمت همه محصولات</h3>
 
-        <FaChevronDown
+        <svg
           className={`w-6 h-6 cursor-pointer  ${
             openAllProduct ? "rotate-180" : "rotate-0"
           } transition-all duration-500 `}
-        />
+        >
+          <use href="/sprite.svg#dropdown_icon" />
+        </svg>
       </div>
       <div className="w-full pt-6 flex flex-col sm:flex-row justify-between items-center  ">
         <div className="w-full sm:w-1/2">
@@ -104,6 +105,7 @@ const ChangeAllPrices = ({ reload, setReload }) => {
                     alt="spinner"
                     width={25}
                     height={25}
+                    sizes="50px"
                   />
                 ) : null}
               </div>

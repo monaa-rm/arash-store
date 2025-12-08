@@ -4,21 +4,16 @@ import {
   setShowMenu,
   setShowMenuCategory,
 } from "@/features/globalSlice";
-import { setActive } from "@/features/productSlice";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { AiFillProduct } from "react-icons/ai";
-import { BiSolidInfoSquare } from "react-icons/bi";
-import { BsInfoSquareFill } from "react-icons/bs";
-import { FaHome } from "react-icons/fa";
-import { RiApps2Fill, RiBloggerFill } from "react-icons/ri";
-import { TbLayoutListFilled } from "react-icons/tb";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const HeaderContent = () => {
   const active = useSelector((store) => store.globalSlice.menuActiveItem);
-  const showMenuCategory = useSelector((store) => store.globalSlice.showMenuCategory);
+  const showMenuCategory = useSelector(
+    (store) => store.globalSlice.showMenuCategory
+  );
   const path = usePathname();
   const dispatch = useDispatch();
   const activeHandler = (clickedItem) => {
@@ -45,11 +40,14 @@ const HeaderContent = () => {
           dispatch(setShowMenuCategory(false));
         }}
         className={` hover:text-blue-700 group flex justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700 ${
-          active == "/" && !showMenuCategory &&
+          active == "/" &&
+          !showMenuCategory &&
           "text-blue-700 border-b border-blue-700 border-opacity-100"
         } transition-all duration-500 ease-in-out`}
       >
-        <FaHome className="lg:hidden w-5 h-5 " />
+        <svg className="lg:hidden w-5 h-4 text-inherit ">
+          <use href="/sprite.svg#home_icon" />
+        </svg>
         خانه
       </Link>
       <Link
@@ -59,13 +57,16 @@ const HeaderContent = () => {
           dispatch(setShowMenuCategory(false));
         }}
         href={"/products"}
-        className={`hover:text-blue-700  flex justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700  ${
-          active == "/products" && !showMenuCategory &&
+        className={`hover:text-blue-700 group flex justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700  ${
+          active == "/products" &&
+          !showMenuCategory &&
           "text-blue-700 border-b border-blue-700 border-opacity-100"
         } transition-all duration-500 ease-in-out`}
       >
-        {/* <AiFillProduct className="lg:hidden w-5 h-5 " /> */}
-        <RiApps2Fill  className="lg:hidden w-5 h-5 " />
+
+        <svg className="lg:hidden w-5 h-4 text-inherit ">
+          <use href="/sprite.svg#products_icon" />
+        </svg>
         محصولات
       </Link>
       <Link
@@ -75,27 +76,33 @@ const HeaderContent = () => {
           dispatch(setShowMenuCategory(false));
         }}
         href={"/blogs"}
-        className={`hover:text-blue-700  flex justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700  ${
-          active == "/blogs" && !showMenuCategory &&
+        className={`hover:text-blue-700 group flex justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700  ${
+          active == "/blogs" &&
+          !showMenuCategory &&
           "text-blue-700 border-b border-blue-700 border-opacity-100"
         } transition-all duration-500 ease-in-out`}
       >
-        <RiBloggerFill className="lg:hidden w-5 h-5 " />
+        <svg className="lg:hidden  w-5 h-4 text-inherit ">
+          <use href="/sprite.svg#blog_icon" />
+        </svg>
         وبلاگ
       </Link>
       <div
         onClick={() => {
-          //  dispatch(setMenuActiveItem('category'));
           dispatch(setShowMenuCategory(true));
         }}
-        className={` hover:text-blue-700  flex justify-start gap-2 lg:justify-center items-center border-b
+        className={` hover:text-blue-700 flex group justify-start gap-2 lg:justify-center items-center border-b
            border-opacity-0 hover:border-opacity-100 border-blue-700  cursor-pointer transition-all duration-500
-            ease-in-out ${ showMenuCategory &&
-          "text-blue-700 border-b border-blue-700 border-opacity-100"}`}
+            ease-in-out ${
+              (showMenuCategory || active == "/category") &&
+              "text-blue-700 border-b border-blue-700 border-opacity-100"
+            }`}
       >
-        <TbLayoutListFilled className="lg:hidden w-5 h-5 " />
+        <svg className="lg:hidden w-5 h-4 text-inherit ">
+          <use href="/sprite.svg#categories_icon" />
+        </svg>
         دسته بندی ها
-      </div> 
+      </div>
       <Link
         onClick={() => {
           activeHandler("/aboutus");
@@ -103,12 +110,15 @@ const HeaderContent = () => {
           dispatch(setShowMenuCategory(false));
         }}
         href={"/about-us"}
-        className={`hover:text-blue-700  flex justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700  ${
-          active == "/aboutus" && !showMenuCategory &&
+        className={`hover:text-blue-700  flex group justify-start gap-2 lg:justify-center items-center border-b border-opacity-0 hover:border-opacity-100 border-blue-700  ${
+          active == "/aboutus" &&
+          !showMenuCategory &&
           "text-blue-700 border-b border-blue-700 border-opacity-100"
         } transition-all duration-500 ease-in-out`}
       >
-        <BiSolidInfoSquare className="lg:hidden w-5 h-5 " />
+        <svg className="lg:hidden w-5 h-4 text-inherit ">
+          <use href="/sprite.svg#menu_info_icon" />
+        </svg>
         درباره ما
       </Link>
     </div>

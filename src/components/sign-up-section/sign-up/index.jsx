@@ -2,7 +2,6 @@
 import { setShowLoginBox } from "@/features/globalSlice";
 import Image from "next/image";
 import { useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
 const SignUp = ({ setShowSignUp }) => {
@@ -17,7 +16,7 @@ const SignUp = ({ setShowSignUp }) => {
 
     try {
       if ((phoneNumber, password, repeatPassword)) {
-        setDataMessage("")
+        setDataMessage("");
         setLoading(true);
         const formData = { phone: phoneNumber, password, repeatPassword };
         const res = await fetch("/api/auth/add", {
@@ -27,10 +26,10 @@ const SignUp = ({ setShowSignUp }) => {
         });
         const data = await res.json();
         if (res.ok) {
-          dispatch(setShowLoginBox(false))
-          setPhoneNumber("")
-          setPassword("")
-          setRepeatPassword("")
+          dispatch(setShowLoginBox(false));
+          setPhoneNumber("");
+          setPassword("");
+          setRepeatPassword("");
           console.log("success-", data.message);
         } else {
           console.log("error-", data.error);
@@ -38,9 +37,9 @@ const SignUp = ({ setShowSignUp }) => {
         }
       }
     } catch (error) {
-      setDataMessage("خطایی رخ داده است")
-    }finally {
-      setLoading(false)
+      setDataMessage("خطایی رخ داده است");
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -51,7 +50,9 @@ const SignUp = ({ setShowSignUp }) => {
           onClick={() => setShowSignUp(false)}
           className="[background:linear-gradient(144deg,#af40ff,#5b42f3_50%,#00ddeb)] text-white  py-2 font-bold rounded-[8px] hover:opacity-80 w-10 h-8 flex justify-center items-center"
         >
-          <FaArrowLeft className="text-white w-6 h-6" />
+          <svg className="text-white w-6 h-6">
+            <use href="/sprite.svg#item_arrow_left" />
+          </svg>{" "}
         </button>
       </div>
       <div className="w-full flex flex-col gap-4 ">
@@ -119,7 +120,14 @@ const SignUp = ({ setShowSignUp }) => {
             type="button"
           >
             ثبت نام
-            {loading ? <Image src={"/images/spinner.svg"} alt="spinner" width={25} height={25} /> : null}
+            {loading ? (
+              <Image
+                src={"/images/spinner.svg"}
+                alt="spinner"
+                width={25}
+                height={25}
+              />
+            ) : null}
           </button>
         </div>
       </div>

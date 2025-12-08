@@ -3,7 +3,6 @@ import { getJalaliDate, slugifyBlog } from "@/utiles/utils-func";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { RiDeleteBin5Fill } from "react-icons/ri";
 
 const AdminBlogItem = ({ blog, reload, setReload }) => {
   const [showRemoveBox, setShowRemoveBox] = useState(false);
@@ -51,8 +50,9 @@ const AdminBlogItem = ({ blog, reload, setReload }) => {
         <div className="relative w-full h-[150px]">
           <Image
             src={blog?.imageSrc}
-            alt={blog?.imageSrc}
+            alt={blog?.title}
             fill
+            sizes="384px"
             className="object-cover"
           />
         </div>
@@ -70,13 +70,18 @@ const AdminBlogItem = ({ blog, reload, setReload }) => {
         <div className="w-full h-10 absolute bottom-0 flex justify-between items-center px-4 py-2 border-t border-blue-300 text-zinc-500 text-sm">
           {getJalaliDate(blog?.createdAt)}
           <div className="w-7 h-7 group flex justify-center items-center rounded-[8px] bg-rose-700 hover:bg-rose-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out ">
-            <RiDeleteBin5Fill
+            <i
               onClick={() => {
                 setShowRemoveBox(true);
                 setItemToRemove(blog?._id);
               }}
-              className={`w-5 h-5 transition-all duration-300 ease-in-out text-white`}
-            />
+            >
+              <svg
+                className={`w-5 h-5 transition-all duration-300 ease-in-out text-white`}
+              >
+                <use href="/sprite.svg#delete_icon" />
+              </svg>
+            </i>
           </div>
           <div
             id={`blogItemAdmin${blog?._id}`}
@@ -94,6 +99,7 @@ const AdminBlogItem = ({ blog, reload, setReload }) => {
                   alt="spinner"
                   width={25}
                   height={25}
+                  sizes="50px"
                 />
               </div>
             ) : (

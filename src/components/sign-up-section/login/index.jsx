@@ -28,15 +28,12 @@ const Login = ({
       if ((phoneNumber, password)) {
         setDataMessage("");
         setLoading(true);
-        // const formData = { phone: phoneNumber, password };
         const res = await signIn("credentials", {
           phone: phoneNumber,
           password: password,
           loginWithCode: false,
           redirect: false,
         });
-        console.log(res);
-        // const data = await res.json();
         if (res.error) {
           console.log("error-", res.error);
           setDataMessage(res.error);
@@ -44,7 +41,6 @@ const Login = ({
           dispatch(setShowLoginBox(false));
           setPhoneNumber("");
           setPassword("");
-          // console.log("success-", data.message);
         }
       }
     } catch (error) {

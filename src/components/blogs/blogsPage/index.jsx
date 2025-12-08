@@ -2,8 +2,9 @@
 import BlogItem from "@/components/elements/blog-Item";
 import GlobalLoading from "@/components/elements/global-loading";
 import Pagination from "@/components/elements/pagination";
+import { setMenuActiveItem } from "@/features/globalSlice";
 import { useState, useEffect, useCallback } from "react";
-import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
+import { useDispatch } from "react-redux";
 
 const Allblogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -14,7 +15,10 @@ const Allblogs = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(-1);
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setMenuActiveItem("/blogs"));
+  }, []);
   const fetchblogs = useCallback(async () => {
     setLoading(true);
     try {
@@ -40,22 +44,30 @@ const Allblogs = () => {
     fetchblogs();
   }, [fetchblogs]);
 
- 
   return (
-    <div className="w-full p-4">
-      <h3 className="font-bold text-xl">آخرین وبلاگ ها</h3>
+    <main className="w-full p-4">
+      {/* <h1 className="font-bold text-xl"></h1> */}
+       <h1 className="font-bold text-xl flex items-center gap-2 pb-4  sm:px-4">
+        {/* <BiCategory /> */}
+        <svg className="w-5 h-5 text-inherit">
+          <use href="/sprite.svg#blog_icon" />
+        </svg>
+       آخرین وبلاگ ها
+      </h1>
       {loading ? (
         <GlobalLoading />
       ) : (
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 p-4">
-          {blogs?.length > 0 ? (
-            blogs.map((item) => <BlogItem blog={item} key={item._id} />)
-          ) : (
-            <div className="pb-4 text-sm text-gray-500">
-              وبلاگی برای نمایش وجود ندارد.
-            </div>
-          )}
-        </div>
+        <section className="w-full p-4">
+          <div  className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            {blogs?.length > 0 ? (
+              blogs.map((item) => <BlogItem blog={item} key={item._id} />)
+            ) : (
+              <p className="pb-4 text-sm text-gray-500">
+                وبلاگی برای نمایش وجود ندارد.
+              </p>
+            )}
+          </div>
+        </section>
       )}
       <Pagination
         items={blogs}
@@ -64,7 +76,7 @@ const Allblogs = () => {
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
       />
-    </div>
+    </main>
   );
 };
 

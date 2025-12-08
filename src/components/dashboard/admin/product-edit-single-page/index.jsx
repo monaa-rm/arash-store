@@ -26,6 +26,9 @@ const ProductEditSinglePage = ({ data }) => {
   const [productProperties, setProductProperties] = useState(
     data?.properties || []
   );
+  const [width, setWidth] = useState(String(data?.width) || "");
+  const [height, setHeight] = useState(String(data?.height) || "");
+  const [weight, setWeight] = useState(String(data?.weight) || "");
   const [productDesc, setProductDesc] = useState(data?.description || []);
   const [errorArray, setErrorArray] = useState([]);
   const [files, setFiles] = useState([]);
@@ -77,6 +80,55 @@ const ProductEditSinglePage = ({ data }) => {
 
     setProductInsocks(newvalue);
   };
+    const heightHandler = (value) => {
+    setFinallyText("");
+    let newvalue = value.replace(/[^0-9\-]/g, "");
+
+    // قبول فقط یک صفر
+    if (newvalue === "00") {
+      newvalue = "0";
+    }
+
+    // حذف صفر ابتدایی اگر عدد دیگری بعد از آن وارد شود
+    if (newvalue.length > 1 && newvalue.startsWith("0")) {
+      newvalue = newvalue.substring(1);
+      console.log(newvalue);
+      return newvalue;
+    }
+    setHeight(newvalue);
+  };
+  const widthHandler = (value) => {
+    setFinallyText("");
+    let newvalue = value.replace(/[^0-9\-]/g, "");
+
+    // قبول فقط یک صفر
+    if (newvalue === "00") {
+      newvalue = "0";
+    }
+
+    // حذف صفر ابتدایی اگر عدد دیگری بعد از آن وارد شود
+    if (newvalue.length > 1 && newvalue.startsWith("0")) {
+      newvalue = newvalue.substring(1);
+      return newvalue;
+    }
+    setWidth(newvalue);
+  };
+  const weightHandler = (value) => {
+    setFinallyText("");
+    let newvalue = value.replace(/[^0-9\-]/g, "");
+
+    // قبول فقط یک صفر
+    if (newvalue === "00") {
+      newvalue = "0";
+    }
+
+    // حذف صفر ابتدایی اگر عدد دیگری بعد از آن وارد شود
+    if (newvalue.length > 1 && newvalue.startsWith("0")) {
+      newvalue = newvalue.substring(1);
+      return newvalue;
+    }
+    setWeight(newvalue);
+  };
   const EditProductHandler = async () => {
     const newErrorArray = [];
     setErrorArray([]);
@@ -88,7 +140,9 @@ const ProductEditSinglePage = ({ data }) => {
         !productUnit.length ||
         !productPrice?.length ||
         !productInsocks.length ||
-        // !productCat.length ||
+        !width.length ||
+        !height.length ||
+        !weight.length ||
         !productImgs.length
       ) {
         if (!productTitle.length) {
@@ -106,9 +160,15 @@ const ProductEditSinglePage = ({ data }) => {
         if (!productInsocks.length) {
           newErrorArray.push("productInsocks");
         }
-        // if (!productCat.length) {
-        //   newErrorArray.push("productCat");
-        // }
+        if (!width.length) {
+          newErrorArray.push("width");
+        }
+        if (!height.length) {
+          newErrorArray.push("height");
+        }
+        if (!weight.length) {
+          newErrorArray.push("weight");
+        }
         if (!productImgs.length) {
           newErrorArray.push("files");
         }
@@ -130,6 +190,7 @@ const ProductEditSinglePage = ({ data }) => {
           productProperties,
           productDesc,
           productImgs,
+          width , height , weight,
           editor: session.user,
         };
         const res = await fetch(`/api/product/edit-product/${data._id}`, {
@@ -211,6 +272,39 @@ const ProductEditSinglePage = ({ data }) => {
           setFinallyText={setFinallyText}
         />
       </div>
+            <InputTextSection
+              id="height"
+              name="height"
+              errorArray={errorArray}
+              value={height}
+              type="text"
+              setValue={heightHandler}
+              label={"طول محصول (سانتی‌متر)"}
+              finallyText={finallyText}
+              setFinallyText={setFinallyText}
+            />
+            <InputTextSection
+              id="width"
+              name="width"
+              errorArray={errorArray}
+              value={width}
+              type="text"
+              setValue={widthHandler}
+              label={"عرض محصول (سانتی‌متر)"}
+              finallyText={finallyText}
+              setFinallyText={setFinallyText}
+            />
+            <InputTextSection
+              id="weight"
+              name="weight"
+              errorArray={errorArray}
+              value={weight}
+              type="text"
+              setValue={weightHandler}
+              label={"وزن محصول (گرم)"}
+              finallyText={finallyText}
+              setFinallyText={setFinallyText}
+            />
       <CategoryBox
         productCat={productCat}
         setProductCat={setProductCat}

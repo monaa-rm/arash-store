@@ -2,12 +2,10 @@
 
 import GlobalLoading from "@/components/elements/global-loading";
 import ProductBrifImages from "@/components/elements/produc-brif-images";
-import { BlurFade } from "@/components/magicui/blur-fade";
 import { setProductBrifItem, setShowProductBrif } from "@/features/globalSlice";
 import { slugify } from "@/utiles/utils-func";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 
 const ProductBrif = () => {
@@ -63,7 +61,6 @@ const ProductBrif = () => {
     if (productBrifItem) {
       getProduct();
     }
-    console.log(productBrifItem);
   }, [productBrifItem]);
   useEffect(() => {
     if (showProductBrif && innerDivRef.current) {
@@ -90,7 +87,10 @@ const ProductBrif = () => {
           >
             <div className="flex flex-col md:flex-row gap-2 h-full ">
               <div className="w-full md:w-1/2 h-64 md:h-full flex justify-center items-center">
-                <ProductBrifImages images={product?.imageSrc} />
+                <ProductBrifImages
+                  images={product?.imageSrc}
+                  title={product?.title}
+                />
               </div>
               <div className="w-full h-full md:w-1/2 border-t md:border-0  py-2 flex flex-col md:justify-center gap-2 ">
                 <div className=" flex flex-col gap-0.5">
@@ -98,8 +98,12 @@ const ProductBrif = () => {
                 </div>
                 <div className="flex justify-start items-center gap-2 border-t pt-2">
                   <div className="flex justify-center items-center gap-1 rounded-[5px] bg-gray-200 px-1">
-                    <FaStar className="text-white w-4 h-4 " />
-                    <span className="text-sm text-gray-700">
+                    <i>
+                      <svg className="text-white w-4 h-4 ">
+                        <use href="/sprite.svg#filled_star" />
+                      </svg>
+                    </i>
+                    <span className="text-sm text-gray-500 mt-1">
                       {product?.score}
                     </span>
                   </div>

@@ -267,6 +267,7 @@ const SettingsPage = ({ data }) => {
               alt="spinner"
               width={25}
               height={25}
+              sizes="50px"
             />
           ) : null}
         </div>

@@ -1,12 +1,10 @@
 "use client";
 import CommentItem from "@/components/elements/comment-item";
-import DashboardProductItem from "@/components/elements/dashboard-product-item";
 import GlobalLoading from "@/components/elements/global-loading";
 import Pagination from "@/components/elements/pagination";
-import { setDashboardActiveItem, setUserDashboardActiveItem } from "@/features/globalSlice";
+import {  setUserDashboardActiveItem } from "@/features/globalSlice";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
-import { LuChevronFirst, LuChevronLast } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 
 const UserCommentsPage = () => {
@@ -27,7 +25,7 @@ const UserCommentsPage = () => {
         link: "comments",
       })
     );
-  }, [path]);
+  }, [path, dispatch]);
   const fetchComments = useCallback(async () => {
     setLoading(true);
     try {
@@ -37,7 +35,6 @@ const UserCommentsPage = () => {
       const data = await response.json();
 
       if (response.ok) {
-        console.log(data?.data);
         setComments(data?.data?.sendComments);
         setTotalPages(data?.data?.totalPages);
         setTotalComments(data?.data?.totalComments || 0);

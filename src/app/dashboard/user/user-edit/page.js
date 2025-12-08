@@ -3,8 +3,14 @@ import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import User from "../../../../../models/User";
 import AdminEditPage from "@/components/dashboard/admin/admin-edit-page";
-import { FaUserEdit } from "react-icons/fa";
-
+export const metadata = {
+  title: "داشبورد کاربر",
+  description: "صفحه ویرایش اطلاعات کاربر",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 const UserEdit = async () => {
   const session = await getServerSession(authOptions);
   console.log({ role: session?.user?.role });

@@ -1,6 +1,5 @@
 "use client";
 import RandomProductItem from "@/components/elements/random-product-item";
-import Image from "next/image";
 import Slider from "react-slick";
 
 const RandomProducts = ({ data }) => {

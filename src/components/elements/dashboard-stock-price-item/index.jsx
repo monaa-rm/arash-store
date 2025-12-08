@@ -1,19 +1,13 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { LuBoxes, LuopenBoxCart } from "react-icons/lu";
-import { FaArrowRightLong, FaCartopenBox } from "react-icons/fa6";
-import { CiopenBoxCart } from "react-icons/ci";
 import { formatNumberToPersian } from "@/utiles/utils-func";
 import { useEffect, useState } from "react";
-import { FaArrowRight, FaDollarSign, FaEdit } from "react-icons/fa";
-import ProductAddToCart from "@/components/elements/product-add-to-cart";
-import SearchItemAddToCart from "@/components/elements/search-item-add-to-cart";
-import { RiDeleteBin5Fill } from "react-icons/ri";
+
 import InputTextSection from "../input-text-section";
 import { useSession } from "next-auth/react";
 
-const DashboardStockPriceItem = ({ item , reload , setReload}) => {
+const DashboardStockPriceItem = ({ item, reload, setReload }) => {
   const [openBox, setOpenBox] = useState(false);
   const [productStock, setProductStock] = useState(item?.instock || 0);
   const [productCost, setProductCost] = useState(item?.price.howMuch || 0);
@@ -78,6 +72,7 @@ const DashboardStockPriceItem = ({ item , reload , setReload}) => {
             <Image
               src={item?.imageSrc[0]?.file}
               fill
+              sizes="256px"
               className="object-fill"
               alt={item?.imageSrc[0]?.file}
             />
@@ -93,11 +88,13 @@ const DashboardStockPriceItem = ({ item , reload , setReload}) => {
               {item?.title}
             </Link>
             <div className="flex justify-start items-center gap-1 pt-3">
-              <LuBoxes
+              <svg
                 className={`w-4 h-4 ${
                   item?.instock == 0 ? "text-rose-600" : "text-blue-400"
                 } `}
-              />
+              >
+                <use href="/sprite.svg#instock_icon" />
+              </svg>
               {item?.instock == 0 ? (
                 <span className="text-xs text-rose-600">ناموجود</span>
               ) : (
@@ -110,11 +107,14 @@ const DashboardStockPriceItem = ({ item , reload , setReload}) => {
               <div className="h-8 gap-2 flex justify-center items-center">
                 <div
                   onClick={() => setOpenBox(true)}
-                  className="w-7 h-7 group flex justify-center items-center rounded-[8px] bg-violet-700 hover:bg-violet-800 hover:w-8 hover:h-8 cursor-pointer  transition-all duration-300 ease-in-out "
+                  className="w-7 h-7 group flex justify-center items-center rounded-[8px] bg-violet-700 hover:bg-violet-800  cursor-pointer  transition-all duration-300 ease-in-out "
                 >
-                  <FaDollarSign
-                    className={`w-5 h-5  transition-all duration-300 ease-in-out text-white`}
-                  />
+                                   <svg
+                                    className={`w-5 h-5  transition-all duration-300 ease-in-out text-white`}
+
+                  >
+                    <use href="/sprite.svg#dollar_icon" />
+                  </svg>
                 </div>
               </div>
               <div className="flex justify-center items-center gap-1">
@@ -133,7 +133,11 @@ const DashboardStockPriceItem = ({ item , reload , setReload}) => {
               onClick={() => setOpenBox(false)}
               className=" w-9 h-7 flex items-center justify-center cursor-pointer rounded-[8px] bg-blue-700 hover:bg-blue-800 transition-all duration-300 ease-in-out "
             >
-              <FaArrowRightLong className="w-7 text-white" />
+                 <svg
+                    className="w-7 h-7 text-white rotate-180"
+                  >
+                    <use href="/sprite.svg#item_arrow_left" />
+                  </svg>
             </div>
             <div className="flex-grow w-full pt-4 flex flex-col gap-6 text-blue-950 font-bold">
               <p className="text-sm line-clamp-2">{item?.title}</p>
@@ -165,16 +169,16 @@ const DashboardStockPriceItem = ({ item , reload , setReload}) => {
                   <span className="absolute bg-blue-700 w-40 h-36 rounded-full group-hover:scale-100 scale-0 -z-10 -left-2 -top-10 group-hover:duration-500 duration-700 origin-center transform transition-all"></span>
                   <span className="absolute bg-blue-800 w-40 h-36 -left-2 -top-10 rounded-full group-hover:scale-100 scale-0 -z-10 group-hover:duration-700 duration-500 origin-center transform transition-all"></span>
                   <div className="flex justify-center w-full items-center gap-2">
-                ویرایش
-                {loading ? (
-                  <Image
-                    src={"/images/spinner.svg"}
-                    alt="spinner"
-                    width={25}
-                    height={25}
-                  />
-                ) : null}
-              </div>
+                    ویرایش
+                    {loading ? (
+                      <Image
+                        src={"/images/spinner.svg"}
+                        alt="spinner"
+                        width={25}
+                        height={25}
+                      />
+                    ) : null}
+                  </div>
                 </button>
               </div>
             </div>

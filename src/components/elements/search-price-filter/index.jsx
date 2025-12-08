@@ -2,29 +2,20 @@
 
 import { setReloadFilter, setSearchPrice } from "@/features/filterSlice";
 import { formatNumberToPersian } from "@/utiles/utils-func";
-import { useEffect, useState } from "react";
-import { FaFilter } from "react-icons/fa";
 import { getTrackBackground, Range } from "react-range";
 import { useDispatch, useSelector } from "react-redux";
 
 const SearchPriceFilter = () => {
   const STEP = 1000;
   const MIN = 0;
-  // const MAX = highestPrice;
   const rtl = true;
-  // const [max, setMax] = useState(0);
   const searchPrice = useSelector((store) => store.filterSlice.searchPrice);
   const dispatch = useDispatch();
   const showPriceGlobal = useSelector(
     (store) => store.globalSlice.showPriceGlobal
   );
-  const highestPrice = useSelector(
-    (store) => store.filterSlice.highestPrice
-  );
-  // useEffect(() => {
-  //   if(highestPrice > 0){   dispatch(setMax(searchPrice[1]))}
+  const highestPrice = useSelector((store) => store.filterSlice.highestPrice);
 
-  // }, [highestPrice])
   if (!showPriceGlobal) return <></>;
   return (
     <div className="h-60 w-full max-w-80 rounded-[8px] border bg-white  py-4 px-4">
@@ -39,7 +30,6 @@ const SearchPriceFilter = () => {
           rtl={rtl}
           onChange={(value) => {
             dispatch(setSearchPrice(value));
-            // setValues(value);
           }}
           renderTrack={({ props, children }) => (
             <div
@@ -114,7 +104,9 @@ const SearchPriceFilter = () => {
         className="bg-blue-800 mt-6 flex justify-center items-center gap-2 w-full text-white border border-blue-700 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-[8px] hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group"
       >
         <span className="bg-blue-700 shadow-blue-700 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-[8px] opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-        <FaFilter />
+        <svg className="w-5 h-5 text-white">
+          <use href="/sprite.svg#filter_filled_icon" />
+        </svg>
         صافی
       </button>
     </div>

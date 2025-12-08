@@ -1,8 +1,5 @@
 import ProductRating from "@/components/elements/product-rating";
-import { LiaUserCircle } from "react-icons/lia";
-import { FaUserCircle } from "react-icons/fa";
 import { getJalaliDate } from "@/utiles/utils-func";
-import { AiOutlineDelete } from "react-icons/ai";
 import { useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -22,7 +19,6 @@ const UsersComments = ({ comments, setComments }) => {
       console.log(data);
       if (res.ok) {
         console.log(data);
-        // setFinallyText(data?.error);
         const copyCms = [...comments];
         const newComments = copyCms.filter((item) => item._id !== id);
         setComments(newComments);
@@ -50,7 +46,9 @@ const UsersComments = ({ comments, setComments }) => {
         >
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-1">
             <div className="flex justify-start items-center gap-2">
-              <FaUserCircle className="w-8 h-8 text-zinc-300" />
+              <svg className="w-8 h-8 text-zinc-300">
+                <use href="/sprite.svg#cm_user_icon" />
+              </svg>
               <span className="font-bold">{comment?.name}</span>
             </div>
             <div className="w-24">

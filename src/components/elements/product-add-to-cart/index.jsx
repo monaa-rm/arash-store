@@ -5,7 +5,6 @@ import {
   getFromLocalStorage,
 } from "@/utiles/utils-func";
 import React, { useEffect, useState } from "react";
-import { FiMinus, FiPlus } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 
 const ProductAddToCart = ({ productCount, id, price }) => {
@@ -95,7 +94,9 @@ const ProductAddToCart = ({ productCount, id, price }) => {
             className="h-full p-2 hover:bg-blue-600 hover:text-zinc-200 active:bg-blue-800  transition-all duration-300 ease-in-out"
             onClick={handleDecrement}
           >
-            <FiMinus />
+            <svg className="h-3 w-3 text-inherit">
+              <use href="/sprite.svg#minus_icon" />
+            </svg>
           </button>
           <input
             type="number"
@@ -116,24 +117,12 @@ const ProductAddToCart = ({ productCount, id, price }) => {
             className="h-full p-2 hover:bg-blue-600 hover:text-zinc-200 active:bg-blue-800  transition-all duration-300 ease-in-out"
             onClick={handleIncrement}
           >
-            <FiPlus />
+            <svg className="h-3 w-3 text-inherit">
+              <use href="/sprite.svg#plus_icon" />
+            </svg>
           </button>
         </div>
-        {/* <button
-          onClick={() => addToCartHandler()}
-          disabled={productCount == 0}
-          type="button"
-          className=" rounded-[7px] overflow-hidden text-white font-bold px-3 h-10 bg-blue-600  active:bg-blue-800  hover:bg-blue-700 transition-all duration-300 ease-in-out flex justify-between items-center "
-        >
-       {count !== 0 && !msg.length ? "ویرایش در سبد خرید" : "   افزودن به سبد خرید"}
-        </button> */}
-        {/* <div
-        className={`${
-          msg?.length ? "bg-orange-500" : "bg-none"
-        } rounded-[4px]  text-sm  flex justify-center items-center w-8 h-8 text-white`}
-      >
-        {msg}
-      </div> */}
+      
       </div>
 
       <span className="text-blue-600 md:hidden font-bold text-sm">

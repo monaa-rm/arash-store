@@ -1,7 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { TbSortDescending2 } from "react-icons/tb";
-import { RiFilterOffLine } from "react-icons/ri";
 import SearchCategoryFilter from "../search-category-filter";
 import SearchPriceFilter from "../search-price-filter";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,8 +15,8 @@ const searchHeaderItems = [
     link: "default",
   },
   {
-    title: "محبوبیت",
-    link: "popular",
+    title: "پیشنهاد‌ها",
+    link: "suggested",
   },
   {
     title: "پربازدید ترین",
@@ -83,12 +81,15 @@ const SearchMainBoxHeader = ({ setCurrentPage }) => {
   }, []);
 
   return (
-    <>
+    <header className="w-full">
       <div className="w-full border-b text-sm text-zinc-600 hidden lg:flex justify-between items-center p-4 ">
         <div className=" justify-start items-center flex gap-1 lg:gap-2">
           <div className="flex justify-start items-center gap-1">
-            <TbSortDescending2 className="w-6 h-6 text-zinc-500" />
-            مرتب سازی:
+            {/* <TbSortDescending2 className="w-6 h-6 text-zinc-500" /> */}
+            <svg className="w-6 h-6 text-zinc-500">
+              <use href="/sprite.svg#sort_icon" />
+            </svg>
+            <h2>مرتب سازی:</h2>
           </div>
           {searchHeaderItems?.map((item) => (
             <div
@@ -115,7 +116,7 @@ const SearchMainBoxHeader = ({ setCurrentPage }) => {
       </div>
       <div className=" border rounded-[8px] text-sm lg:hidden overflow-hidden z-[4] sticky top-[75px]">
         <div className="flex justify-between items-center  py-2 px-4 border-b bg-gradient-to-l from-slate-100 to-slate-50">
-          <span className="font-bold">فروشگاه</span>
+          <h2 className="font-bold">فروشگاه</h2>
           <span className="text-zinc-500 text-xs">
             نمایش {numberCategories} از {totalProducts} کالا
           </span>
@@ -125,14 +126,18 @@ const SearchMainBoxHeader = ({ setCurrentPage }) => {
             onClick={() => setShowFilter(true)}
             className="flex justify-center items-center gap-2 cursor-pointer "
           >
-            <RiFilterOffLine className="w-6 h-6 text-zinc-500" />
+            <svg className="w-6 h-6 text-zinc-500">
+              <use href="/sprite.svg#filter_icon" />
+            </svg>
             <span className="text-zinc-500"> فیلتر کردن</span>
           </div>
           <div
             onClick={() => setShowSort(true)}
             className="flex justify-center items-center gap-2 cursor-pointer "
           >
-            <TbSortDescending2 className="w-6 h-6 text-zinc-500" />
+            <svg className="w-6 h-6 text-zinc-500">
+              <use href="/sprite.svg#sort_icon" />
+            </svg>
             <span className="text-zinc-500">مرتب سازی</span>
           </div>
         </div>
@@ -191,7 +196,7 @@ const SearchMainBoxHeader = ({ setCurrentPage }) => {
           ))}
         </div>
       </div>
-    </>
+    </header>
   );
 };
 

@@ -1,8 +1,7 @@
 import { setShowLoginBox } from "@/features/globalSlice";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 const EnterWithSms = ({
@@ -18,18 +17,7 @@ const EnterWithSms = ({
   const [loginCode, setLoginCode] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  // useEffect(() => {
-  // const sendSms = async () => {
-  //   const res = await fetch(`/api/auth/sms/send-sms`,{
-  //     method:"POST",
-  //     body: {phone: phoneNumber},
-  //     headers: {"Content-Type" : "application/json"}
-  //   })
-  //   console.log(res)
-  // }
-  // enterwhitSms && sendSms()
 
-  // }, [enterwhitSms]);
   const loginHandler = async (e) => {
     e.preventDefault();
 
@@ -40,7 +28,6 @@ const EnterWithSms = ({
         setLoading(true);
         const res = await signIn("credentials", {
           phone: phoneNumber,
-          // password: password,
           loginWithCode: true,
           loginCode: loginCode,
           redirect: false,
@@ -55,7 +42,7 @@ const EnterWithSms = ({
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setSmsMessage("خطایی رخ داده است");
     } finally {
       setLoading(false);
@@ -68,7 +55,9 @@ const EnterWithSms = ({
           onClick={() => setEnterWithSms(false)}
           className="[background:linear-gradient(144deg,#af40ff,#5b42f3_50%,#00ddeb)] text-white  py-2 font-bold rounded-[8px] hover:opacity-80 w-10 h-8 flex justify-center items-center"
         >
-          <FaArrowLeft className="text-white w-6 h-6" />
+          <svg className="text-white w-6 h-6">
+            <use href="/sprite.svg#item_arrow_left" />
+          </svg>
         </button>
       </div>
       <div className="font-bold">
@@ -95,22 +84,22 @@ const EnterWithSms = ({
           </span>
         </div>
         <button
-            disabled={!phoneNumber || !loginCode}
-            onClick={(e) => loginHandler(e)}
-            className="[background:linear-gradient(144deg,#af40ff,#5b42f3_50%,#00ddeb)] text-white px-4 
+          disabled={!phoneNumber || !loginCode}
+          onClick={(e) => loginHandler(e)}
+          className="[background:linear-gradient(144deg,#af40ff,#5b42f3_50%,#00ddeb)] text-white px-4 
             py-2 font-bold rounded-[8px] hover:opacity-80 w-full flex justify-center items-center gap-1"
-            type="button"
-          >
-            ورود
-            {loading ? (
-              <Image
-                src={"/images/spinner.svg"}
-                alt="spinner"
-                width={25}
-                height={25}
-              />
-            ) : null}
-          </button>
+          type="button"
+        >
+          ورود
+          {loading ? (
+            <Image
+              src={"/images/spinner.svg"}
+              alt="spinner"
+              width={25}
+              height={25}
+            />
+          ) : null}
+        </button>
       </div>
     </div>
   );

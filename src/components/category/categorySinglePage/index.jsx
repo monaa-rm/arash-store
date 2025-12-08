@@ -1,11 +1,11 @@
 "use client";
-import DashboardProductItem from "@/components/elements/dashboard-product-item";
 import GlobalLoading from "@/components/elements/global-loading";
 import Pagination from "@/components/elements/pagination";
 import SearchBoxItem from "@/components/search/search-box-item";
-import { useParams, useSearchParams } from "next/navigation";
+import { setMenuActiveItem } from "@/features/globalSlice";
+import { useParams } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
-import { BiCategory } from "react-icons/bi";
+import { useDispatch } from "react-redux";
 
 const CategorySinglePage = ({ cat }) => {
   const params = useParams();
@@ -18,7 +18,10 @@ const CategorySinglePage = ({ cat }) => {
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(-1);
   const [isSearchActive, setIsSearchActive] = useState(false);
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setMenuActiveItem("/category"));
+  }, []);
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
@@ -46,25 +49,28 @@ const CategorySinglePage = ({ cat }) => {
   }, [fetchProducts]);
 
   return (
-    <div className="w-full p-4">
+    <main className="w-full p-4">
       <h1 className="font-bold text-xl flex items-center gap-2 pb-4">
-        <BiCategory />
+        {/* <BiCategory /> */}
+        <svg className="w-5 h-5 text-inherit">
+          <use href="/sprite.svg#category_icon_2" />
+        </svg>
         {cat?.name}
       </h1>
       {loading ? (
         <GlobalLoading />
       ) : (
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 p-4">
+        <section className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 p-4">
           {products?.length === 0 ? (
-            <div className="pb-4 text-sm text-gray-500">محصولی یافت نشد</div>
+            <p className="pb-4 text-sm text-gray-500">محصولی یافت نشد</p>
           ) : products?.length > 0 ? (
             products.map((item) => <SearchBoxItem item={item} key={item._id} />)
           ) : (
-            <div className="pb-4 text-sm text-gray-500">
+            <p className="pb-4 text-sm text-gray-500">
               محصولی برای نمایش وجود ندارد.
-            </div>
+            </p>
           )}
-        </div>
+        </section>
       )}
 
       <Pagination
@@ -74,7 +80,7 @@ const CategorySinglePage = ({ cat }) => {
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
       />
-    </div>
+    </main>
   );
 };
 

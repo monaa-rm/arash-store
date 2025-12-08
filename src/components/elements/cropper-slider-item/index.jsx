@@ -2,8 +2,7 @@
 
 import { slugify } from "@/utiles/utils-func";
 import Link from "next/link";
-import { CgArrowLeft } from "react-icons/cg";
-import { useSelector } from "react-redux";
+
 
 const CropperSliderItem = ({ item }) => {
   const prdslug = slugify(item?.title);
@@ -34,7 +33,9 @@ const CropperSliderItem = ({ item }) => {
          duration-200 backdrop-blur-[12px]"
         >
           <Link href={`/products/${item?._id}/${prdslug}`}>مشاهده محصول</Link>
-          <CgArrowLeft />
+          <svg className="w-6 h-4 text-white">
+            <use href="/sprite.svg#item_arrow_left" />
+          </svg>
         </button>
       </div>
     </div>

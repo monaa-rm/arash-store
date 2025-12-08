@@ -1,18 +1,7 @@
 "use client";
 
 import { useDispatch } from "react-redux";
-import {
-  setClientAdditionalInfo,
-  setClientAddress,
-  setClientCity,
-  setClientEmail,
-  setClientLastName,
-  setClientMobileNumber,
-  setClientName,
-  setClientPhoneNumber,
-  setClientPostalCode,
-  setClientProvince,
-} from "@/features/orderSlice";
+
 
 const InputTextSection = ({
   id,

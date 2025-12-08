@@ -15,7 +15,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "arash-store-bucket.storage.iran.liara.space",
+        hostname: `${process.env.NEXT_PUBLIC_HOST_URL}`,
         port: "",
         // پوشش دادن چند مسیر با استفاده از یک الگوی کلی‌تر
         // یا اگر مطمئن هستید که همه چیز زیر یک پوشش است، این روش خوب است.

@@ -2,7 +2,14 @@ import DashboradUserMainPage from "@/components/dashboard/user/dashboard-user-ma
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-
+export const metadata = {
+  title: "داشبورد کاربر",
+  description: "داشبورد کاربر",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 const UserDashboard = async () => {
   const  session  = await getServerSession(authOptions);
   console.log({"role" : session?.user?.role})
