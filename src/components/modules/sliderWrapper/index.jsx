@@ -52,21 +52,21 @@ const SliderWrapper = ({
   };
 
   return (
-    <section className={`p-4 w-full  ${sliderbg} flex flex-col gap-4`}>
+    <section className={`py-4 w-full  ${sliderbg} flex flex-col gap-4`}>
       <h2 className="font-bold text-2xl">{sliderTitle}</h2>
 
       <div className=" w-full  h-72 px-8 relative">
         <div
           className="absolute  h-16 rounded-full top-1/2 -translate-y-1/2 left-0 right-0
-        flex justify-between items-center px-2 "
+        flex justify-between items-center "
         >
-         <button className="button outline-0 w-10 h-10  z-[1]" onClick={next}>
-              <svg className="w-10 h-10 text-gray-300 opacity-50 hover:opacity-100 transition-all rotate-180 duration-300">
+         <button className="button outline-0 sm:w-10 sm:h-10  z-[1]" onClick={next}>
+              <svg className="w-8 h-8 sm:w-10 sm:h-10  text-gray-300 opacity-50 hover:opacity-100 transition-all rotate-180 duration-300">
                 <use href="/sprite.svg#slider_arrow_left" />
               </svg>
             </button> 
-            <button className="button outline-0 w-10 h-10 z-[1]" onClick={previous}>
-              <svg className="w-10 h-10 text-gray-300 opacity-50 hover:opacity-100 transition-all duration-300">
+            <button className="button outline-0 sm:w-10 sm:h-10 z-[1]" onClick={previous}>
+              <svg className="w-8 h-8 sm:w-10 sm:h-10  text-gray-300 opacity-50 hover:opacity-100 transition-all duration-300">
                 <use href="/sprite.svg#slider_arrow_left" />
               </svg>
             </button>

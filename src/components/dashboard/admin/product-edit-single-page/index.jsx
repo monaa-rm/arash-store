@@ -64,9 +64,40 @@ const ProductEditSinglePage = ({ data }) => {
 
     setProductPrice(newvalue);
   };
+  const persianNumbers = [
+/۰/g,
+/۱/g,
+/۲/g,
+/۳/g,
+/۴/g,
+/۵/g,
+/۶/g,
+/۷/g,
+/۸/g,
+/۹/g,
+];
+const arabicNumbers = [
+/٠/g,
+/١/g,
+/٢/g,
+/٣/g,
+/٤/g,
+/٥/g,
+/٦/g,
+/٧/g,
+/٨/g,
+/٩/g,
+];
   const productStockHandler = (value) => {
     setFinallyText("");
-    let newvalue = value.replace(/[^0-9\-]/g, "");
+
+    let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+    let newvalue = value.replace(/[^0-9]/g, "");
 
     // قبول فقط یک صفر
     if (newvalue === "00") {
@@ -82,7 +113,13 @@ const ProductEditSinglePage = ({ data }) => {
   };
     const heightHandler = (value) => {
     setFinallyText("");
-    let newvalue = value.replace(/[^0-9\-]/g, "");
+       let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+    let newvalue = englishValue.replace(/[^0-9]/g, "");
 
     // قبول فقط یک صفر
     if (newvalue === "00") {
@@ -99,7 +136,16 @@ const ProductEditSinglePage = ({ data }) => {
   };
   const widthHandler = (value) => {
     setFinallyText("");
-    let newvalue = value.replace(/[^0-9\-]/g, "");
+    
+    let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+
+    // --- 2️⃣ حذف هر چیزی به جز عدد و علامت منفی ---
+    let newvalue = englishValue.replace(/[^0-9]/g, "");
 
     // قبول فقط یک صفر
     if (newvalue === "00") {
@@ -115,8 +161,16 @@ const ProductEditSinglePage = ({ data }) => {
   };
   const weightHandler = (value) => {
     setFinallyText("");
-    let newvalue = value.replace(/[^0-9\-]/g, "");
 
+    let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+
+    // --- 2️⃣ حذف هر چیزی به جز عدد و علامت منفی ---
+    let newvalue = englishValue.replace(/[^0-9]/g, "");
     // قبول فقط یک صفر
     if (newvalue === "00") {
       newvalue = "0";

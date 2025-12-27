@@ -11,9 +11,9 @@ import { useEffect, useState } from "react";
 import { setFavorites } from "@/features/globalSlice";
 
 const ProductSingleItemPage = ({ data, similiarProducts }) => {
-
   let favorites = useSelector((store) => store?.globalSlice?.favorites) || [];
-  let freeSending = useSelector((store) => store?.globalSlice?.freeSending) || false;
+  let freeSending =
+    useSelector((store) => store?.globalSlice?.freeSending) || false;
   const [isLiked, setIsLiked] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -161,12 +161,12 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
                   onClick={() => favoriteHandler()}
                 >
                   {isLiked ? (
-                    <svg className="w-7 h-7 cursor-pointer hover:text-blue-700 text-zinc-800 transition-all duration-300">
-                      <use href="/sprite.svg#outline_heart" />
-                    </svg>
-                  ) : (
                     <svg className="w-7 h-7 cursor-pointer text-blue-600 hover:text-blue-700 transition-all duration-300">
                       <use href="/sprite.svg#filled_heart" />
+                    </svg>
+                  ) : (
+                    <svg className="w-7 h-7 cursor-pointer hover:text-blue-700 text-zinc-800 transition-all duration-300">
+                      <use href="/sprite.svg#outline_heart" />
                     </svg>
                   )}
                 </div>
@@ -209,7 +209,7 @@ const ProductSingleItemPage = ({ data, similiarProducts }) => {
         </div>
       </div>
       <SimiliarProducts similiarProducts={similiarProducts} />
-      
+
       <ProductDescComment
         rate={data?.score}
         id={data?._id}

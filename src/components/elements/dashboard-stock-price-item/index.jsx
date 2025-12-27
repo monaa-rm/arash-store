@@ -14,6 +14,30 @@ const DashboardStockPriceItem = ({ item, reload, setReload }) => {
   const [finallyText, setFinallyText] = useState("");
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
+      const persianNumbers = [
+      /۰/g,
+      /۱/g,
+      /۲/g,
+      /۳/g,
+      /۴/g,
+      /۵/g,
+      /۶/g,
+      /۷/g,
+      /۸/g,
+      /۹/g,
+    ];
+    const arabicNumbers = [
+      /٠/g,
+      /١/g,
+      /٢/g,
+      /٣/g,
+      /٤/g,
+      /٥/g,
+      /٦/g,
+      /٧/g,
+      /٨/g,
+      /٩/g,
+    ];
   useEffect(() => {
     const handleClick = (event) => {
       if (!event.target.closest(`#DashboardStockPriceItem${item?._id}`)) {
@@ -27,6 +51,68 @@ const DashboardStockPriceItem = ({ item, reload, setReload }) => {
       document.body.removeEventListener("click", handleClick);
     };
   }, []);
+
+    const productCostHandler = (value) => {
+    setFinallyText("");
+
+    if (!value) {
+      setProductCost(0);
+      return;
+    }
+    let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+
+    // --- 2️⃣ حذف هر چیزی به جز عدد و علامت منفی ---
+    let newvalue = englishValue.replace(/[^0-9]/g, "");
+
+    // --- 3️⃣ قبول فقط یک صفر ---
+    if (newvalue === "00") {
+      newvalue = "0";
+    }
+
+    // --- 4️⃣ حذف صفر ابتدایی اگر عدد دیگری بعد از آن وارد شود ---
+    if (newvalue.length > 1 && newvalue.startsWith("0")) {
+      newvalue = newvalue.substring(1);
+    }
+
+    // --- 5️⃣ به‌روزرسانی state ---
+    setProductCost(newvalue);
+  };
+    const productStockHandler = (value) => {
+    setFinallyText("");
+
+    if (!value) {
+      setProductStock(0);
+      return;
+    }
+
+    let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+
+    // --- 2️⃣ حذف هر چیزی به جز عدد و علامت منفی ---
+    let newvalue = englishValue.replace(/[^0-9]/g, "");
+
+    // قبول فقط یک صفر
+    if (newvalue === "00") {
+      newvalue = "0";
+    }
+
+    // حذف صفر ابتدایی اگر عدد دیگری بعد از آن وارد شود
+    if (newvalue.length > 1 && newvalue.startsWith("0")) {
+      newvalue = newvalue.substring(1);
+      console.log(newvalue);
+      return newvalue;
+    }
+    setProductStock(newvalue);
+  };
   const changeItemshandler = async (value) => {
     try {
       setLoading(true);
@@ -56,6 +142,7 @@ const DashboardStockPriceItem = ({ item, reload, setReload }) => {
       setFinallyText("خطایی رخ داده است");
     }
   };
+  
   return (
     <div
       id={`DashboardStockPriceItem${item?._id}`}
@@ -146,7 +233,7 @@ const DashboardStockPriceItem = ({ item, reload, setReload }) => {
                 name={`productStock${item?._id}`}
                 value={productStock}
                 type="text"
-                setValue={setProductStock}
+                setValue={productStockHandler}
                 label={"موجودی"}
                 finallyText={finallyText}
                 setFinallyText={setFinallyText}
@@ -156,7 +243,7 @@ const DashboardStockPriceItem = ({ item, reload, setReload }) => {
                 name={`productCost${item?._id}`}
                 value={productCost}
                 type="text"
-                setValue={setProductCost}
+                setValue={productCostHandler}
                 label={"قیمت"}
                 finallyText={finallyText}
                 setFinallyText={setFinallyText}

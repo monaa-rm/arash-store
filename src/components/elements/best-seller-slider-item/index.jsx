@@ -24,7 +24,9 @@ const BestSellerSliderItem = ({ data, hideBreef }) => {
     dispatch(setFavorites(parsedFavs)); // به‌روزرسانی وضعیت local
   }, [data?._id]);
   useEffect(() => {
-    favorites.includes(data?._id) ? setIsLiked(true) : setIsLiked(false);
+    if (favorites.length) {
+      favorites.includes(data?._id) ? setIsLiked(true) : setIsLiked(false);
+    }
   }, [data?._id, favorites]);
 
   const favoriteHandler = async () => {
@@ -87,7 +89,8 @@ const BestSellerSliderItem = ({ data, hideBreef }) => {
               : "تماس بگیرید "}
           </div>
           <div className="flex justify-center items-center gap-1 border-t pt-2">
-            <button type="button"
+            <button
+              type="button"
               onClick={() => {
                 dispatch(setProductBrifItem(_id));
                 dispatch(setShowProductBrif(true));
@@ -99,12 +102,12 @@ const BestSellerSliderItem = ({ data, hideBreef }) => {
             </button>
             <button type="button" onClick={() => favoriteHandler()}>
               {isLiked ? (
-                <svg className="w-7 h-7 cursor-pointer hover:text-blue-700 text-zinc-800 transition-all duration-300">
-                  <use href="/sprite.svg#outline_heart" />
-                </svg>
-              ) : (
                 <svg className="w-7 h-7 cursor-pointer text-blue-600 hover:text-blue-700 transition-all duration-300">
                   <use href="/sprite.svg#filled_heart" />
+                </svg>
+              ) : (
+                <svg className="w-7 h-7 cursor-pointer hover:text-blue-700 text-zinc-800 transition-all duration-300">
+                  <use href="/sprite.svg#outline_heart" />
                 </svg>
               )}
             </button>

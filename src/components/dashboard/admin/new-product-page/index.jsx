@@ -40,22 +40,105 @@ const NewProductPage = () => {
   }, [path]);
   const productPriceHandler = (value) => {
     setFinallyText("");
-    let newvalue = value.replace(/[^0-9\-]/g, "");
-    // قبول فقط یک صفر
+
+    if (!value) {
+      setProductPrice("");
+      return;
+    }
+
+    // --- 1️⃣ تبدیل اعداد فارسی و عربی به انگلیسی ---
+    const persianNumbers = [
+      /۰/g,
+      /۱/g,
+      /۲/g,
+      /۳/g,
+      /۴/g,
+      /۵/g,
+      /۶/g,
+      /۷/g,
+      /۸/g,
+      /۹/g,
+    ];
+    const arabicNumbers = [
+      /٠/g,
+      /١/g,
+      /٢/g,
+      /٣/g,
+      /٤/g,
+      /٥/g,
+      /٦/g,
+      /٧/g,
+      /٨/g,
+      /٩/g,
+    ];
+
+    let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+
+    // --- 2️⃣ حذف هر چیزی به جز عدد و علامت منفی ---
+    let newvalue = englishValue.replace(/[^0-9]/g, "");
+
+    // --- 3️⃣ قبول فقط یک صفر ---
     if (newvalue === "00") {
       newvalue = "0";
     }
 
-    // حذف صفر ابتدایی اگر عدد دیگری بعد از آن وارد شود
+    // --- 4️⃣ حذف صفر ابتدایی اگر عدد دیگری بعد از آن وارد شود ---
     if (newvalue.length > 1 && newvalue.startsWith("0")) {
       newvalue = newvalue.substring(1);
     }
 
+    // --- 5️⃣ به‌روزرسانی state ---
     setProductPrice(newvalue);
   };
+
   const productStockHandler = (value) => {
     setFinallyText("");
-    let newvalue = value.replace(/[^0-9\-]/g, "");
+
+    if (!value) {
+      setProductPrice("");
+      return;
+    }
+
+    // --- 1️⃣ تبدیل اعداد فارسی و عربی به انگلیسی ---
+    const persianNumbers = [
+      /۰/g,
+      /۱/g,
+      /۲/g,
+      /۳/g,
+      /۴/g,
+      /۵/g,
+      /۶/g,
+      /۷/g,
+      /۸/g,
+      /۹/g,
+    ];
+    const arabicNumbers = [
+      /٠/g,
+      /١/g,
+      /٢/g,
+      /٣/g,
+      /٤/g,
+      /٥/g,
+      /٦/g,
+      /٧/g,
+      /٨/g,
+      /٩/g,
+    ];
+
+    let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+
+    // --- 2️⃣ حذف هر چیزی به جز عدد و علامت منفی ---
+    let newvalue = englishValue.replace(/[^0-9]/g, "");
 
     // قبول فقط یک صفر
     if (newvalue === "00") {
@@ -72,7 +155,47 @@ const NewProductPage = () => {
   };
   const heightHandler = (value) => {
     setFinallyText("");
-    let newvalue = value.replace(/[^0-9\-]/g, "");
+
+    if (!value) {
+      setProductPrice("");
+      return;
+    }
+
+    // --- 1️⃣ تبدیل اعداد فارسی و عربی به انگلیسی ---
+    const persianNumbers = [
+      /۰/g,
+      /۱/g,
+      /۲/g,
+      /۳/g,
+      /۴/g,
+      /۵/g,
+      /۶/g,
+      /۷/g,
+      /۸/g,
+      /۹/g,
+    ];
+    const arabicNumbers = [
+      /٠/g,
+      /١/g,
+      /٢/g,
+      /٣/g,
+      /٤/g,
+      /٥/g,
+      /٦/g,
+      /٧/g,
+      /٨/g,
+      /٩/g,
+    ];
+
+    let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+
+    // --- 2️⃣ حذف هر چیزی به جز عدد و علامت منفی ---
+    let newvalue = englishValue.replace(/[^0-9]/g, "");
 
     // قبول فقط یک صفر
     if (newvalue === "00") {
@@ -89,7 +212,47 @@ const NewProductPage = () => {
   };
   const widthHandler = (value) => {
     setFinallyText("");
-    let newvalue = value.replace(/[^0-9\-]/g, "");
+
+    if (!value) {
+      setProductPrice("");
+      return;
+    }
+
+    // --- 1️⃣ تبدیل اعداد فارسی و عربی به انگلیسی ---
+    const persianNumbers = [
+      /۰/g,
+      /۱/g,
+      /۲/g,
+      /۳/g,
+      /۴/g,
+      /۵/g,
+      /۶/g,
+      /۷/g,
+      /۸/g,
+      /۹/g,
+    ];
+    const arabicNumbers = [
+      /٠/g,
+      /١/g,
+      /٢/g,
+      /٣/g,
+      /٤/g,
+      /٥/g,
+      /٦/g,
+      /٧/g,
+      /٨/g,
+      /٩/g,
+    ];
+
+    let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+
+    // --- 2️⃣ حذف هر چیزی به جز عدد و علامت منفی ---
+    let newvalue = englishValue.replace(/[^0-9]/g, "");
 
     // قبول فقط یک صفر
     if (newvalue === "00") {
@@ -105,7 +268,47 @@ const NewProductPage = () => {
   };
   const weightHandler = (value) => {
     setFinallyText("");
-    let newvalue = value.replace(/[^0-9\-]/g, "");
+
+    if (!value) {
+      setProductPrice("");
+      return;
+    }
+
+    // --- 1️⃣ تبدیل اعداد فارسی و عربی به انگلیسی ---
+    const persianNumbers = [
+      /۰/g,
+      /۱/g,
+      /۲/g,
+      /۳/g,
+      /۴/g,
+      /۵/g,
+      /۶/g,
+      /۷/g,
+      /۸/g,
+      /۹/g,
+    ];
+    const arabicNumbers = [
+      /٠/g,
+      /١/g,
+      /٢/g,
+      /٣/g,
+      /٤/g,
+      /٥/g,
+      /٦/g,
+      /٧/g,
+      /٨/g,
+      /٩/g,
+    ];
+
+    let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+
+    // --- 2️⃣ حذف هر چیزی به جز عدد و علامت منفی ---
+    let newvalue = englishValue.replace(/[^0-9]/g, "");
 
     // قبول فقط یک صفر
     if (newvalue === "00") {
