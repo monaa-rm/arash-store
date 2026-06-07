@@ -16,7 +16,32 @@ const ChangePriceByCategory = ({ reload, setReload }) => {
   const [operation, setOperation] = useState(null);
   const [catErr, setCatErr] = useState(false);
   const { data: session } = useSession();
+          const persianNumbers = [
+      /۰/g,
+      /۱/g,
+      /۲/g,
+      /۳/g,
+      /۴/g,
+      /۵/g,
+      /۶/g,
+      /۷/g,
+      /۸/g,
+      /۹/g,
+    ];
+    const arabicNumbers = [
+      /٠/g,
+      /١/g,
+      /٢/g,
+      /٣/g,
+      /٤/g,
+      /٥/g,
+      /٦/g,
+      /٧/g,
+      /٨/g,
+      /٩/g,
+    ];
   const searchCatHandler = (e) => {
+    
     setSearchedCat(e?.target?.value);
     const catListSearch = categories?.filter(
       (item) =>
@@ -53,7 +78,20 @@ const ChangePriceByCategory = ({ reload, setReload }) => {
     FetchAllCats();
   }, []);
   const productPriceHandler = (value) => {
-    let newvalue = value.replace(/[^0-9\-]/g, "");
+        if (!value) {
+      setAllproductprice(0);
+      return;
+    }
+
+    let englishValue = value;
+    for (let i = 0; i < 10; i++) {
+      englishValue = englishValue
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
+    }
+
+    // --- 2️⃣ حذف هر چیزی به جز عدد و علامت منفی ---
+    let newvalue = englishValue.replace(/[^0-9]/g, "");
 
     // قبول فقط یک صفر
     if (newvalue === "00") {

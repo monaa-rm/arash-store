@@ -86,10 +86,10 @@ export default async function RootLayout({ children }) {
           freeSending={freeSending}
         >
           <NextAuthProvider>
-            {/* <>
+            <>
               <meta charSet="utf-8" />
-              <link rel="shortcut icon" href="" type="image/x-icon" />
-            </> */}
+              <link rel="shortcut icon" href="/images/arashstoreico.ico" type="image/x-icon" />
+            </>
             <HeaderSetting />
             <Header show_price={show_price} />
             <SignUpSection />

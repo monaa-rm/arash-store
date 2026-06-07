@@ -8,7 +8,8 @@ import {
 } from "@/utiles/utils-func";
 import { useEffect, useState } from "react";
 import SearchItemAddToCart from "@/components/elements/search-item-add-to-cart";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setFavorites } from "@/features/globalSlice";
 
 const SearchBoxItem = ({ item }) => {
   const [shopping, setShopping] = useState(false);
@@ -16,10 +17,13 @@ const SearchBoxItem = ({ item }) => {
   const [msg, setMsg] = useState("");
   const [reload, setReload] = useState(-1);
   const prdslug = slugify(item?.title);
+  let favorites = useSelector((store) => store?.globalSlice?.favorites) || [];
+  const [isLiked, setIsLiked] = useState(false);
   const showPriceGlobal =
     useSelector((store) => store.globalSlice.showPriceGlobal) || false;
   const orderProducts =
     useSelector((store) => store.orderSlice.orderProducts) || [];
+  const dispatch = useDispatch();
   useEffect(() => {
     const handleClick = (event) => {
       if (!event.target.closest(`#searchBoxItem${item?._id}`)) {
@@ -43,12 +47,41 @@ const SearchBoxItem = ({ item }) => {
       setMsg("");
     }
   }, [reload]);
-  // console.log({ orderedProduct });
+  useEffect(() => {
+    const favs = localStorage.getItem("favorites");
+    const parsedFavs = favs ? JSON.parse(favs) : [];
+    dispatch(setFavorites(parsedFavs)); // به‌روزرسانی وضعیت local
+  }, [item?._id]);
+  useEffect(() => {
+    if (favorites.length) {
+      favorites.includes(item?._id) ? setIsLiked(true) : setIsLiked(false);
+    }
+  }, [item?._id, favorites]);
 
+  const favoriteHandler = async () => {
+    try {
+      if (isLiked) {
+        console.log("is liked")
+        setIsLiked(false);
+        const newFavorites = favorites.filter((item) => item !== item?._id);
+        localStorage.setItem("favorites", JSON.stringify(newFavorites));
+        dispatch(setFavorites(newFavorites));
+      } else {
+        console.log("isnt like")
+        setIsLiked(true);
+        const newFavorites = [...favorites, item?._id];
+        console.log(newFavorites);
+        localStorage.setItem("favorites", JSON.stringify(newFavorites));
+        dispatch(setFavorites(newFavorites));
+      }
+    } catch (error) {
+      setIsLiked(isLiked);
+    }
+  };
   return (
     <article
       id={`searchBoxItem${item?._id}`}
-      className="group mb-2 relative w-full h-72 flex justify-center items-center z-0  [perspective:1000px]"
+      className="group mb-2 relative w-full h-[300px] flex justify-center items-center z-0  [perspective:1000px]"
     >
       <div
         className={`absolute flex justify-center items-center duration-1000 w-full h-full [transform-style:preserve-3d] ${
@@ -57,10 +90,10 @@ const SearchBoxItem = ({ item }) => {
       >
         {/* main section */}
         <div
-          className=" absolute w-full overflow-hidden max-w-[260px] border rounded-2xl hover:shadow-md transition-all
-         duration-500 h-72 "
+          className=" absolute w-full overflow-hidden max-w-[260px] border rounded-[10px] hover:shadow-md transition-all
+         duration-500 h-[300px] "
         >
-          <div className="w-full h-44 relative">
+          <div className="w-full h-48 relative">
             <Image
               src={item?.imageSrc[0]?.file}
               fill
@@ -69,7 +102,7 @@ const SearchBoxItem = ({ item }) => {
               alt={item?.title}
             />
           </div>
-          <div className="w-full flex flex-col gap-1 p-2">
+          <div className="w-full flex flex-col gap-0.5 p-2">
             <Link
               href={`/products/${item._id}/${prdslug}`}
               className=" cursor-pointer font-bold text-sm line-clamp-1 "
@@ -98,7 +131,7 @@ const SearchBoxItem = ({ item }) => {
               )}
             </div>
             <div className="flex justify-between items-center gap-2  pt-2">
-              <div className="w-8 h-8 flex justify-center items-center">
+              <div className=" flex justify-center items-center gap-1">
                 <div
                   onClick={() => {
                     if (showPriceGlobal) setShopping(true);
@@ -124,6 +157,21 @@ const SearchBoxItem = ({ item }) => {
                     <use href="/sprite.svg#shopp_icon" />
                   </svg>
                 </div>
+                <button
+                  type="button"
+                  className=""
+                  onClick={() => favoriteHandler()}
+                >
+                  {isLiked ? (
+                    <svg className="w-7 h-7 cursor-pointer text-blue-600 hover:text-blue-700 transition-all duration-300">
+                      <use href="/sprite.svg#filled_heart" />
+                    </svg>
+                  ) : (
+                    <svg className="w-7 h-7 cursor-pointer hover:text-blue-700 text-zinc-800 transition-all duration-300">
+                      <use href="/sprite.svg#outline_heart" />
+                    </svg>
+                  )}
+                </button>
               </div>
               {showPriceGlobal ? (
                 <div className="flex justify-center items-center gap-1">
@@ -142,8 +190,8 @@ const SearchBoxItem = ({ item }) => {
         </div>
         {/* add to cart section */}
         <div
-          className="absolute w-full overflow-hidden max-w-[260px] border rounded-2xl hover:shadow-md transition-all 
-        duration-500 h-72  bg-gradient-to-br from-white to-gray-200  p-6 text-white [transform:rotateX(180deg)] 
+          className="absolute w-full overflow-hidden max-w-[260px] border rounded-[10px] hover:shadow-md transition-all 
+        duration-500 h-[300px]  bg-gradient-to-br from-white to-gray-200  p-6 text-white [transform:rotateX(180deg)] 
         [backface-visibility:hidden]"
         >
           <div className="flex flex-col w-full h-full">
@@ -151,7 +199,6 @@ const SearchBoxItem = ({ item }) => {
               onClick={() => setShopping(false)}
               className=" w-9 h-7 flex items-center justify-center cursor-pointer rounded-[4px] bg-blue-700 hover:bg-blue-800 transition-all duration-300 ease-in-out "
             >
-
               <svg className="w-6 h-6 text-white rotate-180">
                 <use href="/sprite.svg#item_arrow_left" />
               </svg>
